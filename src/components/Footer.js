@@ -7,50 +7,16 @@ const Footer = () => {
         <div class="container px-4 mx-auto">
           <div class="-mx-4 flex flex-wrap justify-between">
             <div class="px-4 my-4 w-full xl:w-1/5">
-              <a href="/" class="block w-56 mb-10">
-                <svg
-                  version="1.1"
-                  viewBox="0 0 3368 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g fill="none" fill-rule="evenodd">
-                    <g transform="translate(0 -75)">
-                      <g transform="translate(0 75)">
-                        <rect
-                          width="512"
-                          height="512"
-                          rx="128"
-                          fill="#3D5AFE"
-                        ></rect>
-                        <rect
-                          x="149"
-                          y="176"
-                          width="220"
-                          height="220"
-                          fill="#fff"
-                        ></rect>
-                        <circle cx="259" cy="156" r="40" fill="#fff"></circle>
-                        <circle
-                          cx="369"
-                          cy="286"
-                          r="40"
-                          fill="#2962FF"
-                        ></circle>
-                      </g>
-                      <text
-                        fill="white"
-                        font-family="Nunito-Bold, Nunito"
-                        font-size="512"
-                        font-weight="bold"
-                      >
-                        <tspan x="654" y="518">
-                          TurtorMinds
-                        </tspan>
-                      </text>
-                    </g>
-                  </g>
-                </svg>
-              </a>
+              <div className="flex items-center">
+                <img
+                  src="https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/444151589_1877086456037477_1111746622231164736_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFWMFxBN3oBRpFAMIm2sGJSsVmeo7cxhPKxWZ6jtzGE8jXgbkR5Nk2mWoD5kF9PiAabOJAjeXYkWFn-nmXA01la&_nc_ohc=CIgL3TAe-pQQ7kNvgHYT2f1&_nc_ht=scontent.fsgn2-6.fna&oh=00_AYB_nxgSeHhakBLldvCH7JS1yAnUhIK2Oz2BZgqp8SBv0g&oe=664D328A"
+                  alt="Logo"
+                  className="ml-4 h-20 w-20 rounded-full mb-2"
+                />
+                <a href="#" className="text-white text-3xl ml-4 font-bold">
+                  TutorMinds
+                </a>
+              </div>
               <p class="text-justify">
                 TutorMinds là trang web gia sư trực tuyến hàng đầu, mang đến cho
                 học sinh mọi lứa tuổi cơ hội học tập hiệu quả với đội ngũ gia sư
@@ -92,33 +58,33 @@ const Footer = () => {
             <div class="px-4 my-4 w-full sm:w-auto">
               <div>
                 <h2 class="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">
-                  Blog
+                  Thông tin khóa học
                 </h2>
               </div>
               <ul class="leading-8">
                 <li>
                   <a href="#" class="hover:text-blue-400">
-                    Getting Started With HTML and CSS
+                    Bắt đầu học lớp Giutar căn bản
                   </a>
                 </li>
                 <li>
                   <a href="#" class="hover:text-blue-400">
-                    What Is Flex And When to Use It?
+                    Toán học lớp 3
                   </a>
                 </li>
                 <li>
                   <a href="#" class="hover:text-blue-400">
-                    How TailwindCSS Can Help Your Productivity?
+                    Học lập trình với HTML & CSS
                   </a>
                 </li>
                 <li>
                   <a href="#" class="hover:text-blue-400">
-                    5 Tips to Make Responsive Website
+                    5 thủ thuật để bấm máy tính casio
                   </a>
                 </li>
                 <li>
                   <a href="#" class="hover:text-blue-400">
-                    See More
+                    Nhiều môn học khác
                   </a>
                 </li>
               </ul>
@@ -126,7 +92,7 @@ const Footer = () => {
             <div class="px-4 my-4 w-full sm:w-auto xl:w-1/5">
               <div>
                 <h2 class="inline-block text-2xl pb-4 mb-4 border-b-4 border-blue-600">
-                  Connect With Us
+                  Liên hệ với chúng tôi
                 </h2>
               </div>
               <a
