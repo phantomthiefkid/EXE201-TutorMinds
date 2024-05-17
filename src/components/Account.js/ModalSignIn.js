@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Boxes, PlusCircle, XCircle } from 'react-bootstrap-icons';
 const ModalSignIn = ({ visible, onClose }) => {
   if (!visible) return null;
   return (
