@@ -20,10 +20,8 @@ const Homepage = () => {
       </div>
       <div class="container mx-auto max-w-full p-6 bg-blue-100">
         <h2 class="text-3xl font-bold text-blue-500 mb-3">Dịch Vụ</h2>
-
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="p-6 bg-gray-100 rounded-lg shadow-sm">
-         
             <h3 class="text-lg font-bold mb-4 text-blue-500">
               Gia sư trực tuyến
             </h3>
