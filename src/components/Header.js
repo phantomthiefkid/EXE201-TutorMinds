@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import ModalSignIn from './Account.js/ModalSignIn';
 
 const Header = () => {
+    const [showModalLogin, setShowModalLogin] = useState(false);
+    const handleOnClose = () => setShowModalLogin(false);
     return (
+       <>
+        <ModalSignIn onClose={handleOnClose} visible={showModalLogin}></ModalSignIn>
         <nav className="bg-sky-500 p-4">
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo and Brand */}
@@ -20,11 +25,11 @@ const Header = () => {
                 <div className="hidden md:flex space-x-6">
                     <a href="#" className="text-white hover:text-gray-200">Trang chủ</a>
                     <a href="#" className="text-white hover:text-gray-200">Đăng ký</a>
-                    <a href="#" className="text-white hover:text-gray-200">Đăng nhập</a>
+                    <button onClick={() => setShowModalLogin(true)} className="text-white hover:text-gray-200">Đăng nhập</button>
                     <a href="#" className="text-white hover:text-gray-200">Liên hệ</a>
                 </div>
             </div>
-        </nav>
+        </nav></>
     );
 }
 
