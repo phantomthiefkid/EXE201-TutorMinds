@@ -18,7 +18,10 @@ const Footer = () => {
                 </a>
               </div>
               <p className="text-justify leading-6 mt-2">
-                Gia sư trực tuyến hàng đầu, kết nối học sinh với đội ngũ gia sư giàu kinh nghiệm và tâm huyết.
+                TutorMinds là nền tảng kết nối học sinh với đội ngũ gia sư trực
+                tuyến uy tín, giàu kinh nghiệm và tâm huyết. Chúng tôi cam kết
+                mang đến cho bạn trải nghiệm học tập hiệu quả, tiện lợi và phù
+                hợp với mọi nhu cầu.
               </p>
             </div>
 
