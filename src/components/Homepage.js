@@ -26,7 +26,7 @@ const Homepage = () => {
       <div class="container mx-auto max-w-full p-6 bg-blue-100">
         <h2 class="text-3xl font-bold text-blue-500 mb-3">Dịch Vụ</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="p-6 bg-gray-100 rounded-lg shadow-sm">
+          <div class="p-6 bg-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl">
             <div class="flex items-center mb-4">
               <Book class="mr-2 text-blue-500" />
               <h3 class="text-lg font-bold text-blue-500">Gia sư trực tuyến</h3>
@@ -36,7 +36,7 @@ const Homepage = () => {
             </p>
           </div>
 
-          <div class="p-6 bg-gray-100 rounded-lg shadow-sm">
+          <div class="p-6 bg-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl">
             <div class="flex items-center mb-4">
               <Broadcast class="mr-2 text-blue-500" />
               <h3 class="text-lg font-bold text-blue-500">
@@ -49,7 +49,7 @@ const Homepage = () => {
             </p>
           </div>
 
-          <div class="p-6 bg-gray-100 rounded-lg shadow-sm">
+          <div class="p-6 bg-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl">
             <div class="flex items-center mb-4">
               <People class="mr-2 text-blue-500" />
               <h3 class="text-lg font-bold text-blue-500">
@@ -133,8 +133,8 @@ const Homepage = () => {
           <h3 class="text-xl mb-6">
             Liên hệ với chúng tôi ngay hôm nay để đặt lịch học
           </h3>
-          <button class="bg-green-500 text-white py-3 px-6 rounded-full hover:bg-green-600">
-            Get in Touch
+          <button class="bg-blue-400 py-3 px-6 rounded-full hover:bg-blue-600 ">
+            Bắt đầu
           </button>
         </div>
       </div>
