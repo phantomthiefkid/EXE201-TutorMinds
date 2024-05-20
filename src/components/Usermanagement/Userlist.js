@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from "react-router-dom"
 
 const UserList = () => {
     return (
@@ -13,7 +14,9 @@ const UserList = () => {
                         </h2>
                     </div>
                     <button className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
+                        <Link to={`/createUser`}>
                         Add New User
+                        </Link>
                     </button>
                 </div>
 
