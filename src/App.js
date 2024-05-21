@@ -5,7 +5,6 @@ import Homepage from "./components/Homepage";
 import Footer from "./components/Footer";
 import UserList from "./components/Usermanagement/Userlist";
 import CreateUser from "./components/Usermanagement/CreateUser";
-import Register from "./components/Usermanagement/RegisterTeacher";
 import RegisterTeacher from "./components/Usermanagement/RegisterTeacher";
 import RegisterUser from "./components/Usermanagement/RegisterUser";
 function App() {

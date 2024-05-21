@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const CreateUser = () => {
   return (
-    <div class="min-h-screen bg-gray-50 flex flex-col justify-center sm:px-6 lg:px-8 mt-2 ">
+    <div style={{ backgroundImage: 'url("https://i.vdoc.vn/data/image/2019/07/31/tu-the-ngoi-hoc-dung.jpg")' }} class="min-h-screen bg-gray-50 flex flex-col justify-center sm:px-6 lg:px-8 ">
       <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <img
           class="mx-auto h-12 w-auto"
