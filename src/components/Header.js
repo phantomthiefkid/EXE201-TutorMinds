@@ -32,7 +32,7 @@ const Header = () => {
             <Link to="/" className="text-white hover:text-gray-200">
               Trang chủ
             </Link>
-            <Link to="" className="text-white hover:text-gray-200">
+            <Link to="/registerUser" className="text-white hover:text-gray-200">
               Đăng ký
             </Link>
             <button
