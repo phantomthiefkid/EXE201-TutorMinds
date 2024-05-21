@@ -53,7 +53,7 @@ body {
     border-radius: 4px;
 }
 
-button {
+/* button {
     background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
@@ -65,7 +65,7 @@ button {
 
 button:hover {
     background-color: #45a049;
-}
+} */
 
 .mt-4 {
     margin-top: 1rem;
