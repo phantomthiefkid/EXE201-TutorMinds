@@ -58,7 +58,6 @@ const Dashboard = () => {
             />
           </div>
         </div>
-
         <div class="p-4 bg-white rounded-lg shadow-lg h-32">
           <div class="flex items-center justify-between">
             <div className="block">
@@ -72,7 +71,6 @@ const Dashboard = () => {
             />
           </div>
         </div>
-
         <div class="p-4 bg-white rounded-lg shadow-lg h-32">
           <div class="flex items-center justify-between">
             <div className="block">
@@ -86,7 +84,6 @@ const Dashboard = () => {
             />
           </div>
         </div>
-
         <div class="p-4 bg-white rounded-lg shadow-lg h-32">
           <div class="flex items-center justify-between">
             <div className="block">
