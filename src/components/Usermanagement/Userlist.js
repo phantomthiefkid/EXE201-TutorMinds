@@ -13,6 +13,10 @@ const UserList = () => {
             [id]: !prevState[id] 
         }));
     }
+    const closeAllDropdowns = () => {
+        setDropdownStates({});
+    }
+
     return (
         <>
             <UpdateUser 
@@ -95,7 +99,7 @@ const UserList = () => {
                                             </button>
                                             {dropdownStates[1] && (
                                                 <div className="dropdown-content absolute right-20 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
-                                                    <button onClick={() => setShowModalUpdate(true)} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
+                                                    <button onClick={() => { closeAllDropdowns(); setShowModalUpdate(true); }} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
                                                     <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Vô hiệu hóa người dùng</button>
                                                 </div>
                                             )}
@@ -138,7 +142,7 @@ const UserList = () => {
                                             </button>
                                             {dropdownStates[2] && (
                                                 <div className="dropdown-content absolute right-20 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
-                                                    <button onClick={() => setShowModalUpdate(true)} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
+                                                    <button onClick={() => { closeAllDropdowns(); setShowModalUpdate(true); }} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
                                                     <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Vô hiệu hóa người dùng</button>
                                                 </div>
                                             )}
@@ -180,7 +184,7 @@ const UserList = () => {
                                             </button>
                                             {dropdownStates[3] && (
                                                 <div className="dropdown-content absolute right-20 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
-                                                    <button onClick={() => setShowModalUpdate(true)} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
+                                                    <button onClick={() => { closeAllDropdowns(); setShowModalUpdate(true); }} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
                                                     <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Vô hiệu hóa người dùng</button>
                                                 </div>
                                             )}
@@ -222,7 +226,7 @@ const UserList = () => {
                                             </button>
                                             {dropdownStates[4] && (
                                                 <div className="dropdown-content absolute right-20 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
-                                                    <button onClick={() => setShowModalUpdate(true)} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
+                                                    <button onClick={() => { closeAllDropdowns(); setShowModalUpdate(true); }} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
                                                     <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Vô hiệu hóa người dùng</button>
                                                 </div>
                                             )}
@@ -264,7 +268,7 @@ const UserList = () => {
                                             </button>
                                             {dropdownStates[5] && (
                                                 <div className="dropdown-content absolute right-20 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
-                                                    <button onClick={() => setShowModalUpdate(true)} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
+                                                    <button onClick={() => { closeAllDropdowns(); setShowModalUpdate(true); }} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
                                                     <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Vô hiệu hóa người dùng</button>
                                                 </div>
                                             )}
