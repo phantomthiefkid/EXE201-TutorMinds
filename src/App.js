@@ -15,11 +15,11 @@ function App() {
       <Header></Header>
       <Routes>
         <Route path="/" element={<Homepage></Homepage>}></Route>
-        <Route path="/createUser" element={<CreateUser></CreateUser>}></Route>
+        <Route path="/createUser" element={<SidebarAdmin><CreateUser></CreateUser></SidebarAdmin>}></Route>
         <Route path="/registerTeacher" element={<RegisterTeacher></RegisterTeacher>}></Route>
         <Route path="/registerUser" element={<RegisterUser></RegisterUser>}></Route>
         <Route path="/userlist" element={<SidebarAdmin><UserList></UserList></SidebarAdmin>}></Route>
-        <Route path="/dashboard" element={<SidebarAdmin><Dashboard></Dashboard></SidebarAdmin>}></Route>
+        <Route path="/dashboard" element={<SidebarAdmin><Dashboard/></SidebarAdmin>}></Route>
       </Routes>
       <Footer></Footer>
     </BrowserRouter>
