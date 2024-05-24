@@ -25,7 +25,7 @@ const UserList = () => {
                     <div className="flex justify-between items-center mb-6">
                         <div className="flex items-center">
 
-                            <h2 className="text-2xl font-semibold leading-tight text-gray-800 bg-gradient-to-r from-blue-500 to-green-500 text-transparent bg-clip-text">
+                            <h2 className="text-3xl font-semibold leading-tight text-gray-800 bg-gradient-to-r from-blue-500 to-green-500 text-transparent bg-clip-text">
                                 Quản lí người dùng
                             </h2>
                         </div>
