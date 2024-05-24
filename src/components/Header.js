@@ -11,7 +11,7 @@ const Header = () => {
         onClose={handleOnClose}
         visible={showModalLogin}
       ></ModalSignIn>
-      <nav className="bg-sky-500 p-4">
+      <nav style={{background: '#6A9CFD'}} className="p-4">
         <div className="container mx-auto flex justify-between items-center">
           {/* Logo and Brand */}
           <div className="flex items-center">
