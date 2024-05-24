@@ -7,16 +7,19 @@ import UserList from "./components/Usermanagement/Userlist";
 import CreateUser from "./components/Usermanagement/CreateUser";
 import RegisterTeacher from "./components/Usermanagement/RegisterTeacher";
 import RegisterUser from "./components/Usermanagement/RegisterUser";
+import SidebarAdmin from "./components/Admin/SidebarAdmin";
+import Dashboard from "./components/Admin/Dashboard";
 function App() {
   return (
     <BrowserRouter>
       <Header></Header>
       <Routes>
         <Route path="/" element={<Homepage></Homepage>}></Route>
-        <Route path="/userlist" element={<UserList></UserList>}></Route>
         <Route path="/createUser" element={<CreateUser></CreateUser>}></Route>
         <Route path="/registerTeacher" element={<RegisterTeacher></RegisterTeacher>}></Route>
         <Route path="/registerUser" element={<RegisterUser></RegisterUser>}></Route>
+        <Route path="/userlist" element={<SidebarAdmin><UserList></UserList></SidebarAdmin>}></Route>
+        <Route path="/dashboard" element={<SidebarAdmin><Dashboard></Dashboard></SidebarAdmin>}></Route>
       </Routes>
       <Footer></Footer>
     </BrowserRouter>

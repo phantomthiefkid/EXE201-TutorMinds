@@ -29,7 +29,7 @@ const CreateUser = () => {
                 <input
                   id="name"
                   name="name"
-                  placeholder="John Doe"
+                  placeholder="Họ và tên"
                   type="text"
                   required=""
                   value=""

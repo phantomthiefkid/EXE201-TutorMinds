@@ -5,6 +5,14 @@ import UpdateUser from './UpdateUser';
 const UserList = () => {
     const [showModalUpdate, setShowModalUpdate] = useState(false);
     const handleOnClose = () => setShowModalUpdate(false);
+    const [dropdownStates, setDropdownStates] = useState({});
+
+    const toggleDropdown = (id) => {
+        setDropdownStates(prevState => ({
+            ...prevState,
+            [id]: !prevState[id] 
+        }));
+    }
     return (
         <>
             <UpdateUser 
@@ -44,9 +52,6 @@ const UserList = () => {
                                             Họ và tên
                                         </th>
                                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                            Hành động
-                                        </th>
-                                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                             Role
                                         </th>
                                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100"></th>
@@ -77,22 +82,23 @@ const UserList = () => {
                                             <p className="text-gray-900 whitespace-no-wrap">Sherlock Holmes</p>
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <button onClick={() => setShowModalUpdate(true)} className="text-gray-900 whitespace-no-wrap px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md shadow-md transition duration-300 ease-in-out">
-                                                Update
-                                            </button>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                                 <span aria-hidden className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
                                                 <span className="relative">Active</span>
                                             </span>
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
-                                            <button type="button" className="inline-block text-gray-500 hover:text-gray-700">
+                                            <button type="button" onClick={() => toggleDropdown(1)} className="inline-block text-gray-500 hover:text-gray-700">
                                                 <svg className="inline-block h-6 w-6 fill-current" viewBox="0 0 24 24">
                                                     <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z" />
                                                 </svg>
                                             </button>
+                                            {dropdownStates[1] && (
+                                                <div className="dropdown-content absolute right-20 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
+                                                    <button onClick={() => setShowModalUpdate(true)} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
+                                                    <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Vô hiệu hóa người dùng</button>
+                                                </div>
+                                            )}
                                         </td>
                                     </tr>
 
@@ -110,7 +116,7 @@ const UserList = () => {
                                                     <p className="text-gray-900 whitespace-no-wrap">Molly Sanders</p>
                                                     <p className="text-gray-600 whitespace-no-wrap">ID: 000002</p>
                                                 </div>
-                                            </div>
+                                            </div> 
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <p className="text-gray-900 whitespace-no-wrap">molly@example.com</p>
@@ -119,22 +125,23 @@ const UserList = () => {
                                             <p className="text-gray-900 whitespace-no-wrap">Sherlock Holmes</p>
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <button onClick={() => setShowModalUpdate(true)} className="text-gray-900 whitespace-no-wrap px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md shadow-md transition duration-300 ease-in-out">
-                                                Update
-                                            </button>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                                 <span aria-hidden className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
                                                 <span className="relative">Active</span>
                                             </span>
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
-                                            <button type="button" className="inline-block text-gray-500 hover:text-gray-700">
+                                            <button type="button" onClick={() => toggleDropdown(2)} className="inline-block text-gray-500 hover:text-gray-700">
                                                 <svg className="inline-block h-6 w-6 fill-current" viewBox="0 0 24 24">
                                                     <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z" />
                                                 </svg>
                                             </button>
+                                            {dropdownStates[2] && (
+                                                <div className="dropdown-content absolute right-20 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
+                                                    <button onClick={() => setShowModalUpdate(true)} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
+                                                    <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Vô hiệu hóa người dùng</button>
+                                                </div>
+                                            )}
                                         </td>
                                     </tr>
                                     <tr>
@@ -160,22 +167,23 @@ const UserList = () => {
                                             <p className="text-gray-900 whitespace-no-wrap">Sherlock Holmes</p>
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <button onClick={() => setShowModalUpdate(true)} className="text-gray-900 whitespace-no-wrap px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md shadow-md transition duration-300 ease-in-out">
-                                                Update
-                                            </button>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                                 <span aria-hidden className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
                                                 <span className="relative">Active</span>
                                             </span>
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
-                                            <button type="button" className="inline-block text-gray-500 hover:text-gray-700">
+                                            <button type="button" onClick={() => toggleDropdown(3)} className="inline-block text-gray-500 hover:text-gray-700">
                                                 <svg className="inline-block h-6 w-6 fill-current" viewBox="0 0 24 24">
                                                     <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z" />
                                                 </svg>
                                             </button>
+                                            {dropdownStates[3] && (
+                                                <div className="dropdown-content absolute right-20 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
+                                                    <button onClick={() => setShowModalUpdate(true)} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
+                                                    <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Vô hiệu hóa người dùng</button>
+                                                </div>
+                                            )}
                                         </td>
                                     </tr>
                                     <tr>
@@ -201,22 +209,23 @@ const UserList = () => {
                                             <p className="text-gray-900 whitespace-no-wrap">Sherlock Holmes</p>
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <button onClick={() => setShowModalUpdate(true)} className="text-gray-900 whitespace-no-wrap px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md shadow-md transition duration-300 ease-in-out">
-                                                Update
-                                            </button>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                                 <span aria-hidden className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
                                                 <span className="relative">Active</span>
                                             </span>
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
-                                            <button type="button" className="inline-block text-gray-500 hover:text-gray-700">
+                                            <button type="button" onClick={() => toggleDropdown(4)} className="inline-block text-gray-500 hover:text-gray-700">
                                                 <svg className="inline-block h-6 w-6 fill-current" viewBox="0 0 24 24">
                                                     <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z" />
                                                 </svg>
                                             </button>
+                                            {dropdownStates[4] && (
+                                                <div className="dropdown-content absolute right-20 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
+                                                    <button onClick={() => setShowModalUpdate(true)} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
+                                                    <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Vô hiệu hóa người dùng</button>
+                                                </div>
+                                            )}
                                         </td>
                                     </tr>
                                     <tr>
@@ -242,25 +251,25 @@ const UserList = () => {
                                             <p className="text-gray-900 whitespace-no-wrap">Sherlock Holmes</p>
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <button onClick={() => setShowModalUpdate(true)} className="text-gray-900 whitespace-no-wrap px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md shadow-md transition duration-300 ease-in-out">
-                                                Update
-                                            </button>
-                                        </td>
-                                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                                 <span aria-hidden className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
                                                 <span className="relative">Active</span>
                                             </span>
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
-                                            <button type="button" className="inline-block text-gray-500 hover:text-gray-700">
+                                            <button type="button" onClick={() => toggleDropdown(5)} className="inline-block text-gray-500 hover:text-gray-700">
                                                 <svg className="inline-block h-6 w-6 fill-current" viewBox="0 0 24 24">
                                                     <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z" />
                                                 </svg>
                                             </button>
+                                            {dropdownStates[5] && (
+                                                <div className="dropdown-content absolute right-20 mt-2 w-48 bg-white shadow-lg rounded-md z-10">
+                                                    <button onClick={() => setShowModalUpdate(true)} className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cập nhập người dùng</button>
+                                                    <button className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Vô hiệu hóa người dùng</button>
+                                                </div>
+                                            )}
                                         </td>
                                     </tr>
-                                    
                                 </tbody>
                             </table>
                         </div>

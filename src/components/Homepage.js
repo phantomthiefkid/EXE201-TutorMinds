@@ -128,7 +128,7 @@ const Homepage = () => {
       </div>
 
       <div class="flex items-center justify-center">
-        <div class="text-center p-6 bg-white">
+        <div class="text-center p-6">
           <h1 class="text-3xl mb-4">Bạn đã sẵn sàng để bắt đầu?</h1>
           <h3 class="text-xl mb-6">
             Liên hệ với chúng tôi ngay hôm nay để đặt lịch học
