@@ -23,7 +23,7 @@ const Homepage = () => {
           className="rounded-sm mx-auto mt-3"
         />
       </div>
-      <div class="container mx-auto max-w-full p-6 bg-blue-100">
+      <div class="container mx-auto max-w-full p-6 bg-blue-100 z-10">
         <h2 class="text-3xl font-bold text-blue-500 mb-3">Dịch Vụ</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="p-6 bg-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl">
