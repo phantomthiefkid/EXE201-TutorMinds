@@ -29,6 +29,9 @@ const Header = () => {
 
           {/* Menu Items */}
           <div className="hidden md:flex space-x-6">
+            <Link to="/dashboard" className="text-white hover:text-gray-200">
+              Dashboard
+            </Link>
             <Link to="/" className="text-white hover:text-gray-200">
               Trang chủ
             </Link>
