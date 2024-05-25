@@ -38,6 +38,9 @@ const Header = () => {
             <Link to="/registerUser" className="text-white hover:text-gray-200">
               Đăng ký
             </Link>
+            <Link to="/registerTeacher" className="text-white hover:text-gray-200">
+              Đăng ký gia sư
+            </Link>
             <button
               onClick={() => setShowModalLogin(true)}
               className="text-white hover:text-gray-200"
