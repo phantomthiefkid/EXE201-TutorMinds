@@ -29,11 +29,11 @@ const Header = () => {
 
           {/* Menu Items */}
           <div className="hidden md:flex space-x-6">
-            <Link to="/dashboard" className="text-white hover:text-gray-200">
-              Thống kê
-            </Link>
             <Link to="/" className="text-white hover:text-gray-200">
               Trang chủ
+            </Link>
+            <Link to="/tutorlist" className="text-white hover:text-gray-200">
+              Danh sách gia sư
             </Link>
             <Link to="/registerUser" className="text-white hover:text-gray-200">
               Đăng ký
