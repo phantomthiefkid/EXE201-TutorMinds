@@ -88,7 +88,7 @@ const Dashboard = () => {
           <div class="flex items-center justify-between">
             <div className="block">
               <h3 class="text-lg font-bold text-gray-300">Doanh thu</h3>
-              <p class="text-gray-600 text-2xl font-bold">56.000.000 VNĐ</p>
+              <p class="text-gray-600 text-2xl font-bold">56.000.000.000 VNĐ</p>
             </div>
             <img
               alt="student"
