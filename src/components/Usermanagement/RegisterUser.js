@@ -148,7 +148,7 @@ const RegisterUser = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label
               htmlFor="birthdate"
               className="block text-gray-700 font-semibold mb-2"
@@ -162,7 +162,7 @@ const RegisterUser = () => {
               className="w-full p-3 border border-gray-300 rounded-md"
               required
             />
-          </div>
+          </div> */}
           <div className="mb-4">
             <label
               htmlFor="gender"
