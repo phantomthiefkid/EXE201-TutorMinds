@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
+import { Link, useNavigate } from 'react-router-dom';
 import "chart.js/auto";
 const Dashboard = () => {
+  const token = localStorage.getItem('token')
+  const navigate = useNavigate();
   // Dữ liệu biểu đồ
   const [chartData, setChartData] = useState({
     labels: ["January", "February", "March", "April", "May", "June"],
@@ -37,6 +40,12 @@ const Dashboard = () => {
     (total, item) => total + item.invoices,
     0
   );
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/')
+    }
+  }, [token])
 
   return (
     <div className="container mx-auto max-w-full p-6">
