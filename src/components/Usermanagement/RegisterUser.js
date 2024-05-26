@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ModalSignIn from "../Account.js/ModalSignIn";
+import axios from 'axios';
 
 const RegisterUser = () => {
   const [showModalLogin, setShowModalLogin] = useState(false);
   const handleOnClose = () => setShowModalLogin(false);
   const formRef = useRef(null);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     
     const formData = new FormData(event.target);
@@ -24,26 +25,24 @@ const RegisterUser = () => {
       roleId: 3
     };
 
-    fetch('http://tutormind-env.eba-ejjyp8md.ap-northeast-1.elasticbeanstalk.com/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': '*/*',
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => {
-      if (response.ok) {
+    try {
+      const response = await axios.post('http://tutormind-env.eba-ejjyp8md.ap-northeast-1.elasticbeanstalk.com/api/auth/register', data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+        }
+      });
+
+      if (response.status === 200) {
         toast.success("Đăng ký thành công!");
         setShowModalLogin(true);
         formRef.current.reset();
       } else {
         toast.error("Đăng ký thất bại!");
       }
-    })
-    .catch(error => {
+    } catch (error) {
       toast.error("Có lỗi xảy ra, vui lòng thử lại!");
-    });
+    }
   };
 
   return (
@@ -201,7 +200,7 @@ const RegisterUser = () => {
       <ModalSignIn
         onClose={handleOnClose}
         visible={showModalLogin}
-      ></ModalSignIn>
+      />
     </div>
   );
 };
