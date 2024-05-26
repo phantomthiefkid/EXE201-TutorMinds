@@ -5,7 +5,7 @@ import {BarChart, People, Book, BoxArrowRight, ClipboardDataFill, Laptop} from "
 const SidebarAdmin = ({ children }) => {
     return (
         <div className='grid grid-cols-12'>
-            <div className="h-screen col-span-2 bg-white  text-gray-600 w-64 space-y-6 py-7 px-2 shadow-sm">
+            <div className="h-screen col-span-2 bg-white  text-gray-600 w-64 space-y-6 py-7 px-2 shadow-md">
                 <span href="" className="text-blue-300 flex items-center space-x-2 px-4">
                     <span className="text-2xl font-extrabold">Admin</span>
                 </span>
