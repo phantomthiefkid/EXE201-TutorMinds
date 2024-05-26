@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,6 +7,7 @@ import ModalSignIn from "../Account.js/ModalSignIn";
 const RegisterUser = () => {
   const [showModalLogin, setShowModalLogin] = useState(false);
   const handleOnClose = () => setShowModalLogin(false);
+  const formRef = useRef(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,7 +35,8 @@ const RegisterUser = () => {
     .then(response => {
       if (response.ok) {
         toast.success("Đăng ký thành công!");
-        setShowModalLogin(true)
+        setShowModalLogin(true);
+        formRef.current.reset();
       } else {
         toast.error("Đăng ký thất bại!");
       }
@@ -56,7 +58,7 @@ const RegisterUser = () => {
         <h1 className="text-3xl font-bold mb-6 text-center text-blue-700">
           Đăng Ký Tài Khoản
         </h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} ref={formRef}>
           <div className="mb-4">
             <label
               htmlFor="fullname"
