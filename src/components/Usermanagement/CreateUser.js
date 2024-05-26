@@ -1,7 +1,7 @@
-import { async } from "q";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import { CreateNewUser } from "../../redux/Usermanagement/user";
 
 const initialUser = {
@@ -18,6 +18,7 @@ const initialUser = {
 const CreateUser = () => {
   const [user, setUser] = useState(initialUser);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleOnChange = (e) => {
     let { name, value } = e.target;
 
@@ -37,15 +38,22 @@ const CreateUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(CreateNewUser(user));
-      
+      await dispatch(CreateNewUser(user)).then(() => {
+        toast.success('Tạo mới người dùng thành công!!!!')
+        setTimeout(() => {
+          navigate('/userlist')
+        }, 1000)
+      })
+     
     } catch (error) {
       console.log("Looix roi")
     }
   }
 
   return (
+    
     <div class="min-h-screen bg-gray-50 flex flex-col justify-center sm:px-6 lg:px-8 ">
+      <ToastContainer></ToastContainer>
       <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <img
           class="mx-auto h-12 w-auto"
