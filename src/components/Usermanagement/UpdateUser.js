@@ -1,36 +1,29 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
-const CreateUser = () => {
+
+
+const UpdateUser = ({ visible, onClose }) => {
+  if (!visible) return null;
   return (
-    <div class="min-h-screen bg-gray-50 flex flex-col justify-center sm:px-6 lg:px-8 ">
-      <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <img
-          class="mx-auto h-12 w-auto"
-          src="https://cdn-icons-png.freepik.com/512/2521/2521826.png"
-          alt="Workflow"
-        />
-        <h2 class="mt-2 text-center text-3xl leading-9 font-extrabold text-gray-900">
-          Thêm mới người dùng
-        </h2>
-      </div>
+    <div className="fixed inset-0 z-50 overflow-auto bg-gray-800 bg-opacity-75 flex items-center justify-center">
       <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md shadow-2xl rounded-md mb-6">
         <div class="bg-white py-8 px-4 sm:rounded-lg sm:px-10">
+          <h2 className="text-2xl mb-4 font-semibold text-center">Cập nhập người dùng</h2>
           <form method="POST" action="#">
             <div>
               <label
                 for="email"
-                class="block text-sm font-medium leading-5  text-gray-700">
+                class="block text-sm font-medium leading-5  text-gray-700"
+              >
                 Họ và tên
               </label>
               <div class="mt-1 relative rounded-md shadow-sm">
                 <input
                   id="name"
                   name="name"
-                  placeholder="Họ và tên"
                   type="text"
                   required=""
-                  value=""
+                  value="Join Su"
                   class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 />
                 <div class="hidden absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
@@ -52,7 +45,8 @@ const CreateUser = () => {
             <div class="mt-6">
               <label
                 for="username"
-                class="block text-sm font-medium leading-5 text-gray-700">
+                class="block text-sm font-medium leading-5 text-gray-700"
+              >
                 Username
               </label>
               <div class="mt-1 flex rounded-md shadow-sm">
@@ -62,10 +56,9 @@ const CreateUser = () => {
                 <input
                   id="username"
                   name="username"
-                  placeholder="john"
                   type="text"
                   required=""
-                  value=""
+                  value="john"
                   class="flex-1 form-input pl-3 block w-full rounded-none rounded-r-md transition duration-150 ease-in-out sm:text-sm sm:leading-5 "
                 />
               </div>
@@ -75,13 +68,16 @@ const CreateUser = () => {
               <div className="text-red-500 mb-3"></div>
               <label
                 for="base-input"
-                class="block text-sm font-medium leading-5 text-gray-700">
+                class="block text-sm font-medium leading-5 text-gray-700"
+              >
                 Role:
               </label>
               <select
                 id="role"
                 name="roleID"
-                className={`block w-full mt-1 border border-gray-300 rounded-lg shadow-sm p-2.5 bg-gray-50`}>
+                defaultValue="1"
+                className={`block w-full mt-1 border border-gray-300 rounded-lg shadow-sm p-2.5 bg-gray-50`}
+              >
                 <option>Select one</option>
                 <option value="1">Admin</option>
                 <option value="2">Giáo viên</option>
@@ -92,19 +88,19 @@ const CreateUser = () => {
             <div class="mt-6">
               <label
                 for="email"
-                class="block text-sm font-medium leading-5  text-gray-700">
+                class="block text-sm font-medium leading-5  text-gray-700"
+              >
                 Email address
               </label>
               <div class="mt-1 relative rounded-md shadow-sm">
                 <input
                   id="email"
                   name="email"
-                  placeholder="user@example.com"
                   type="email"
                   required=""
-                  value=""
+                  value="exam@gmail.com"
                   class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5
-                "
+                    "
                 />
                 <div class="hidden absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                   <svg
@@ -125,13 +121,15 @@ const CreateUser = () => {
             <div class="mt-6">
               <label
                 for="base-input"
-                class="block text-sm font-medium leading-5 text-gray-700" >
+                class="block text-sm font-medium leading-5 text-gray-700"
+              >
                 Ngày sinh:
               </label>
               <input
                 type="date"
                 id="dob"
                 name="dob"
+                defaultValue="2024-05-21"
                 class={`mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5`}
               />
             </div>
@@ -148,7 +146,7 @@ const CreateUser = () => {
                   id="male"
                   name="gender"
                   value="1"
-                  checked=""
+                  checked
                   className="drop-shadow-md mr-1 form-check-input custom-radio"
                 />
                 <label for="nam" className="mr-10">
@@ -168,26 +166,30 @@ const CreateUser = () => {
             </ul>
 
             <div className="flex justify-center gap-14 row mt-3 mb-3">
-              <Link
-                to={"/userlist"}
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-                <button class="text-red-600 w-full flex justify-center hover:scale-110 transition-transform duration-300 bg-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-500 text-sm font-bold px-5 py-2 focus:z-10">
-                  Trở về
-                </button>
-              </Link>
+              <button
+                className="border border-red-500 text-red-500 px-4 py-2 rounded hover:bg-red-500 hover:text-white hover:border-red-600"
+                onClick={onClose}
+                style={{ width: '120px' }} // Adjust the width here
+              >
+                Close
+              </button>
+
               <Link to="">
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
-                  Tạo mới
+                  className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+                  style={{ width: '120px' }} // Adjust the width here to match
+                >
+                  Cập nhập
                 </button>
               </Link>
             </div>
+
           </form>
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default CreateUser;
+export default UpdateUser;
