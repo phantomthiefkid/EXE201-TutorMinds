@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import UpdateUser from './UpdateUser';
+import { ToastContainer } from 'react-toastify';
 
 const UserList = () => {
     const [showModalUpdate, setShowModalUpdate] = useState(false);
@@ -12,7 +13,7 @@ const UserList = () => {
     const [sortOrder, setSortOrder] = useState('asc');
     const [currentPage, setCurrentPage] = useState(1);
     const [users, setUsers] = useState([]);
-    const usersPerPage = 3;
+    const usersPerPage = 5;
 
     const axiosInstance = axios.create({
         baseURL: 'http://tutormind-env.eba-ejjyp8md.ap-northeast-1.elasticbeanstalk.com/api',
@@ -81,6 +82,7 @@ const UserList = () => {
                 onClose={handleOnClose}
                 visible={showModalUpdate}>
             </UpdateUser>
+            <ToastContainer></ToastContainer>
             <div className="container mx-auto px-4 sm:px-8">
                 <div className="py-8">
                     {/* Header */}
