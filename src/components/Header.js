@@ -86,14 +86,16 @@ const Header = () => {
                   {isOpen && (
                     <div className="absolute w-32 top-14 left-100 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-2 w-full">
-                        <Link to="/userlist">
-                          <button
-                            className="block px-4 py-2 w-full text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                            onClick={() => window.scrollTo(0, 0)}
-                          >
-                            Quản lý
-                          </button>
-                        </Link>
+                        {roleName === "ADMIN" && (
+                          <Link to="/userlist">
+                            <button
+                              className="block px-4 py-2 w-full text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                              onClick={() => window.scrollTo(0, 0)}
+                            >
+                              Quản lý
+                            </button>
+                          </Link>
+                        )}
                         <Link to="">
                           <button
                             className="block px-4 py-2 w-full text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
@@ -103,10 +105,11 @@ const Header = () => {
                           </button>
                         </Link>
                       </div>
-                      <div onClick={handleLogout} className="cursor-pointer hover:text-blue-500 flex justify-between mx-2">
-                        <BoxArrowRight
-                          size={20}
-                        ></BoxArrowRight>
+                      <div
+                        onClick={handleLogout}
+                        className="cursor-pointer hover:text-blue-500 flex justify-between mx-2"
+                      >
+                        <BoxArrowRight size={20}></BoxArrowRight>
                         Đăng xuất
                       </div>
                     </div>
