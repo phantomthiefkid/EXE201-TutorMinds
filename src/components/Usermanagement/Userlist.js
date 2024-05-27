@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 
 const UserList = () => {
     const [showModalUpdate, setShowModalUpdate] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
     const handleOnClose = () => setShowModalUpdate(false);
     const [dropdownStates, setDropdownStates] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
@@ -17,25 +18,20 @@ const UserList = () => {
 
     const axiosInstance = axios.create({
         baseURL: 'http://tutormind-env.eba-ejjyp8md.ap-northeast-1.elasticbeanstalk.com/api',
-        // Thêm các cấu hình khác nếu cần
-      });
+    });
       
-      // Thêm interceptor để thêm token vào header của mỗi yêu cầu
-      axiosInstance.interceptors.request.use(
+    axiosInstance.interceptors.request.use(
         (config) => {
-          // Lấy token từ localStorage hoặc nơi bạn lưu trữ token
-        //   const token = localStorage.getItem('accessToken');
-          const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJUcmFuNDU2IiwiZW1haWwiOiJzdGFmZjEyQGdtYWlsLmNvbSIsInVzZXJJZCI6MjEsIlJvbGVOYW1lIjoiU1RVREVOVCIsImlhdCI6MTcxNjcwMTAxMSwiZXhwIjoxNzE2Nzg3NDExfQ.e2V5SqGO5BVxHFIvo951QrF0K4NFXZkymhfO7UzXiv0';
-          if (token) {
-            // Nếu token tồn tại, thêm nó vào header Authorization
-            config.headers.Authorization = `Bearer ${token}`;
-          }
-          return config;
+            const token = localStorage.getItem('token');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
         },
         (error) => {
-          return Promise.reject(error);
+            return Promise.reject(error);
         }
-      );
+    );
 
     useEffect(() => {
         fetchUsers();
@@ -43,12 +39,12 @@ const UserList = () => {
 
     const fetchUsers = async () => {
         try {
-          const response = await axiosInstance.get(`/users?pageNo=${currentPage - 1}&pageSize=${usersPerPage}&sortField=id&sortOrder=${sortOrder}&search=${searchTerm}&roleName=${filterRole}`);
-          setUsers(response.data);
+            const response = await axiosInstance.get(`/users?pageNo=${currentPage - 1}&pageSize=${usersPerPage}&sortField=id&sortOrder=${sortOrder}&search=${searchTerm}&roleName=${filterRole}`);
+            setUsers(response.data);
         } catch (error) {
-          console.error('Error fetching users:', error);
+            console.error('Error fetching users:', error);
         }
-      };
+    };
 
     const toggleDropdown = (id) => {
         setDropdownStates(prevState => ({
@@ -69,23 +65,26 @@ const UserList = () => {
         setSortOrder(e.target.value);
     };
 
+    const handleEditClick = (user) => {
+        setSelectedUser(user);
+        setShowModalUpdate(true);
+    };
+
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
 
     const totalPages = users.totalPages;
 
-    console.log(users);
-
     return (
         <>
             <UpdateUser 
                 onClose={handleOnClose}
-                visible={showModalUpdate}>
-            </UpdateUser>
-            <ToastContainer></ToastContainer>
+                visible={showModalUpdate}
+                user={selectedUser}
+            />
+            <ToastContainer />
             <div className="container mx-auto px-4 sm:px-8">
                 <div className="py-8">
-                    {/* Header */}
                     <div className="flex justify-between items-center mb-6">
                         <div className="flex items-center">
                             <h2 className="text-3xl font-semibold leading-tight text-gray-800 bg-gradient-to-r from-blue-500 to-green-500 text-transparent bg-clip-text">
@@ -93,13 +92,10 @@ const UserList = () => {
                             </h2>
                         </div>
                         <button className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
-                            <Link to={`/createUser`}>
-                            Add New User
-                            </Link>
+                            <Link to={`/createUser`}>Add New User</Link>
                         </button>
                     </div>
 
-                    {/* Search and Filter */}
                     <div className="flex justify-between items-center mb-4">
                         <input 
                             type="text" 
@@ -113,7 +109,6 @@ const UserList = () => {
                             <option value="admin">Admin</option>
                             <option value="tutor">Tutor</option>
                             <option value="student">Student</option>
-                            {/* Add more roles as needed */}
                         </select>
                         <select onChange={handleSortChange} value={sortOrder} className="border p-2 rounded">
                             <option value="asc">Sort Ascending</option>
@@ -121,7 +116,6 @@ const UserList = () => {
                         </select>
                     </div>
 
-                    {/* Table Container */}
                     <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                         <div className="inline-block min-w-full shadow-md rounded-lg overflow-hidden">
                             <table className="min-w-full leading-normal">
@@ -143,7 +137,7 @@ const UserList = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {users?.content?.map((user, index) => (
+                                    {users?.content?.map((user) => (
                                         <tr key={user.id}>
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <div className="flex items-center">
@@ -164,7 +158,7 @@ const UserList = () => {
                                                 <p className="text-gray-900 whitespace-no-wrap">{user.email}</p>
                                             </td>
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                            <p className="text-gray-900 whitespace-no-wrap">{user.fullName}</p>
+                                                <p className="text-gray-900 whitespace-no-wrap">{user.fullName}</p>
                                             </td>
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -182,7 +176,7 @@ const UserList = () => {
                                                     <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg z-20">
                                                         <div className="py-1 rounded-md bg-white shadow-xs">
                                                             <button
-                                                                onClick={() => setShowModalUpdate(true)}
+                                                                onClick={() => handleEditClick(user)}
                                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                                                             >
                                                                 Edit
@@ -200,7 +194,6 @@ const UserList = () => {
                                     ))}
                                 </tbody>
                             </table>
-                            {/* Pagination */}
                             <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
                                 <span className="text-xs xs:text-sm text-gray-900">
                                     Showing {indexOfFirstUser + 1} to {indexOfLastUser} of {users.length} Entries
