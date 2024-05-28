@@ -60,6 +60,10 @@ const Header = () => {
             <Link to="/tutorlist" className="text-white hover:text-gray-200">
               Danh sách gia sư
             </Link>
+            <Link to="/courselist" className="text-white hover:text-gray-200">
+              Danh sách khóa học
+            </Link>
+
             {token ? null : (<Link to="/registerUser" className="text-white hover:text-gray-200">
               Đăng ký
             </Link>)}
@@ -95,16 +99,12 @@ const Header = () => {
 
                       <div
                         className="cursor-pointer hover:text-blue-500 flex justify-start items-center px-10 py-2"
-                        onClick={() => window.scrollTo(0, 0)}
-                      >
+                        onClick={() => window.scrollTo(0, 0)}                   >
                         <Person size={20} className="mr-2"></Person> Hồ sơ
                       </div>
-
-
                       <div
                         onClick={handleLogout}
-                        className="cursor-pointer hover:text-blue-500 flex justify-start items-center px-10 py-2"
-                      >
+                        className="cursor-pointer hover:text-blue-500 flex justify-start items-center px-10 py-2">
                         <BoxArrowRight size={20} className="mr-2" />
                         Đăng xuất
                       </div>
