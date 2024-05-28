@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ModalSignIn from "../Account.js/ModalSignIn";
@@ -8,15 +8,16 @@ import axios from 'axios';
 const RegisterUser = () => {
   const [showModalLogin, setShowModalLogin] = useState(false);
   const handleOnClose = () => setShowModalLogin(false);
-  const formRef = useRef(null);
+  // const formRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     const formData = new FormData(event.target);
     const data = {
       email: formData.get("email"),
-      username: formData.get("fullname"),
+      username: formData.get("email"),
       password: formData.get("password"),
       fullName: formData.get("fullname"),
       phone: formData.get("phone"),
@@ -35,11 +36,17 @@ const RegisterUser = () => {
 
       if (response.status === 200) {
         toast.success("Đăng ký thành công!");
-        setShowModalLogin(true);
-        formRef.current.reset();
+        // setShowModalLogin(true);
+        // formRef.current.reset();
+        setTimeout(() => {
+          navigate('/')
+        }, 500)
+        window.scrollTo(0, 0); // Cuộn lên trên trang
       } else {
         toast.error("Đăng ký thất bại!");
       }
+
+
     } catch (error) {
       toast.error("Có lỗi xảy ra, vui lòng thử lại!");
     }
@@ -53,11 +60,17 @@ const RegisterUser = () => {
           'url("https://giasudaykemtainha.vn/uploads/posts/gia-su-online-day-truc-tuyen-qua-mang.jpg")',
       }}
     >
+      <ModalSignIn
+        onClose={handleOnClose}
+        visible={showModalLogin}
+      ></ModalSignIn>
+      <ToastContainer></ToastContainer>
       <div className="bg-white bg-opacity-90 p-10 rounded-lg shadow-lg max-w-lg w-full mt-5 mb-5">
         <h1 className="text-3xl font-bold mb-6 text-center text-blue-700">
           Đăng Ký Tài Khoản
         </h1>
-        <form onSubmit={handleSubmit} ref={formRef}>
+        {/* <form onSubmit={handleSubmit} ref={formRef}> */}
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               htmlFor="fullname"
@@ -196,7 +209,7 @@ const RegisterUser = () => {
           </Link>
         </p>
       </div>
-      <ToastContainer />
+     
       <ModalSignIn
         onClose={handleOnClose}
         visible={showModalLogin}

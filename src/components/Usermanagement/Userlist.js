@@ -19,7 +19,7 @@ const UserList = () => {
     const axiosInstance = axios.create({
         baseURL: 'http://tutormind-env.eba-ejjyp8md.ap-northeast-1.elasticbeanstalk.com/api',
     });
-      
+
     axiosInstance.interceptors.request.use(
         (config) => {
             const token = localStorage.getItem('token');
@@ -49,7 +49,7 @@ const UserList = () => {
     const toggleDropdown = (id) => {
         setDropdownStates(prevState => ({
             ...prevState,
-            [id]: !prevState[id] 
+            [id]: !prevState[id]
         }));
     };
 
@@ -82,7 +82,7 @@ const UserList = () => {
 
     return (
         <>
-            <UpdateUser 
+            <UpdateUser
                 onClose={handleOnClose}
                 visible={showModalUpdate}
                 user={selectedUser}
@@ -98,14 +98,14 @@ const UserList = () => {
                             </h2>
                         </div>
                         <button className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
-                            <Link to={`/createUser`}>Add New User</Link>
+                            <Link to={`/createUser`}>Thêm mới người dùng</Link>
                         </button>
                     </div>
 
                     <div className="flex justify-between items-center mb-4">
-                        <input 
-                            type="text" 
-                            placeholder="Search by name..." 
+                        <input
+                            type="text"
+                            placeholder="Search by name..."
                             value={searchTerm}
                             onChange={handleSearchChange}
                             className="border p-2 rounded w-1/3"
@@ -134,16 +134,28 @@ const UserList = () => {
                                             Email
                                         </th>
                                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                            Tên đăng nhập
+                                        </th>
+                                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                             Họ và tên
                                         </th>
                                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                            Role
+                                            Số điện thoại
+                                        </th>
+                                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                            Địa chỉ
+                                        </th>
+                                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                            Giới tính
+                                        </th>
+                                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                            Vai trò
                                         </th>
                                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {users?.content?.map((user) => (
+                                    {users?.content?.map((user, index) => (
                                         <tr key={user.id}>
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <div className="flex items-center">
@@ -156,7 +168,7 @@ const UserList = () => {
                                                     </div>
                                                     <div className="ml-3">
                                                         <p className="text-gray-900 whitespace-no-wrap">{user.name}</p>
-                                                        <p className="text-gray-600 whitespace-no-wrap">ID: {user.id}</p>
+                                                        {/* <p className="text-gray-600 whitespace-no-wrap">Stt: {index + 1}</p> */}
                                                     </div>
                                                 </div>
                                             </td>
@@ -164,7 +176,19 @@ const UserList = () => {
                                                 <p className="text-gray-900 whitespace-no-wrap">{user.email}</p>
                                             </td>
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <p className="text-gray-900 whitespace-no-wrap">{user.username}</p>
+                                            </td>
+                                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <p className="text-gray-900 whitespace-no-wrap">{user.fullName}</p>
+                                            </td>
+                                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <p className="text-gray-900 whitespace-no-wrap">{user.phone}</p>
+                                            </td>
+                                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <p className="text-gray-900 whitespace-no-wrap">{user.address}</p>
+                                            </td>
+                                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <p className="text-gray-900 whitespace-no-wrap">{user.gender === 1 ? "Nam" : "Nữ"}</p>
                                             </td>
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">

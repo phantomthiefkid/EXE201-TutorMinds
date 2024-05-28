@@ -44,7 +44,7 @@ const CreateUser = () => {
           navigate('/userlist')
         }, 1000)
       })
-     
+      
     } catch (error) {
       console.log("Looix roi")
     }
