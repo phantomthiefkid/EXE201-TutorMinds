@@ -10,6 +10,7 @@ import RegisterUser from "./components/Usermanagement/RegisterUser";
 import SidebarAdmin from "./components/Admin/SidebarAdmin";
 import Dashboard from "./components/Admin/Dashboard";
 import Tutorlist from "./components/Tutormanagement/Tutorlist";
+import CourseList from "./components/CourseManagement/CourseList";
 function App() {
   return (
     <BrowserRouter>
@@ -22,6 +23,7 @@ function App() {
         <Route path="/userlist" element={<SidebarAdmin><UserList></UserList></SidebarAdmin>}></Route>
         <Route path="/dashboard" element={<SidebarAdmin><Dashboard/></SidebarAdmin>}></Route>
         <Route path="/tutorlist" element={<Tutorlist></Tutorlist>}></Route>
+        <Route path="/courselist" element={<CourseList></CourseList>}></Route>
       </Routes>
       <Footer></Footer>
     </BrowserRouter>
