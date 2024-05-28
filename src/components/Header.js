@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { BoxArrowRight } from "react-bootstrap-icons";
+import { BoxArrowRight, Gear, Person } from "react-bootstrap-icons";
 import ModalSignIn from "./Account.js/ModalSignIn";
 import {
   getUserDataFromToken,
@@ -60,15 +60,10 @@ const Header = () => {
             <Link to="/tutorlist" className="text-white hover:text-gray-200">
               Danh sách gia sư
             </Link>
-            <Link to="/registerUser" className="text-white hover:text-gray-200">
+            {token ? null : (<Link to="/registerUser" className="text-white hover:text-gray-200">
               Đăng ký
-            </Link>
-            <Link
-              to="/registerTeacher"
-              className="text-white hover:text-gray-200"
-            >
-              Đăng ký gia sư
-            </Link>
+            </Link>)}
+
             {token ? (
               <div>
                 <div onClick={toggleDropdown} className="flex items-center">
@@ -84,36 +79,38 @@ const Header = () => {
                   />
 
                   {isOpen && (
-                    <div className="absolute w-32 top-14 left-100 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <div className="py-2 w-full">
-                        {roleName === "ADMIN" && (
-                          <Link to="/userlist">
-                            <button
-                              className="block px-4 py-2 w-full text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                              onClick={() => window.scrollTo(0, 0)}
-                            >
-                              Quản lý
-                            </button>
-                          </Link>
-                        )}
-                        <Link to="">
-                          <button
-                            className="block px-4 py-2 w-full text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                    <div className="absolute w-48 top-16 right-2 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+
+                      {roleName === "ADMIN" && (
+                        <Link to="/userlist">
+                          <div
+                            className="cursor-pointer hover:text-blue-500 flex justify-start items-center px-10 py-2"
                             onClick={() => window.scrollTo(0, 0)}
                           >
-                            Hồ sơ
-                          </button>
+                            <Gear size={20} className="mr-2"></Gear>
+                            Quản lý
+                          </div>
                         </Link>
+                      )}
+
+                      <div
+                        className="cursor-pointer hover:text-blue-500 flex justify-start items-center px-10 py-2"
+                        onClick={() => window.scrollTo(0, 0)}
+                      >
+                        <Person size={20} className="mr-2"></Person> Hồ sơ
                       </div>
+
+
                       <div
                         onClick={handleLogout}
-                        className="cursor-pointer hover:text-blue-500 flex justify-between mx-2"
+                        className="cursor-pointer hover:text-blue-500 flex justify-start items-center px-10 py-2"
                       >
-                        <BoxArrowRight size={20}></BoxArrowRight>
+                        <BoxArrowRight size={20} className="mr-2" />
                         Đăng xuất
                       </div>
                     </div>
-                  )}
+                  )
+                  }
                 </div>
               </div>
             ) : (

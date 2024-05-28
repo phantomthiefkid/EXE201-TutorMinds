@@ -48,12 +48,11 @@ const Dashboard = () => {
   }, [token])
 
   return (
-    <div className="container mx-auto max-w-full p-6">
-      <h2 className="text-2xl font-semibold leading-tight text-gray-600  mb-4">
+    <div className="container mx-auto max-w-full p-10">
+      <h2 className="text-3xl font-semibold leading-tight text-gray-800 bg-gradient-to-r from-blue-500 to-green-500 text-transparent bg-clip-text">
         Chào mừng Admin!
       </h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10 mx-auto max-w-full p-2">
         <div class="p-4 bg-white rounded-lg shadow-lg h-32">
           <div class="flex items-center justify-between">
             <div className="block">
