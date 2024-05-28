@@ -53,6 +53,10 @@ const UserList = () => {
         }));
     };
 
+    const closeAllDropdowns = () => {
+        setDropdownStates({});
+    }
+
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
@@ -65,9 +69,10 @@ const UserList = () => {
         setSortOrder(e.target.value);
     };
 
-    const handleEditClick = (user) => {
+    const handleEditClick = (user, e) => {
         setSelectedUser(user);
         setShowModalUpdate(true);
+        closeAllDropdowns();
     };
 
     const indexOfLastUser = currentPage * usersPerPage;
@@ -81,6 +86,7 @@ const UserList = () => {
                 onClose={handleOnClose}
                 visible={showModalUpdate}
                 user={selectedUser}
+                fetchUsers={fetchUsers}
             />
             <ToastContainer />
             <div className="container mx-auto px-4 sm:px-8">
