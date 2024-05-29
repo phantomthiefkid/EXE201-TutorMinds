@@ -73,7 +73,6 @@ const TutorDetail = () => {
                         </p>
                         <p className="text-gray-700 mt-2">Rất hiểu biết.</p>
                     </div>
-                    {/* Thêm các đánh giá khác nếu cần */}
                 </div>
             </div>
         </div>
