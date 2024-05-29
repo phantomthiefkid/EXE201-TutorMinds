@@ -3,7 +3,7 @@ import { GeoAltFill, MortarboardFill, StarFill, CodeSlash } from 'react-bootstra
 
 const TutorDetail = () => {
     return (
-        <div className="max-w-6xl mx-auto p-6 bg-gray-100">
+        <div className="max-w-6xl mx-auto p-6 bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-200 ">
             <div className="bg-white shadow-md rounded-lg p-6 mb-8">
                 <div className="flex flex-col md:flex-row items-center md:items-start md:space-x-8 mb-8">
                     <img
