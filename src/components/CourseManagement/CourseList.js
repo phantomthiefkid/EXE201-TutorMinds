@@ -229,7 +229,7 @@ const CourseList = () => {
         </div>
 
         {filteredCourses.map((course) => (
-          <Link to={`/coursedetail/${course.id}`}>
+          <Link to={`/coursedetail/${course.id}`} onClick={() => window.scrollTo(0, 0)}>
             <div
               key={course.id}
               className="rounded-sm border-2 border-gray-200 p-4 grid grid-cols-12 mb-8 max-lg:max-w-lg max-lg:mx-auto"
