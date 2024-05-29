@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const CourseList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -186,7 +187,7 @@ const CourseList = () => {
       subject: "Data Science",
     },
   ];
-  
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -213,7 +214,11 @@ const CourseList = () => {
             value={searchTerm}
             onChange={handleSearch}
           />
-          <select className="border p-2 rounded" value={filter} onChange={handleFilter}>
+          <select
+            className="border p-2 rounded"
+            value={filter}
+            onChange={handleFilter}
+          >
             <option value="">Filter by Subject</option>
             <option value="Electronics">Electronics</option>
             <option value="Web Development">Web Development</option>
@@ -222,51 +227,62 @@ const CourseList = () => {
             <option value="Marketing">Marketing</option>
           </select>
         </div>
+
         {filteredCourses.map((course) => (
-          <div key={course.id} className="rounded-sm border-2 border-gray-200 p-4 grid grid-cols-12 mb-8 max-lg:max-w-lg max-lg:mx-auto">
-            <div className="col-span-12 lg:col-span-2 img box">
-              <img
-                src={course.img}
-                alt={course.name}
-                className="max-lg:w-full lg:w-[200px]"
-              />
-            </div>
-            <div className="col-span-12 lg:col-span-10 detail w-full lg:pl-3">
-              <div className="flex items-center justify-between w-full mb-4">
-                <h5 className="font-manrope font-bold text-2xl leading-9 text-gray-900">
-                  {course.name}
-                </h5>
-                <h6 className="text-indigo-600 font-manrope font-bold text-2xl leading-9 text-right">
-                  {course.price}
-                </h6>
+          <Link to={`/coursedetail/${course.id}`}>
+            <div
+              key={course.id}
+              className="rounded-sm border-2 border-gray-200 p-4 grid grid-cols-12 mb-8 max-lg:max-w-lg max-lg:mx-auto"
+            >
+              <div className="col-span-12 lg:col-span-2 img box">
+                <img
+                  src={course.img}
+                  alt={course.name}
+                  className="max-lg:w-full lg:w-[200px]"
+                />
               </div>
-              <p className="font-normal text-base leading-7 text-gray-500 mb-6">
-                {course.description}{" "}
-                <a href="javascript:;" className="text-indigo-600">
-                  More....
-                </a>
-              </p>
-              <div className="flex">
-                <div className="flex items-center gap-4">
-                  <div className="flex gap-0.5">
-                    <p className="text-lg mr-2">{course.rating}</p>
-                    {[...Array(5)].map((_, i) => (
-                      <svg
-                        key={i}
-                        className={`h-6 w-6 shrink-0 ${i < Math.floor(course.rating) ? "fill-amber-400" : "fill-gray-300"}`}
-                        viewBox="0 0 256 256"
-                      >
-                        <path d="M239.2 97.4A16.4 16.4.0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4.0 00128 16h0a16.4 16.4.0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5.0 0016.8 97.4 16.8 16.8.0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5.0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1.0 008.7 2.6 16.5 16.5.0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8.0 00239.2 97.4z"></path>
-                      </svg>
-                    ))}
+              <div className="col-span-12 lg:col-span-10 detail w-full lg:pl-3">
+                <div className="flex items-center justify-between w-full mb-4">
+                  <h5 className="font-manrope font-bold text-2xl leading-9 text-gray-900">
+                    {course.name}
+                  </h5>
+                  <h6 className="text-indigo-600 font-manrope font-bold text-2xl leading-9 text-right">
+                    {course.price}
+                  </h6>
+                </div>
+                <p className="font-normal text-base leading-7 text-gray-500 mb-6">
+                  {course.description}{" "}
+                  <a href="javascript:;" className="text-indigo-600">
+                    More....
+                  </a>
+                </p>
+                <div className="flex">
+                  <div className="flex items-center gap-4">
+                    <div className="flex gap-0.5">
+                      <p className="text-lg mr-2">{course.rating}</p>
+                      {[...Array(5)].map((_, i) => (
+                        <svg
+                          key={i}
+                          className={`h-6 w-6 shrink-0 ${
+                            i < Math.floor(course.rating)
+                              ? "fill-amber-400"
+                              : "fill-gray-300"
+                          }`}
+                          viewBox="0 0 256 256"
+                        >
+                          <path d="M239.2 97.4A16.4 16.4.0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4.0 00128 16h0a16.4 16.4.0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5.0 0016.8 97.4 16.8 16.8.0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5.0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1.0 008.7 2.6 16.5 16.5.0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8.0 00239.2 97.4z"></path>
+                        </svg>
+                      ))}
+                    </div>
                   </div>
                 </div>
+                <p className="font-normal text-base leading-7 text-gray-500 mb-6">
+                  {course.totalHours} total hours . {course.lectures} lectures .
+                  All Video
+                </p>
               </div>
-              <p className="font-normal text-base leading-7 text-gray-500 mb-6">
-                {course.totalHours} total hours . {course.lectures} lectures . All Video
-              </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </>
