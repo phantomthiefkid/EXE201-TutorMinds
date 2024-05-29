@@ -187,9 +187,6 @@ const CourseList = () => {
     },
   ];
   
-  // Rest of the React component code
-  
-
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Check2Circle, GeoAlt } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 
 const TutorCard = ({ tutor }) => {
   return (
@@ -20,11 +21,11 @@ const TutorCard = ({ tutor }) => {
         />
       </div>
       <div class="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden">
-        <img
+        <Link to={`/tutordetail/${tutor.id}`}><img
           class="object-cover object-center h-32"
           src={tutor.profilePicture}
           alt={`${tutor.name}'s profile`}
-        />
+        /></Link>
       </div>
       <div class="text-center mt-2">
         <div className="flex justify-center">
