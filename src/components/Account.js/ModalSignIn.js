@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { loginApi } from "../../redux/auth/loginSlice";
 
 const ModalSignIn = ({ visible, onClose }) => {
@@ -52,7 +51,7 @@ const ModalSignIn = ({ visible, onClose }) => {
   return (
     <>
       <ToastContainer></ToastContainer>
-      <div className="fixed inset-0 z-10 overflow-y-auto flex items-center justify-center">
+      <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center">
         <div className="relative bg-white rounded-lg max-w-md p-8">
           <button
             onClick={onClose}
@@ -126,7 +125,9 @@ const ModalSignIn = ({ visible, onClose }) => {
           </div>
         </div>
       </div>
-      <div className="fixed inset-0 bg-black bg-opacity-50"></div>
+      {visible && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+      )}
     </>
   );
 };

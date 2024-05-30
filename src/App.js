@@ -12,6 +12,7 @@ import Dashboard from "./components/Admin/Dashboard";
 import Tutorlist from "./components/Tutormanagement/Tutorlist";
 import CourseList from "./components/CourseManagement/CourseList";
 import TutorDetail from "./components/Tutormanagement/TutorDetail";
+import CourseDetail from "./components/CourseManagement/CourseDetail";
 function App() {
   return (
     <BrowserRouter>
@@ -26,6 +27,7 @@ function App() {
         <Route path="/tutorlist" element={<Tutorlist></Tutorlist>}></Route>
         <Route path="/courselist" element={<CourseList></CourseList>}></Route>
         <Route path="/tutordetail/:id" element={<TutorDetail></TutorDetail>}></Route>
+        <Route path="/coursedetail/:id" element={<CourseDetail></CourseDetail>}></Route>
       </Routes>
       <Footer></Footer>
     </BrowserRouter>
