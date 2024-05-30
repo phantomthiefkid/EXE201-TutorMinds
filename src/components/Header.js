@@ -34,7 +34,7 @@ const Header = () => {
           <div className="flex items-center">
             <Link to="/">
               <img
-                src="https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/444151589_1877086456037477_1111746622231164736_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFWMFxBN3oBRpFAMIm2sGJSsVmeo7cxhPKxWZ6jtzGE8jXgbkR5Nk2mWoD5kF9PiAabOJAjeXYkWFn-nmXA01la&_nc_ohc=edeqdBUQWB8Q7kNvgFWqCMb&_nc_ht=scontent.fsgn2-6.fna&oh=00_AYCaPj40SYxC-4bRD6Rw-7Ww4P599NAY0fVW_iaFEljP-A&oe=6655FC8A"
+                src="https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-6/445551860_1884650355281087_2659972058971311210_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_ohc=afA7fdo_8IUQ7kNvgGzfXrj&_nc_ht=scontent.fsgn2-4.fna&oh=00_AYCmUH7wEEo7MOax-QUL5qPfAOwHacx1dHoWZj9UvAxK6w&oe=665DFA91"
                 alt="Logo"
                 className="h-12 w-12 rounded-full"
               />
