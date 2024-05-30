@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const URL_CREATE_NEW_USER = "http://tutormind-env.eba-ejjyp8md.ap-northeast-1.elasticbeanstalk.com/api/auth/register"
+const URL_CREATE_NEW_USER = "https://fams-management.tech/api/auth/register"
 
 export const CreateNewUser = createAsyncThunk('CreateNewUser', async (data) => {
     try {
