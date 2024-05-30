@@ -27,7 +27,7 @@ const RegisterUser = () => {
     };
 
     try {
-      const response = await axios.post('http://tutormind-env.eba-ejjyp8md.ap-northeast-1.elasticbeanstalk.com/api/auth/register', data, {
+      const response = await axios.post('http://35.72.46.118/api/auth/register', data, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': '*/*',

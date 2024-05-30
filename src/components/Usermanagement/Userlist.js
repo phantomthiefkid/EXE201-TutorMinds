@@ -17,7 +17,7 @@ const UserList = () => {
     const usersPerPage = 5;
 
     const axiosInstance = axios.create({
-        baseURL: 'http://tutormind-env.eba-ejjyp8md.ap-northeast-1.elasticbeanstalk.com/api',
+        baseURL: 'https://fams-management.tech/api',
     });
 
     axiosInstance.interceptors.request.use(

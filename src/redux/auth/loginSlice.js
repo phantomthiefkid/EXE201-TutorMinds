@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const URL_LOGIN = `http://35.72.46.118/api/auth/login`; //URI: Login
+const URL_LOGIN = `https://fams-management.tech/api/auth/login`;
 
 export const loginApi = (email, password) => {
   return axios.post(URL_LOGIN, {
