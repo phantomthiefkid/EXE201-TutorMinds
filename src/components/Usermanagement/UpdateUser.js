@@ -44,7 +44,7 @@ const UpdateUser = ({ visible, onClose, user, fetchUsers }) => {
     try {
       const encodedEmail = encodeURIComponent(userUpdate.email); 
       const response = await axios.put(
-        `http://tutormind-env.eba-ejjyp8md.ap-northeast-1.elasticbeanstalk.com/api/users/users?email=${encodedEmail}`,userUpdate ,{
+        `https://fams-management.tech/api/users/users?email=${encodedEmail}`,userUpdate ,{
           headers: {
             'accept': '*/*',
             'Authorization': `Bearer ${token}`,

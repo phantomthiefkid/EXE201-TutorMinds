@@ -10,7 +10,9 @@ import RegisterUser from "./components/Usermanagement/RegisterUser";
 import SidebarAdmin from "./components/Admin/SidebarAdmin";
 import Dashboard from "./components/Admin/Dashboard";
 import Tutorlist from "./components/Tutormanagement/Tutorlist";
-import Tutordetail from "./components/Tutormanagement/Tutordetail";
+import CourseList from "./components/CourseManagement/CourseList";
+import CourseDetail from "./components/CourseManagement/CourseDetail";
+import TutorDetail from "./components/Tutormanagement/Tutordetail";
 function App() {
   return (
     <BrowserRouter>
@@ -21,9 +23,11 @@ function App() {
         <Route path="/registerTeacher" element={<RegisterTeacher></RegisterTeacher>}></Route>
         <Route path="/registerUser" element={<RegisterUser></RegisterUser>}></Route>
         <Route path="/userlist" element={<SidebarAdmin><UserList></UserList></SidebarAdmin>}></Route>
-        <Route path="/dashboard" element={<SidebarAdmin><Dashboard/></SidebarAdmin>}></Route>
+        <Route path="/dashboard" element={<SidebarAdmin><Dashboard /></SidebarAdmin>}></Route>
         <Route path="/tutorlist" element={<Tutorlist></Tutorlist>}></Route>
-        <Route path="/tutordetail" element={<Tutordetail></Tutordetail>}></Route>
+        <Route path="/courselist" element={<CourseList></CourseList>}></Route>
+        <Route path="/tutordetail/:id" element={<TutorDetail></TutorDetail>}></Route>
+        <Route path="/coursedetail/:id" element={<CourseDetail></CourseDetail>}></Route>
       </Routes>
       <Footer></Footer>
     </BrowserRouter>

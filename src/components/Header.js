@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { BoxArrowRight, Gear, Person } from "react-bootstrap-icons";
+import { BoxArrowRight, Gear, Person, Search } from "react-bootstrap-icons";
 import ModalSignIn from "./Account.js/ModalSignIn";
-import {
-  getUserDataFromToken,
-  getUserNameFromToken,
-} from "../redux/auth/loginSlice";
+import { getUserDataFromToken, getUserNameFromToken } from "../redux/auth/loginSlice";
 
 const Header = () => {
   const [showModalLogin, setShowModalLogin] = useState(false);
@@ -14,7 +10,6 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const user = getUserNameFromToken();
   const roleName = getUserDataFromToken();
 
@@ -32,91 +27,97 @@ const Header = () => {
 
   return (
     <>
-      <ModalSignIn
-        onClose={handleOnClose}
-        visible={showModalLogin}
-      ></ModalSignIn>
-      <nav style={{ background: "#6A9CFD" }} className="p-4">
+      <ModalSignIn onClose={handleOnClose} visible={showModalLogin} />
+      <nav className="bg-white p-4 shadow-lg w-full z-0">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Logo and Brand */}
+          {/* Logo */}
           <div className="flex items-center">
-            <Link to={`/`}>
+            <Link to="/">
               <img
-                src="https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/444151589_1877086456037477_1111746622231164736_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFWMFxBN3oBRpFAMIm2sGJSsVmeo7cxhPKxWZ6jtzGE8jXgbkR5Nk2mWoD5kF9PiAabOJAjeXYkWFn-nmXA01la&_nc_ohc=edeqdBUQWB8Q7kNvgFWqCMb&_nc_ht=scontent.fsgn2-6.fna&oh=00_AYCaPj40SYxC-4bRD6Rw-7Ww4P599NAY0fVW_iaFEljP-A&oe=6655FC8A"
+                src="https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-6/445551860_1884650355281087_2659972058971311210_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_ohc=afA7fdo_8IUQ7kNvgGzfXrj&_nc_ht=scontent.fsgn2-4.fna&oh=00_AYCmUH7wEEo7MOax-QUL5qPfAOwHacx1dHoWZj9UvAxK6w&oe=665DFA91"
                 alt="Logo"
-                className="ml-4 h-12 w-12 rounded-full"
+                className="h-12 w-12 rounded-full"
               />
             </Link>
-            <Link to={`/`} className="text-white text-2xl ml-4 font-bold">
+            <Link to="/" className="text-blue-600 text-2xl ml-4 font-bold">
               TutorMinds
             </Link>
           </div>
 
+          {/* Search Bar */}
+          <div className="flex-grow mx-8 hidden md:block">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Tìm kiếm khóa học hoặc gia sư"
+                className="w-full p-3 pl-10 border border-gray-200 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            </div>
+          </div>
+
           {/* Menu Items */}
           <div className="hidden md:flex space-x-6 items-center">
-            <Link to="/" className="text-white hover:text-gray-200">
+            <Link to="/" className="text-blue-600 hover:text-blue-800 transition duration-300">
               Trang chủ
             </Link>
-            <Link to="/tutorlist" className="text-white hover:text-gray-200">
+            <Link to="/tutorlist" className="text-blue-600 hover:text-blue-800 transition duration-300">
               Danh sách gia sư
             </Link>
-            {token ? null : (<Link to="/registerUser" className="text-white hover:text-gray-200">
-              Đăng ký
-            </Link>)}
+            <Link to="/courselist" className="text-blue-600 hover:text-blue-800 transition duration-300">
+              Danh sách khóa học
+            </Link>
+
+            {!token && (
+              <Link to="/registerUser" className="text-blue-600 hover:text-blue-800 transition duration-300">
+                Đăng ký
+              </Link>
+            )}
 
             {token ? (
-              <div>
-                <div onClick={toggleDropdown} className="flex items-center">
-                  <div className="text-white hover:text-gray-200 mr-2 text-lg">
+              <div className="relative">
+                <div onClick={toggleDropdown} className="flex items-center cursor-pointer">
+                  <div className="text-blue-600 hover:text-blue-800 mr-2 text-lg">
                     {roleName}
                   </div>
                   <img
                     className="rounded-full h-12 w-12"
-                    src={
-                      "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                    }
+                    src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
                     alt="profile"
                   />
-
-                  {isOpen && (
-                    <div className="absolute w-48 top-16 right-2 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-
-                      {roleName === "ADMIN" && (
-                        <Link to="/userlist">
-                          <div
-                            className="cursor-pointer hover:text-blue-500 flex justify-start items-center px-10 py-2"
-                            onClick={() => window.scrollTo(0, 0)}
-                          >
-                            <Gear size={20} className="mr-2"></Gear>
-                            Quản lý
-                          </div>
-                        </Link>
-                      )}
-
-                      <div
-                        className="cursor-pointer hover:text-blue-500 flex justify-start items-center px-10 py-2"
-                        onClick={() => window.scrollTo(0, 0)}
-                      >
-                        <Person size={20} className="mr-2"></Person> Hồ sơ
-                      </div>
-
-
-                      <div
-                        onClick={handleLogout}
-                        className="cursor-pointer hover:text-blue-500 flex justify-start items-center px-10 py-2"
-                      >
-                        <BoxArrowRight size={20} className="mr-2" />
-                        Đăng xuất
-                      </div>
-                    </div>
-                  )
-                  }
                 </div>
+
+                {isOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
+                    {roleName === "ADMIN" && (
+                      <Link to="/userlist">
+                        <div className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                          <Gear size={20} className="mr-2" />
+                          Quản lý
+                        </div>
+                      </Link>
+                    )}
+                    <div
+                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
+                      onClick={() => window.scrollTo(0, 0)}
+                    >
+                      <Person size={20} className="mr-2" />
+                      Hồ sơ
+                    </div>
+                    <div
+                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
+                      onClick={handleLogout}
+                    >
+                      <BoxArrowRight size={20} className="mr-2" />
+                      Đăng xuất
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <button
                 onClick={() => setShowModalLogin(true)}
-                className="text-white hover:text-gray-200"
+                className="text-blue-600 hover:text-blue-800 transition duration-300"
               >
                 Đăng nhập
               </button>

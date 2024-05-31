@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const URL_LOGIN = `http://tutormind-env.eba-ejjyp8md.ap-northeast-1.elasticbeanstalk.com/api/auth/login`;
+const URL_LOGIN = `https://fams-management.tech/api/auth/login`;
 
 export const loginApi = (email, password) => {
   return axios.post(URL_LOGIN, {
