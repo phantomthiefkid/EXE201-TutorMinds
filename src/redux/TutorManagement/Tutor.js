@@ -53,6 +53,7 @@ export const fetchTutorDetail = createAsyncThunk("fetchTutorDetail", async ({id}
 
 
     const response = await axios.get(URL_FETCH_TUTOR_DETAIL + id, config);
+    console.log("Du lieu o dau: ", response.data)
     return response.data;
   } catch (error) {
     console.error(
