@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Check2Circle, GeoAlt } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { Book, Brush } from "react-bootstrap-icons";
 
@@ -160,9 +159,11 @@ const TutorList = () => {
                   </span>
 
                   <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
+                    <Link to={`/tutordetail/${tutor.id}`}onClick={() => window.scrollTo(0, 0)} key={tutor.id}>
                     <button class="rounded bg-sky-500 text-white px-6 py-2 text-xs font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400">
                       Chi tiết
                     </button>
+                    </Link>
                   </span>
                 </div>
               </div>

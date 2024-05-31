@@ -11,8 +11,9 @@ import SidebarAdmin from "./components/Admin/SidebarAdmin";
 import Dashboard from "./components/Admin/Dashboard";
 import Tutorlist from "./components/Tutormanagement/Tutorlist";
 import CourseList from "./components/CourseManagement/CourseList";
-import TutorDetail from "./components/Tutormanagement/TutorDetail";
 import CourseDetail from "./components/CourseManagement/CourseDetail";
+import TutorDetail from "./components/Tutormanagement/TutorDetail";
+import ProfileUser from "./components/Usermanagement/ProfileUser";
 function App() {
   return (
     <BrowserRouter>
@@ -28,6 +29,7 @@ function App() {
         <Route path="/courselist" element={<CourseList></CourseList>}></Route>
         <Route path="/tutordetail/:id" element={<TutorDetail></TutorDetail>}></Route>
         <Route path="/coursedetail/:id" element={<CourseDetail></CourseDetail>}></Route>
+        <Route path="/profileuser" element={<ProfileUser></ProfileUser>}></Route>
       </Routes>
       <Footer></Footer>
     </BrowserRouter>

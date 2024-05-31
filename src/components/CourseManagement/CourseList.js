@@ -16,7 +16,7 @@ const CourseList = () => {
       totalHours: 137.5,
       lectures: 735,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Electronics",
+      subject: "Toán",
     },
     {
       id: 2,
@@ -28,7 +28,7 @@ const CourseList = () => {
       totalHours: 120,
       lectures: 600,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Web Development",
+      subject: "Lý",
     },
     {
       id: 3,
@@ -40,7 +40,7 @@ const CourseList = () => {
       totalHours: 150,
       lectures: 800,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Data Science",
+      subject: "Hóa",
     },
     {
       id: 4,
@@ -52,7 +52,7 @@ const CourseList = () => {
       totalHours: 80,
       lectures: 400,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Programming",
+      subject: "Anh Ngữ",
     },
     {
       id: 5,
@@ -64,7 +64,7 @@ const CourseList = () => {
       totalHours: 100,
       lectures: 500,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Marketing",
+      subject: "Văn",
     },
     {
       id: 6,
@@ -76,7 +76,7 @@ const CourseList = () => {
       totalHours: 90,
       lectures: 450,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Programming",
+      subject: "Toán",
     },
     {
       id: 7,
@@ -88,7 +88,7 @@ const CourseList = () => {
       totalHours: 110,
       lectures: 550,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Web Development",
+      subject: "Lý",
     },
     {
       id: 8,
@@ -100,7 +100,7 @@ const CourseList = () => {
       totalHours: 200,
       lectures: 900,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Data Science",
+      subject: "Hóa",
     },
     {
       id: 9,
@@ -112,7 +112,7 @@ const CourseList = () => {
       totalHours: 70,
       lectures: 350,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Marketing",
+      subject: "Anh Ngữ",
     },
     {
       id: 10,
@@ -124,7 +124,7 @@ const CourseList = () => {
       totalHours: 100,
       lectures: 500,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Web Development",
+      subject: "Văn",
     },
     {
       id: 11,
@@ -136,7 +136,7 @@ const CourseList = () => {
       totalHours: 130,
       lectures: 650,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Data Science",
+      subject: "Toán",
     },
     {
       id: 12,
@@ -148,7 +148,7 @@ const CourseList = () => {
       totalHours: 60,
       lectures: 300,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Marketing",
+      subject: "Anh Ngữ",
     },
     {
       id: 13,
@@ -160,7 +160,7 @@ const CourseList = () => {
       totalHours: 80,
       lectures: 400,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Web Development",
+      subject: "Văn",
     },
     {
       id: 14,
@@ -172,7 +172,7 @@ const CourseList = () => {
       totalHours: 75,
       lectures: 375,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Data Science",
+      subject: "Toán",
     },
     {
       id: 15,
@@ -184,7 +184,7 @@ const CourseList = () => {
       totalHours: 140,
       lectures: 700,
       img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Data Science",
+      subject: "Hóa",
     },
   ];
 
@@ -220,18 +220,17 @@ const CourseList = () => {
             onChange={handleFilter}
           >
             <option value="">Filter by Subject</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Web Development">Web Development</option>
-            <option value="Data Science">Data Science</option>
-            <option value="Programming">Programming</option>
-            <option value="Marketing">Marketing</option>
+            <option value="Toán">Toán</option>
+            <option value="Lý">Lý</option>
+            <option value="Hóa">Hóa</option>
+            <option value="Anh Ngữ">Anh Ngữ</option>
+            <option value="Văn">Văn</option>
           </select>
         </div>
 
         {filteredCourses.map((course) => (
-          <Link to={`/coursedetail/${course.id}`} onClick={() => window.scrollTo(0, 0)}>
+          <Link to={`/coursedetail/${course.id}`} onClick={() => window.scrollTo(0, 0)} key={course.id}>
             <div
-              key={course.id}
               className="rounded-sm border-2 border-gray-200 p-4 grid grid-cols-12 mb-8 max-lg:max-w-lg max-lg:mx-auto"
             >
               <div className="col-span-12 lg:col-span-2 img box">
