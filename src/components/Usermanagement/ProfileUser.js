@@ -1,33 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ProfileUser() {
   const [profileImage, setProfileImage] = useState(null);
-  const [fullName, setFullName] = useState('Han');
-  const [phone, setPhone] = useState('0888577863');
-  const [address, setAddress] = useState('Quang Tri');
-  const [gender, setGender] = useState('male');
-  const [username, setUsername] = useState('thienloc@gmail.com');
-  const [email, setEmail] = useState('thienloc@gmail.com');
-  const [avatarUrl, setAvatarUrl] = useState('https://th.bing.com/th/id/R.910cabc7d55bb965d6c42571a2b7973a?rik=HRpRhGm%2fnmbF8g&pid=ImgRaw&r=0');
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [gender, setGender] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [roleId, setRoleId] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
   
   const defaultImage = "https://via.placeholder.com/150"; // Link ảnh mặc định
 
+  // Lấy token từ localStorage
+  const token = localStorage.getItem('token');
+  const userEmail = 'thiemloc@gmail.com';
+
   useEffect(() => {
     // Lấy thông tin người dùng từ API
-    axios.get('/api/user/profile')
-      .then(response => {
-        const { fullName, phone, address, gender, username, email, avatar } = response.data;
-        setFullName(fullName);
-        setPhone(phone);
-        setAddress(address);
-        setGender(gender);
-        setUsername(username);
-        setEmail(email);
-        setAvatarUrl(avatar);
-      })
-      .catch(error => console.error('Error fetching user profile:', error));
-  }, []);
+    axios.get(`http://35.72.46.118/api/users/${userEmail}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      const { fullName, phone, address, gender, username, email, roleId, avatar } = response.data;
+      setFullName(fullName);
+      setPhone(phone);
+      setAddress(address);
+      setGender(gender);
+      setUsername(username);
+      setEmail(email);
+      setRoleId(roleId);
+      setAvatarUrl(avatar);
+    })
+    .catch(error => console.error('Error fetching user profile:', error));
+  }, [token, userEmail]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -48,6 +60,7 @@ function ProfileUser() {
         const imageResponse = await axios.post('/api/upload/avatar', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
           },
         });
 
@@ -58,25 +71,42 @@ function ProfileUser() {
       const userUpdateDto = {
         email,
         username,
+        password: '', // Để trống vì không cần thiết trong trường hợp này
         fullName,
         phone,
         address,
-        gender,
+        gender: parseInt(gender, 10), // Chuyển đổi gender sang số nguyên
+        roleId: parseInt(roleId?.id, 10), // Chuyển đổi roleId sang số nguyên
         avatar: updatedAvatarUrl,
       };
 
-      const response = await axios.put('/api/user/profile', userUpdateDto);
-      console.log('User profile updated:', response.data);
+      const response = await axios.put(`http://35.72.46.118/api/users/users?email=${encodeURIComponent(email)}`, userUpdateDto, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      
+      if (response.status === 200) {
+      console.log(response)
+
+        toast.success('Cập nhật thành công');
+      } else {
+        toast.error('Có lỗi xảy ra');
+      }
     } catch (error) {
       console.error('Error updating profile:', error);
+      toast.error('Có lỗi xảy ra');
     }
   };
 
   return (
     <div className="max-w-md mx-auto bg-white shadow-md rounded-md p-6 mt-6">
+    <ToastContainer></ToastContainer>
       <h2 className="text-2xl font-semibold mb-4">Cập nhật hồ sơ</h2>
       <form onSubmit={handleSubmit}>
-      <div className="mb-4">
+        <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Tên người dùng</label>
           <input
             type="text"
@@ -149,10 +179,19 @@ function ProfileUser() {
             required
           >
             <option value="" disabled>Chọn giới tính</option>
-            <option value="male">Nam</option>
-            <option value="female">Nữ</option>
-            <option value="other">Khác</option>
+            <option value="0">Nam</option>
+            <option value="1">Nữ</option>
+            <option value="2">Khác</option>
           </select>
+        </div>
+        
+        <div className="mb-4">
+          <input
+            type="hidden"
+            value={roleId?.id}
+            disabled
+            className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+          />
         </div>
         <div className="mt-6">
           <button
@@ -168,3 +207,4 @@ function ProfileUser() {
 }
 
 export default ProfileUser;
+
