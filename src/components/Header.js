@@ -101,8 +101,12 @@ const Header = () => {
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                       onClick={() => window.scrollTo(0, 0)}
                     >
-                      <Person size={20} className="mr-2" />
-                      Hồ sơ
+                      <Link to="/profileuser">
+                          <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                          <Person size={20} className="mr-2" />
+                          Hồ sơ
+                          </div>
+                      </Link>
                     </div>
                     <div
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
