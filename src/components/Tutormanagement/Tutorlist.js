@@ -76,14 +76,14 @@ const TutorList = () => {
                 {tutor.fullName}
               </h5>
               <p class="mb-4 text-base">{tutor.address}</p>
-              <button
+              <Link to={`/tutordetail/${tutor.id}`}><button
                 type="button"
                 class=" rounded bg-sky-400 text-white px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal shadow-primary-3 transition duration-150 ease-in-out"
                 data-twe-ripple-init
                 data-twe-ripple-color="light"
               >
                 Chi tiết
-              </button>
+              </button></Link>
             </div>
           </div>
         ))}
