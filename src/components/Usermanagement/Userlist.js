@@ -75,6 +75,10 @@ const UserList = () => {
         closeAllDropdowns();
     };
 
+    const handleManageProfileTutor = (user) => {
+        console.log(user)
+    }
+
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
 
@@ -105,20 +109,20 @@ const UserList = () => {
                     <div className="flex justify-between items-center mb-4">
                         <input
                             type="text"
-                            placeholder="Search by name..."
+                            placeholder="Tìm kiếm theo tên..."
                             value={searchTerm}
                             onChange={handleSearchChange}
                             className="border p-2 rounded w-1/3"
                         />
                         <select onChange={handleFilterChange} value={filterRole} className="border p-2 rounded">
-                            <option value="">Filter by Role</option>
+                            <option value="">Lọc theo vai trò</option>
                             <option value="admin">Admin</option>
-                            <option value="tutor">Tutor</option>
-                            <option value="student">Student</option>
+                            <option value="tutor">Gia sư</option>
+                            <option value="student">Học sinh</option>
                         </select>
                         <select onChange={handleSortChange} value={sortOrder} className="border p-2 rounded">
-                            <option value="asc">Sort Ascending</option>
-                            <option value="desc">Sort Descending</option>
+                            <option value="asc">Sắp xếp tăng dần</option>
+                            <option value="desc">Sắp xếp giảm dần</option>
                         </select>
                     </div>
 
@@ -209,12 +213,18 @@ const UserList = () => {
                                                                 onClick={() => handleEditClick(user)}
                                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                                                             >
-                                                                Edit
+                                                                Chỉnh sửa
                                                             </button>
+                                                            {user.roleName === 'TUTOR' && (<button
+                                                                onClick={() => handleManageProfileTutor(user)}
+                                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                                            >
+                                                                Thông tin gia sư
+                                                            </button>)}
                                                             <button
                                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                                                             >
-                                                                Delete
+                                                                Vô hiệu hóa
                                                             </button>
                                                         </div>
                                                     </div>
