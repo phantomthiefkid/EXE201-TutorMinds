@@ -25,9 +25,6 @@ const UpdateUser = ({ visible, onClose, user, fetchUsers }) => {
     }
   };
 
-
-  
-
   const convertFileUpload = async (file) => {
 
   }

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Homepage from "./components/Homepage";
 import Footer from "./components/Footer";
@@ -12,28 +12,48 @@ import Dashboard from "./components/Admin/Dashboard";
 import Tutorlist from "./components/Tutormanagement/Tutorlist";
 import CourseList from "./components/CourseManagement/CourseList";
 import CourseDetail from "./components/CourseManagement/CourseDetail";
-import TutorDetail from "./components/Tutormanagement/TutorDetail";
+import TutorDetail from "./components/Tutormanagement/Tutordetail";
 import ProfileUser from "./components/Usermanagement/ProfileUser";
+import { getUserDataFromToken } from "./redux/auth/loginSlice";
 function App() {
+  const roleName = getUserDataFromToken();
+
   return (
     <BrowserRouter>
-      <Header></Header>
+      <Header />
       <Routes>
-        <Route path="/" element={<Homepage></Homepage>}></Route>
-        <Route path="/createUser" element={<SidebarAdmin><CreateUser></CreateUser></SidebarAdmin>}></Route>
-        <Route path="/registerTeacher" element={<RegisterTeacher></RegisterTeacher>}></Route>
-        <Route path="/registerUser" element={<RegisterUser></RegisterUser>}></Route>
-        <Route path="/userlist" element={<SidebarAdmin><UserList></UserList></SidebarAdmin>}></Route>
-        <Route path="/dashboard" element={<SidebarAdmin><Dashboard /></SidebarAdmin>}></Route>
-        <Route path="/tutorlist" element={<Tutorlist></Tutorlist>}></Route>
-        <Route path="/courselist" element={<CourseList></CourseList>}></Route>
-        <Route path="/tutordetail/:id" element={<TutorDetail></TutorDetail>}></Route>
-        <Route path="/coursedetail/:id" element={<CourseDetail></CourseDetail>}></Route>
-        <Route path="/profileuser" element={<ProfileUser></ProfileUser>}></Route>
+        <Route path="/" element={<Homepage />}></Route>
+        <Route path="/createUser" element={<CreateUserWithSidebar />}></Route>
+        <Route path="/registerTeacher" element={<RegisterTeacher />}></Route>
+        <Route path="/registerUser" element={<RegisterUser />}></Route>
+        <Route path="/userlist" element={<UserListWithSidebar />}></Route>
+        <Route path="/dashboard" element={<DashboardWithSidebar />}></Route>
+        <Route path="/tutorlist" element={<Tutorlist />}></Route>
+        <Route path="/courselist" element={<CourseList />}></Route>
+        <Route path="/tutordetail/:id" element={<TutorDetailWithSidebar />}></Route>
+        <Route path="/coursedetail/:id" element={<CourseDetail />}></Route>
+        <Route path="/profileuser" element={<ProfileUser />}></Route>
       </Routes>
-      <Footer></Footer>
+      <Footer />
     </BrowserRouter>
   );
+
+  function CreateUserWithSidebar() {
+    return roleName === "ADMIN" ? <SidebarAdmin><CreateUser /></SidebarAdmin> : <Navigate to="/" />;
+  }
+
+  function UserListWithSidebar() {
+    return roleName === "ADMIN" ? <SidebarAdmin><UserList /></SidebarAdmin> : <Navigate to="/" />;
+  }
+
+  function DashboardWithSidebar() {
+    return roleName === "ADMIN" ? <SidebarAdmin><Dashboard /></SidebarAdmin> : <Navigate to="/" />;
+  }
+
+  function TutorDetailWithSidebar() {
+    return roleName === "ADMIN" ? <SidebarAdmin><TutorDetail /></SidebarAdmin> : <Navigate to="/" />;
+  }
 }
+
 
 export default App;

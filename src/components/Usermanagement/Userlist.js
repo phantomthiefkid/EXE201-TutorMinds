@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import UpdateUser from './UpdateUser';
 import { ToastContainer } from 'react-toastify';
+import UpdateTutor from './UpdateTutor';
 
 const UserList = () => {
     const [showModalUpdate, setShowModalUpdate] = useState(false);
+    const [showModalUpdateTutor, setShowModalUpdateTutor] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedTutor, setSelectedTutor] = useState(null);
     const handleOnClose = () => setShowModalUpdate(false);
+    const handleOnCloseTutor = () => setShowModalUpdateTutor(false);
     const [dropdownStates, setDropdownStates] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
     const [filterRole, setFilterRole] = useState('');
@@ -72,11 +76,15 @@ const UserList = () => {
     const handleEditClick = (user, e) => {
         setSelectedUser(user);
         setShowModalUpdate(true);
+        setShowModalUpdateTutor(false); 
         closeAllDropdowns();
     };
 
     const handleManageProfileTutor = (user) => {
-        console.log(user)
+        setSelectedTutor(user); 
+        setShowModalUpdate(false);
+        setShowModalUpdateTutor(true); 
+        closeAllDropdowns();
     }
 
     const indexOfLastUser = currentPage * usersPerPage;
@@ -91,6 +99,12 @@ const UserList = () => {
                 visible={showModalUpdate}
                 user={selectedUser}
                 fetchUsers={fetchUsers}
+            />
+            <UpdateTutor
+                onClose={handleOnCloseTutor}
+                visible={showModalUpdateTutor}
+                tutor={selectedTutor} 
+                fetchUsers={fetchUsers} 
             />
             <ToastContainer />
             <div className="container mx-auto px-4 sm:px-8">
