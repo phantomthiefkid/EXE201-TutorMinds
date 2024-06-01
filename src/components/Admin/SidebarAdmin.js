@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {BarChart, People, Book, BoxArrowRight, ClipboardDataFill, Laptop} from "react-bootstrap-icons";
 
 const SidebarAdmin = ({ children }) => {
+    
     return (
         <div className='grid grid-cols-12'>
             <div className="h-screen col-span-2 bg-white  text-gray-600 w-64 space-y-6 py-7 px-2 shadow-md">

@@ -23,7 +23,7 @@ const TutorDetail = () => {
     }
 
     return (
-        <div className="bg-white min-h-screen text-gray-800 z-0">
+        <div className="bg-gray-200 min-h-screen text-gray-800 z-0">
             <div className="relative z-0">
                 <img
                     src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw5fHxjb3ZlcnxlbnwwfDB8fHwxNzEwNzQxNzY0fDA&ixlib=rb-4.0.3&q=80&w=1080"
@@ -40,7 +40,7 @@ const TutorDetail = () => {
             </div>
 
             <div className="max-w-6xl mx-auto p-4">
-                <div className="bg-slate-200 rounded-lg w-full p-6 mb-6 mt-16 text-center">
+                <div className="bg-slate-200 shadow-lg rounded-lg w-full p-6 mb-6 mt-16 text-center">
                     <h1 className="text-3xl font-bold text-gray-900">Gia sư: {data?.fullName || 'Samuel Abera'}</h1>
                     <div className="flex items-center justify-center mt-2 text-gray-700">
                         <MortarboardFill className="w-5 h-5 mr-2 text-blue-500" />

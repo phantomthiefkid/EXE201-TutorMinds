@@ -28,7 +28,7 @@ const Header = () => {
   return (
     <>
       <ModalSignIn onClose={handleOnClose} visible={showModalLogin} />
-      <nav className="bg-white p-4 shadow-lg w-full z-0">
+      <nav className="bg-white p-4 shadow-lg w-full z-50">
         <div className="container mx-auto flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center">
@@ -88,7 +88,7 @@ const Header = () => {
                 </div>
 
                 {isOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
+                  <div className="absolute z-50 right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
                     {roleName === "ADMIN" && (
                       <Link to="/userlist">
                         <div className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
@@ -101,8 +101,12 @@ const Header = () => {
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                       onClick={() => window.scrollTo(0, 0)}
                     >
-                      <Person size={20} className="mr-2" />
-                      Hồ sơ
+                      <Link to="/profileuser">
+                          <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                          <Person size={20} className="mr-2" />
+                          Hồ sơ
+                          </div>
+                      </Link>
                     </div>
                     <div
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
