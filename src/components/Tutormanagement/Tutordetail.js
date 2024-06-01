@@ -23,7 +23,7 @@ const TutorDetail = () => {
     }
 
     return (
-        <div className="bg-gray-100 min-h-screen text-gray-800 z-0">
+        <div className="bg-gray-200 min-h-screen text-gray-800 z-0">
             <div className="relative z-0">
                 <img
                     src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw5fHxjb3ZlcnxlbnwwfDB8fHwxNzEwNzQxNzY0fDA&ixlib=rb-4.0.3&q=80&w=1080"

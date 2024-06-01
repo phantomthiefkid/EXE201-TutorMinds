@@ -27,7 +27,7 @@ const RegisterUser = () => {
     };
 
     try {
-      const response = await axios.post('http://35.72.46.118/api/auth/register', data, {
+      const response = await axios.post('https://fams-management.tech/api/auth/register', data, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': '*/*',
