@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Homepage from "./components/Homepage";
 import Footer from "./components/Footer";
@@ -13,23 +13,78 @@ import Tutorlist from "./components/Tutormanagement/Tutorlist";
 import CourseList from "./components/CourseManagement/CourseList";
 import TutorDetail from "./components/Tutormanagement/TutorDetail";
 import CourseDetail from "./components/CourseManagement/CourseDetail";
+import { getUserDataFromToken } from "./redux/auth/loginSlice";
+
 function App() {
+  const roleName = getUserDataFromToken();
+
   return (
     <BrowserRouter>
-      <Header></Header>
+      <Header />
       <Routes>
-        <Route path="/" element={<Homepage></Homepage>}></Route>
-        <Route path="/createUser" element={<SidebarAdmin><CreateUser></CreateUser></SidebarAdmin>}></Route>
-        <Route path="/registerTeacher" element={<RegisterTeacher></RegisterTeacher>}></Route>
-        <Route path="/registerUser" element={<RegisterUser></RegisterUser>}></Route>
-        <Route path="/userlist" element={<SidebarAdmin><UserList></UserList></SidebarAdmin>}></Route>
-        <Route path="/dashboard" element={<SidebarAdmin><Dashboard /></SidebarAdmin>}></Route>
-        <Route path="/tutorlist" element={<Tutorlist></Tutorlist>}></Route>
-        <Route path="/courselist" element={<CourseList></CourseList>}></Route>
-        <Route path="/tutordetail/:id" element={<TutorDetail></TutorDetail>}></Route>
-        <Route path="/coursedetail/:id" element={<CourseDetail></CourseDetail>}></Route>
+        <Route path="/" element={<Homepage />} />
+        <Route
+          path="/createUser"
+          element={
+            roleName === "ADMIN" ? (
+              <SidebarAdmin>
+                <CreateUser />
+              </SidebarAdmin>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/registerTeacher"
+          element={<RegisterTeacher />}
+        />
+        <Route
+          path="/registerUser"
+          element={<RegisterUser />}
+        />
+        <Route
+          path="/userlist"
+          element={
+            roleName === "ADMIN" ? (
+              <SidebarAdmin>
+                <UserList />
+              </SidebarAdmin>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            roleName === "ADMIN" ? (
+              <SidebarAdmin>
+                <Dashboard />
+              </SidebarAdmin>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/tutorlist"
+          element={<Tutorlist />}
+        />
+        <Route
+          path="/courselist"
+          element={<CourseList />}
+        />
+        <Route
+          path="/tutordetail/:id"
+          element={<TutorDetail />}
+        />
+        <Route
+          path="/coursedetail/:id"
+          element={<CourseDetail />}
+        />
       </Routes>
-      <Footer></Footer>
+      <Footer />
     </BrowserRouter>
   );
 }
