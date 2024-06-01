@@ -219,7 +219,7 @@ const CourseList = () => {
             value={filter}
             onChange={handleFilter}
           >
-            <option value="">Filter by Subject</option>
+            <option value="">Lọc theo môn học</option>
             <option value="Toán">Toán</option>
             <option value="Lý">Lý</option>
             <option value="Hóa">Hóa</option>
