@@ -12,7 +12,7 @@ import Dashboard from "./components/Admin/Dashboard";
 import Tutorlist from "./components/Tutormanagement/Tutorlist";
 import CourseList from "./components/CourseManagement/CourseList";
 import CourseDetail from "./components/CourseManagement/CourseDetail";
-import TutorDetail from "./components/Tutormanagement/Tutordetail";
+import TutorDetail from "./components/Tutormanagement/TutorDetail";
 import ProfileUser from "./components/Usermanagement/ProfileUser";
 import { getUserDataFromToken } from "./redux/auth/loginSlice";
 function App() {
@@ -30,7 +30,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardWithSidebar />}></Route>
         <Route path="/tutorlist" element={<Tutorlist />}></Route>
         <Route path="/courselist" element={<CourseList />}></Route>
-        <Route path="/tutordetail/:id" element={<TutorDetailWithSidebar />}></Route>
+        <Route path="/tutordetail/:id" element={<TutorDetail />}></Route>
         <Route path="/coursedetail/:id" element={<CourseDetail />}></Route>
         <Route path="/profileuser" element={<ProfileUser />}></Route>
       </Routes>
@@ -50,9 +50,6 @@ function App() {
     return roleName === "ADMIN" ? <SidebarAdmin><Dashboard /></SidebarAdmin> : <Navigate to="/" />;
   }
 
-  function TutorDetailWithSidebar() {
-    return roleName === "ADMIN" ? <SidebarAdmin><TutorDetail /></SidebarAdmin> : <Navigate to="/" />;
-  }
 }
 
 
