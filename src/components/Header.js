@@ -132,20 +132,19 @@ const Header = () => {
                         </div>
                       </Link>
                     </div>
-                    {roleName === "TUTOR" ||
-                      (roleName === "STUDENT" && (
-                        <div
-                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
-                          onClick={() => window.scrollTo(0, 0)}
-                        >
-                          <Link to="/">
-                            <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
-                              <Book size={20} className="mr-2" />
-                              Lớp học của tôi
-                            </div>
-                          </Link>
-                        </div>
-                      ))}
+                    {(roleName === "TUTOR" || roleName === "STUDENT") && (
+                      <div
+                        className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
+                        onClick={() => window.scrollTo(0, 0)}
+                      >
+                        <Link to="/classlist">
+                          <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                            <Book size={20} className="mr-2" />
+                            Lớp học của tôi
+                          </div>
+                        </Link>
+                      </div>
+                    )}
                     <div
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                       onClick={handleLogout}

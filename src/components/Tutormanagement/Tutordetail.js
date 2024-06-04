@@ -84,7 +84,7 @@ const TutorDetail = () => {
                 onClick={() => setShowModalRequest(true)}
                 className="rounded bg-sky-500 text-white px-6 py-2 text-xs font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400"
               >
-                Booking
+                Đăng ký
               </button>
             </div>
             <div className="mt-4 text-md">
