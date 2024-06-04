@@ -12,7 +12,7 @@ import Dashboard from "./components/Admin/Dashboard";
 import Tutorlist from "./components/Tutormanagement/Tutorlist";
 import CourseList from "./components/CourseManagement/CourseList";
 import CourseDetail from "./components/CourseManagement/CourseDetail";
-import TutorDetail from "./components/Tutormanagement/Tutordetail";
+import TutorDetail from "./components/Tutormanagement/TutorDetail";
 import ProfileUser from "./components/Usermanagement/ProfileUser";
 import { getUserDataFromToken } from "./redux/auth/loginSlice";
 function App() {
