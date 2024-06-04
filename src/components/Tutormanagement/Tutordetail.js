@@ -9,7 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchTutorDetail } from "../../redux/TutorManagement/Tutor";
-import ModalRequest from "../Tutormanagement/ModalRequest";
+import ModalRequest from "./ModalRequest";
 
 const TutorDetail = () => {
   const { id } = useParams();

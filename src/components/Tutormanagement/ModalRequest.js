@@ -18,7 +18,7 @@ const ModalRequest = ({ visible, onClose }) => {
   return (
     <div class="fixed inset-0 bg-black bg-opacity-50 z-40">
       <div class="fixed left-0 right-0 mx-auto w-2/5 justify-center z-50 inset-2 overflow-y-scroll ">
-        <div class=" bg-white rounded-l-3xl shadow-md p-8 ">
+        <div class=" bg-white rounded-3xl shadow-md p-8 ">
           <div class="flex items-center border-b-4 border-green-400">
             <img
               src="https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-6/445551860_1884650355281087_2659972058971311210_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_ohc=afA7fdo_8IUQ7kNvgGzfXrj&_nc_ht=scontent.fsgn2-4.fna&oh=00_AYCmUH7wEEo7MOax-QUL5qPfAOwHacx1dHoWZj9UvAxK6w&oe=665DFA91"
