@@ -14,6 +14,7 @@ import CourseList from "./components/CourseManagement/CourseList";
 import CourseDetail from "./components/CourseManagement/CourseDetail";
 import TutorDetail from "./components/Tutormanagement/TutorDetail";
 import ProfileUser from "./components/Usermanagement/ProfileUser";
+import ClassListRequest from "./components/Admin/ClassManagement/ClassListRequest";
 import { getUserDataFromToken } from "./redux/auth/loginSlice";
 import RequestListAdmin from "./components/Admin/RequestListAdmin";
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <Route path="/tutordetail/:id" element={<TutorDetail />}></Route>
         <Route path="/coursedetail/:id" element={<CourseDetail />}></Route>
         <Route path="/profileuser" element={<ProfileUser />}></Route>
+        <Route path="/classlist" element={<ClassListRequest/>}></Route>
         <Route path="/requestlistadmin" element={<RequiestListWithSidebar></RequiestListWithSidebar>}></Route>
       </Routes>
       <Footer />
