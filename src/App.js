@@ -15,7 +15,6 @@ import CourseDetail from "./components/CourseManagement/CourseDetail";
 import TutorDetail from "./components/Tutormanagement/TutorDetail";
 import ProfileUser from "./components/Usermanagement/ProfileUser";
 import { getUserDataFromToken } from "./redux/auth/loginSlice";
-import RequestList from "./components/Admin/RequestListAdmin";
 import RequestListAdmin from "./components/Admin/RequestListAdmin";
 function App() {
   const roleName = getUserDataFromToken();
