@@ -17,9 +17,9 @@ const SidebarAdmin = ({ children }) => {
                     <Link to={`/userlist`} className="flex items-start py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200 hover:text-blue-600 text-md">
                        <People className='mr-2'size={20}/> Quản lí người dùng
                     </Link>
-                    <a href="#" className="flex items-start py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200 hover:text-blue-600 text-md">
-                      <Laptop className='mr-2'size={20}/>  Lớp học
-                    </a>
+                    <Link to={`/requestlistadmin`} className="flex items-start py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200 hover:text-blue-600 text-md">
+                      <Laptop className='mr-2'size={20}/>  Quản lí yêu cầu
+                    </Link>
                     <a href="#" className="flex items-start py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200 hover:text-blue-600 text-md">
                     <Book className='mr-2'size={20}/> Môn học
                     </a>
