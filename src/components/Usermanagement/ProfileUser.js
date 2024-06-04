@@ -15,11 +15,11 @@ function ProfileUser() {
   const [roleId, setRoleId] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
   const emailToken = getEmailDataFromToken();
-  const defaultImage = "https://via.placeholder.com/150"; // Link ảnh mặc định
+  const backgroundImage = "https://th.bing.com/th/id/OIP.MkwchKOQuENF3d2pGm9g-AHaEK?w=283&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7"; // Đường dẫn đến ảnh nền
 
   // Lấy token từ localStorage
   const token = localStorage.getItem('token');
- 
+
   useEffect(() => {
     // Lấy thông tin người dùng từ API
     axios.get(`https://fams-management.tech/api/users/${emailToken}`, {
@@ -38,7 +38,7 @@ function ProfileUser() {
         setRoleId(roleId);
         setAvatarUrl(avatar);
       })
-      .catch(error => console.error('Error fetching user profile:', error));
+      .catch(error => console.error('Lỗi khi lấy thông tin hồ sơ người dùng:', error));
   }, [token, emailToken]);
 
   const handleImageChange = (e) => {
@@ -52,7 +52,7 @@ function ProfileUser() {
     try {
       let updatedAvatarUrl = avatarUrl;
 
-      // Nếu người dùng chọn ảnh mới, tải ảnh lên trước
+      // Nếu người dùng chọn ảnh mới, upload ảnh trước
       if (profileImage) {
         const formData = new FormData();
         formData.append('file', profileImage);
@@ -64,7 +64,7 @@ function ProfileUser() {
           },
         });
 
-        updatedAvatarUrl = imageResponse.data.url; // URL của ảnh sau khi tải lên
+        updatedAvatarUrl = imageResponse.data.url; // URL của ảnh đã upload
       }
 
       // Cập nhật thông tin người dùng
@@ -75,8 +75,8 @@ function ProfileUser() {
         fullName,
         phone,
         address,
-        gender: parseInt(gender, 10), // Chuyển đổi gender sang số nguyên
-        roleId: parseInt(roleId?.id, 10), // Chuyển đổi roleId sang số nguyên
+        gender: parseInt(gender, 10), // Chuyển đổi giới tính thành số nguyên
+        roleId: parseInt(roleId?.id, 10), // Chuyển đổi roleId thành số nguyên
         avatar: updatedAvatarUrl,
       };
 
@@ -94,103 +94,105 @@ function ProfileUser() {
         toast.error('Có lỗi xảy ra');
       }
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error('Lỗi khi cập nhật hồ sơ:', error);
       toast.error('Có lỗi xảy ra');
     }
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-8 mt-6">
-      <ToastContainer />
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Cập nhật hồ sơ</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">Tên người dùng</label>
-          <input
-            type="text"
-            value={username}
-            disabled
-            className="mt-2 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md sm:text-sm"
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">Email</label>
-          <input
-            type="email"
-            value={email}
-            disabled
-            className="mt-2 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md sm:text-sm"
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">Ảnh đại diện</label>
-          <div className="mt-2 flex items-center">
-            <img
-              src={profileImage ? URL.createObjectURL(profileImage) : (avatarUrl || defaultImage)}
-              alt="Profile"
-              className="h-20 w-20 rounded-full object-cover border border-gray-300"
-            />
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className="max-w-2xl mx-auto bg-white shadow-2xl rounded-lg p-8 mt-12 mb-12">
+        <ToastContainer />
+        <h2 className="text-4xl font-extrabold mb-8 text-center text-gray-900">Cập nhật hồ sơ</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-6">
+            <label className="block text-xl font-semibold text-gray-700">Tên người dùng</label>
             <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="ml-4 bg-white rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              type="text"
+              value={username}
+              disabled
+              className="mt-2 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md sm:text-base"
             />
           </div>
-        </div>
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">Họ tên đầy đủ</label>
-          <input
-            type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            required
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">Số điện thoại</label>
-          <input
-            type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            required
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">Địa chỉ</label>
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            required
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">Giới tính</label>
-          <select
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-            className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            required
-          >
-            <option value="" disabled>Chọn giới tính</option>
-            <option value="0">Nam</option>
-            <option value="1">Nữ</option>
-            <option value="2">Khác</option>
-          </select>
-        </div>
-        <div className="mt-8">
-          <button
-            type="submit"
-            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Cập nhật
-          </button>
-        </div>
-      </form>
+          <div className="mb-6">
+            <label className="block text-xl font-semibold text-gray-700">Email</label>
+            <input
+              type="email"
+              value={email}
+              disabled
+              className="mt-2 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md sm:text-base"
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-xl font-semibold text-gray-700">Ảnh đại diện</label>
+            <div className="mt-2 flex items-center">
+              <img
+                src={profileImage ? URL.createObjectURL(profileImage) : (avatarUrl)}
+                alt="Profile"
+                className="h-24 w-24 rounded-full object-cover border border-gray-300"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="ml-4 bg-indigo-600 text-white font-medium px-3 py-2 rounded-md cursor-pointer hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
+          <div className="mb-6">
+            <label className="block text-xl font-semibold text-gray-700">Họ tên đầy đủ</label>
+            <input
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-xl font-semibold text-gray-700">Số điện thoại</label>
+            <input
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-xl font-semibold text-gray-700">Địa chỉ</label>
+            <input
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-xl font-semibold text-gray-700">Giới tính</label>
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base"
+              required
+            >
+              <option value="" disabled>Chọn giới tính</option>
+              <option value="0">Nam</option>
+              <option value="1">Nữ</option>
+              <option value="2">Khác</option>
+            </select>
+          </div>
+          <div className="mt-8">
+            <button
+              type="submit"
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md text-lg font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              Cập nhật
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
