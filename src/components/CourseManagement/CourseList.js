@@ -1,192 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 const CourseList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("");
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const courses = [
-    {
-      id: 1,
-      name: "Round white portable speaker",
-      price: "$220",
-      description:
-        "Introducing our sleek round white portable speaker, the epitome of style and sound! Elevate your auditory experience with this compact yet powerful device that delivers crystal-clear audio wherever you go.",
-      rating: 4.6,
-      totalHours: 137.5,
-      lectures: 735,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Toán",
-    },
-    {
-      id: 2,
-      name: "Advanced Web Development",
-      price: "$180",
-      description:
-        "Master the latest web development technologies and build professional-grade web applications with our comprehensive course.",
-      rating: 4.8,
-      totalHours: 120,
-      lectures: 600,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Lý",
-    },
-    {
-      id: 3,
-      name: "Data Science Bootcamp",
-      price: "$300",
-      description:
-        "Become a data science expert with our intensive bootcamp covering everything from Python programming to machine learning.",
-      rating: 4.9,
-      totalHours: 150,
-      lectures: 800,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Hóa",
-    },
-    {
-      id: 4,
-      name: "Beginner's Guide to Python",
-      price: "$100",
-      description:
-        "Learn Python programming from scratch with this beginner-friendly course designed to get you up and running quickly.",
-      rating: 4.2,
-      totalHours: 80,
-      lectures: 400,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Anh Ngữ",
-    },
-    {
-      id: 5,
-      name: "Digital Marketing Mastery",
-      price: "$150",
-      description:
-        "Gain expertise in digital marketing strategies and tools with our hands-on course, perfect for marketers of all levels.",
-      rating: 4.5,
-      totalHours: 100,
-      lectures: 500,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Văn",
-    },
-    {
-      id: 6,
-      name: "JavaScript Essentials",
-      price: "$130",
-      description:
-        "Learn the fundamentals of JavaScript, the most popular programming language for web development.",
-      rating: 4.7,
-      totalHours: 90,
-      lectures: 450,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Toán",
-    },
-    {
-      id: 7,
-      name: "React for Beginners",
-      price: "$160",
-      description:
-        "Get started with React, the powerful JavaScript library for building user interfaces.",
-      rating: 4.8,
-      totalHours: 110,
-      lectures: 550,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Lý",
-    },
-    {
-      id: 8,
-      name: "Machine Learning A-Z",
-      price: "$320",
-      description:
-        "An in-depth course on machine learning algorithms and techniques using Python.",
-      rating: 4.9,
-      totalHours: 200,
-      lectures: 900,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Hóa",
-    },
-    {
-      id: 9,
-      name: "SEO Fundamentals",
-      price: "$140",
-      description:
-        "Learn the basics of search engine optimization to improve your website's visibility.",
-      rating: 4.4,
-      totalHours: 70,
-      lectures: 350,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Anh Ngữ",
-    },
-    {
-      id: 10,
-      name: "Responsive Web Design",
-      price: "$170",
-      description:
-        "Create responsive websites that look great on all devices, from mobile phones to desktop computers.",
-      rating: 4.6,
-      totalHours: 100,
-      lectures: 500,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Văn",
-    },
-    {
-      id: 11,
-      name: "Data Visualization with Python",
-      price: "$210",
-      description:
-        "Master data visualization techniques using popular Python libraries like Matplotlib and Seaborn.",
-      rating: 4.7,
-      totalHours: 130,
-      lectures: 650,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Toán",
-    },
-    {
-      id: 12,
-      name: "Email Marketing Strategies",
-      price: "$110",
-      description:
-        "Learn effective email marketing strategies to boost your business and engage with your audience.",
-      rating: 4.3,
-      totalHours: 60,
-      lectures: 300,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Anh Ngữ",
-    },
-    {
-      id: 13,
-      name: "Advanced CSS Techniques",
-      price: "$140",
-      description:
-        "Enhance your web development skills with advanced CSS techniques for creating stunning websites.",
-      rating: 4.5,
-      totalHours: 80,
-      lectures: 400,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Văn",
-    },
-    {
-      id: 14,
-      name: "Introduction to SQL",
-      price: "$120",
-      description:
-        "Learn SQL, the standard language for managing and manipulating databases.",
-      rating: 4.6,
-      totalHours: 75,
-      lectures: 375,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Toán",
-    },
-    {
-      id: 15,
-      name: "Python for Data Analysis",
-      price: "$200",
-      description:
-        "Use Python to perform data analysis and gain insights from large datasets.",
-      rating: 4.8,
-      totalHours: 140,
-      lectures: 700,
-      img: "https://pagedone.io/asset/uploads/1701162826.png",
-      subject: "Hóa",
-    },
-  ];
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const token = localStorage.getItem('token'); // Get the token from localStorage
+      try {
+        const response = await axios.get('https://fams-management.tech/course?pageNo=0&pageSize=10', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setCourses(response.data.content);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching course data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -198,10 +38,52 @@ const CourseList = () => {
 
   const filteredCourses = courses.filter((course) => {
     return (
-      course.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      course.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (filter === "" || course.subject === filter)
     );
   });
+
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    return (
+      <>
+        {[...Array(fullStars)].map((_, i) => (
+          <svg
+            key={`full-${i}`}
+            className="h-6 w-6 shrink-0 fill-yellow-400"
+            viewBox="0 0 256 256"
+          >
+            <path d="M239.2 97.4A16.4 16.4.0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4.0 00128 16h0a16.4 16.4.0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5.0 0016.8 97.4 16.8 16.8.0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5.0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1.0 008.7 2.6 16.5 16.5.0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8.0 00239.2 97.4z"></path>
+          </svg>
+        ))}
+        {halfStar && (
+          <svg
+            key="half"
+            className="h-6 w-6 shrink-0 fill-yellow-400"
+            viewBox="0 0 256 256"
+          >
+            <path d="M239.2 97.4A16.4 16.4.0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4.0 00128 16h0a16.4 16.4.0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5.0 0016.8 97.4 16.8 16.8.0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5.0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1.0 008.7 2.6 16.5 16.5.0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8.0 00239.2 97.4zM128 192.8v-132L105.1 82.6 90 130.1l-35.6 4.6 27 22.8L63.3 200 128 163.6z"></path>
+          </svg>
+        )}
+        {[...Array(emptyStars)].map((_, i) => (
+          <svg
+            key={`empty-${i}`}
+            className="h-6 w-6 shrink-0 fill-gray-300"
+            viewBox="0 0 256 256"
+          >
+            <path d="M239.2 97.4A16.4 16.4.0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4.0 00128 16h0a16.4 16.4.0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5.0 0016.8 97.4 16.8 16.8.0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5.0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1.0 008.7 2.6 16.5 16.5.0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8.0 00239.2 97.4z"></path>
+          </svg>
+        ))}
+      </>
+    );
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -215,7 +97,7 @@ const CourseList = () => {
             onChange={handleSearch}
           />
           <select
-            className="border p-2 rounded"
+            className="border p-2 rounded ml-2"
             value={filter}
             onChange={handleFilter}
           >
@@ -235,22 +117,22 @@ const CourseList = () => {
             >
               <div className="col-span-12 lg:col-span-2 img box">
                 <img
-                  src={course.img}
-                  alt={course.name}
+                  src={course.tutor.avatar}
+                  alt={course.title}
                   className="max-lg:w-full lg:w-[200px]"
                 />
               </div>
               <div className="col-span-12 lg:col-span-10 detail w-full lg:pl-3">
                 <div className="flex items-center justify-between w-full mb-4">
                   <h5 className="font-manrope font-bold text-2xl leading-9 text-gray-900">
-                    {course.name}
+                    {course.title}
                   </h5>
                   <h6 className="text-indigo-600 font-manrope font-bold text-2xl leading-9 text-right">
-                    {course.price}
+                    ${course.price}
                   </h6>
                 </div>
                 <p className="font-normal text-base leading-7 text-gray-500 mb-6">
-                  {course.description}{" "}
+                  {course.simpleDescription}{" "}
                   <a href="javascript:;" className="text-indigo-600">
                     More....
                   </a>
@@ -258,26 +140,24 @@ const CourseList = () => {
                 <div className="flex">
                   <div className="flex items-center gap-4">
                     <div className="flex gap-0.5">
-                      <p className="text-lg mr-2">{course.rating}</p>
-                      {[...Array(5)].map((_, i) => (
-                        <svg
-                          key={i}
-                          className={`h-6 w-6 shrink-0 ${
-                            i < Math.floor(course.rating)
-                              ? "fill-amber-400"
-                              : "fill-gray-300"
-                          }`}
-                          viewBox="0 0 256 256"
-                        >
-                          <path d="M239.2 97.4A16.4 16.4.0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4.0 00128 16h0a16.4 16.4.0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5.0 0016.8 97.4 16.8 16.8.0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5.0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1.0 008.7 2.6 16.5 16.5.0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8.0 00239.2 97.4z"></path>
-                        </svg>
-                      ))}
+                      <p className="text-lg mr-2">Rating: {course.rating ? course.rating : "N/A"}</p>
+                      {course.rating ?                         renderStars(course.rating)
+                      :
+                        [...Array(5)].map((_, i) => (
+                          <svg
+                            key={i}
+                            className={`h-6 w-6 shrink-0 fill-yellow-300`}
+                            viewBox="0 0 256 256"
+                          >
+                            <path d="M239.2 97.4A16.4 16.4.0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4.0 00128 16h0a16.4 16.4.0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5.0 0016.8 97.4 16.8 16.8.0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5.0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1.0 008.7 2.6 16.5 16.5.0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8.0 00239.2 97.4z"></path>
+                          </svg>
+                        ))
+                      }
                     </div>
                   </div>
                 </div>
                 <p className="font-normal text-base leading-7 text-gray-500 mb-6">
-                  {course.totalHours} total hours . {course.lectures} lectures .
-                  All Video
+                  Total Hours: {course.totalHours ? course.totalHours : "10h"} . Lectures: {course.tutor.fullName} . All Video
                 </p>
               </div>
             </div>
@@ -289,3 +169,4 @@ const CourseList = () => {
 };
 
 export default CourseList;
+

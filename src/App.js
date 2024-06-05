@@ -14,6 +14,7 @@ import CourseList from "./components/CourseManagement/CourseList";
 import CourseDetail from "./components/CourseManagement/CourseDetail";
 import TutorDetail from "./components/Tutormanagement/TutorDetail";
 import ProfileUser from "./components/Usermanagement/ProfileUser";
+import ClassListRequest from "./components/ClassManagement/ClassListRequest";
 import { getUserDataFromToken } from "./redux/auth/loginSlice";
 import RequestListAdmin from "./components/Admin/RequestListAdmin";
 function App() {
@@ -34,29 +35,55 @@ function App() {
         <Route path="/tutordetail/:id" element={<TutorDetail />}></Route>
         <Route path="/coursedetail/:id" element={<CourseDetail />}></Route>
         <Route path="/profileuser" element={<ProfileUser />}></Route>
-        <Route path="/requestlistadmin" element={<RequiestListWithSidebar></RequiestListWithSidebar>}></Route>
+        <Route path="/classlist" element={<ClassListRequest />}></Route>
+        <Route
+          path="/requestlistadmin"
+          element={<RequiestListWithSidebar></RequiestListWithSidebar>}
+        ></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
   );
 
   function CreateUserWithSidebar() {
-    return roleName === "ADMIN" ? <SidebarAdmin><CreateUser /></SidebarAdmin> : <Navigate to="/" />;
+    return roleName === "ADMIN" ? (
+      <SidebarAdmin>
+        <CreateUser />
+      </SidebarAdmin>
+    ) : (
+      <Navigate to="/" />
+    );
   }
 
   function UserListWithSidebar() {
-    return roleName === "ADMIN" ? <SidebarAdmin><UserList /></SidebarAdmin> : <Navigate to="/" />;
+    return roleName === "ADMIN" ? (
+      <SidebarAdmin>
+        <UserList />
+      </SidebarAdmin>
+    ) : (
+      <Navigate to="/" />
+    );
   }
 
   function DashboardWithSidebar() {
-    return roleName === "ADMIN" ? <SidebarAdmin><Dashboard /></SidebarAdmin> : <Navigate to="/" />;
+    return roleName === "ADMIN" ? (
+      <SidebarAdmin>
+        <Dashboard />
+      </SidebarAdmin>
+    ) : (
+      <Navigate to="/" />
+    );
   }
 
   function RequiestListWithSidebar() {
-    return roleName === "ADMIN" ? <SidebarAdmin><RequestListAdmin></RequestListAdmin></SidebarAdmin> : <Navigate to="/requestlistadmin"/>
+    return roleName === "ADMIN" ? (
+      <SidebarAdmin>
+        <RequestListAdmin></RequestListAdmin>
+      </SidebarAdmin>
+    ) : (
+      <Navigate to="/requestlistadmin" />
+    );
   }
-
 }
-
 
 export default App;
