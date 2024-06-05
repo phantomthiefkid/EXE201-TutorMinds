@@ -2,8 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const URL_FETCH_CLASSES = "https://fams-management.tech/api/conversation";
-const URL_FETCH_CLASSES_DETAIL =
-  "https://fams-management.tech/api/conversation/";
+const URL_FETCH_CLASSES_DETAIL ="https://fams-management.tech/api/conversation/";
 
 export const fetchClassList = createAsyncThunk(
   "fetchClassList",

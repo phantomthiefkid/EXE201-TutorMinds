@@ -15,7 +15,6 @@ function ProfileUser() {
   const [roleId, setRoleId] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
   const emailToken = getEmailDataFromToken();
-  const backgroundImage = "https://th.bing.com/th/id/OIP.MkwchKOQuENF3d2pGm9g-AHaEK?w=283&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7"; // Đường dẫn đến ảnh nền
 
   // Lấy token từ localStorage
   const token = localStorage.getItem('token');
@@ -100,10 +99,10 @@ function ProfileUser() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-      <div className="max-w-2xl mx-auto bg-white shadow-2xl rounded-lg p-8 mt-12 mb-12">
+    <div className="min-h-screen flex items-center justify-center bg-gray-200">
+      <div className="max-w-2xl mx-auto bg-white shadow-2xl p-8 mt-12 mb-12">
         <ToastContainer />
-        <h2 className="text-4xl font-extrabold mb-8 text-center text-gray-900">Cập nhật hồ sơ</h2>
+        <h2 className="text-3xl font-extrabold mb-8 text-center text-gray-900">Cập nhật hồ sơ</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
             <label className="block text-xl font-semibold text-gray-700">Tên người dùng</label>
@@ -131,11 +130,12 @@ function ProfileUser() {
                 alt="Profile"
                 className="h-24 w-24 rounded-full object-cover border border-gray-300"
               />
+              
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                className="ml-4 bg-indigo-600 text-white font-medium px-3 py-2 rounded-md cursor-pointer hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="block w-full text-sm text-gray-900 border border-gray-300 cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
               />
             </div>
           </div>

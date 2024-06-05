@@ -12,7 +12,7 @@ const CourseList = () => {
     const fetchCourses = async () => {
       const token = localStorage.getItem('token'); // Get the token from localStorage
       try {
-        const response = await axios.get('http://35.72.46.118/course?pageNo=0&pageSize=10', {
+        const response = await axios.get('https://fams-management.tech/course?pageNo=0&pageSize=10', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
