@@ -4,10 +4,10 @@ import { CheckCircle, XCircle, ExclamationCircle, Search } from 'react-bootstrap
 const RequestListAdmin = () => {
   // Example data for user requests with avatar URLs
   const requests = [
-    { id: 1, user: 'John Doe', request: 'Increase storage limit', status: 'Approved', avatar: 'https://randomuser.me/api/portraits/men/1.jpg', createdDate: '2023-06-01' },
-    { id: 2, user: 'Jane Smith', request: 'Reset password', status: 'Approved', avatar: 'https://randomuser.me/api/portraits/women/2.jpg', createdDate: '2023-06-02' },
-    { id: 3, user: 'Alice Johnson', request: 'Upgrade account', status: 'Refinement', avatar: 'https://randomuser.me/api/portraits/women/3.jpg', createdDate: '2023-06-03' },
-    { id: 4, user: 'Mike Brown', request: 'Add new feature', status: 'Rejected', avatar: 'https://randomuser.me/api/portraits/men/4.jpg', createdDate: '2023-06-04' },
+    { id: 1, user: 'Huỳnh Gia Vinh', request: 'Increase storage limit', status: 'Approved', avatar: 'https://randomuser.me/api/portraits/men/1.jpg', createdDate: '2023-06-01' },
+    { id: 2, user: 'Nguyễn Hoàng Thiện', request: 'Reset password', status: 'Approved', avatar: 'https://randomuser.me/api/portraits/women/2.jpg', createdDate: '2023-06-02' },
+    { id: 3, user: 'Nguyễn Tấn', request: 'Upgrade account', status: 'Refinement', avatar: 'https://randomuser.me/api/portraits/women/3.jpg', createdDate: '2023-06-03' },
+    { id: 4, user: 'Lộc Shadow', request: 'Add new feature', status: 'Rejected', avatar: 'https://randomuser.me/api/portraits/men/4.jpg', createdDate: '2023-06-04' },
     { id: 5, user: 'Holmes', request: 'Add new feature', status: 'Refinement', avatar: 'https://randomuser.me/api/portraits/men/5.jpg', createdDate: '2023-06-05' },
     { id: 6, user: 'Mike Tyson', request: 'Add new feature', status: 'Approved', avatar: 'https://randomuser.me/api/portraits/men/6.jpg', createdDate: '2023-06-06' },
   ];
@@ -27,7 +27,7 @@ const RequestListAdmin = () => {
         <div className="w-full space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-3xl font-semibold leading-tight text-gray-800 bg-gradient-to-r from-blue-500 to-green-500 text-transparent bg-clip-text">
-              Quản lí người dùng
+              Quản lí yêu cầu người dùng
             </h2>
             <div className="relative w-1/3">
               <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -42,7 +42,7 @@ const RequestListAdmin = () => {
               />
             </div>
           </div>
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 py-6">
             {['All', 'Rejected', 'Refinement', 'Approved'].map(status => (
               <button
                 key={status}
