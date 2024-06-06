@@ -1,25 +1,51 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   Check2,
   Laptop,
   FileEarmarkArrowDown,
   Shield,
 } from "react-bootstrap-icons";
+import { useParams } from "react-router-dom";
 
 const CourseDetail = () => {
+  const { id } = useParams();
   const [activeIndex, setActiveIndex] = useState(null);
+  const [course, setCourse] = useState(null);
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.get(`https://fams-management.tech/course/${id}` , {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setCourse(response.data);
+      } catch (error) {
+        console.error("Error fetching course:", error);
+      }
+    };
+
+    fetchCourse();
+  }, []);
+  if (!course) {
+    return <div>Loading...</div>;
+  }
 
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
+
   return (
     <div className="w-full max-w-full px-4 md:px-5 mx-auto mt-6">
       <div class="text-white flex flex-col h-full min-h-[280px] w-full rounded-sm !bg-gray-900 px-12 py-8">
-        <h2 class="text-3xl mb-4">Vật lý lớp 7</h2>
+        <h2 class="text-3xl mb-4">{course.title}</h2>
         <p class="text-xl">
-          Khóa học vật lý trực tiếp phù hợp cho học sinh cần nắm vững
+          {course.description}
           <br />
-          kiến thức và tư duy logic với những bài học.
+          {course.simpleDescription}
         </p>
         <div class="flex gap-0.5 my-4">
           <p className="text-lg mr-2 text-yellow-400">4.7</p>
@@ -41,9 +67,9 @@ const CourseDetail = () => {
           <p className="text-lg ml-2"> 30 học viên</p>
         </div>
         <span className="flex">
-          Được tạo bởi <p className="text-indigo-300 px-2">Hoàng Thiện</p>
+          Được tạo bởi <p className="text-indigo-300 px-2">{course.tutor.fullName}</p>
         </span>
-        <span className="mt-4">Cập nhật gần nhất 20/9/2023</span>
+        <span className="mt-4">Cập nhật gần nhất {course.updatedDate}</span>
       </div>
 
       <div className="border w-2/4 mt-4 ml-14 p-6">
@@ -86,7 +112,7 @@ const CourseDetail = () => {
               class="w-full h-auto"
             />
             <h3 class="antialiased tracking-normal font-sans text-3xl font-semibold leading-snug text-blue-gray-900 flex justify-center mt-5 mb-2">
-              400.000 VNĐ
+              {course.price} VNĐ
             </h3>
             <button class="border w-full py-3 bg-purple-500 text-white font-bold hover:bg-purple-700">
               Thêm vào giỏ hàng
