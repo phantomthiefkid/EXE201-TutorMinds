@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, XCircle, ExclamationCircle, Search, FileText } from 'react-bootstrap-icons';
+import { CheckCircle, XCircle, ExclamationCircle, FileText } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchClassList } from '../../redux/ClassManagement/classSlice';
 
@@ -10,7 +10,6 @@ const RequestListAdmin = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [filter, setFilter] = useState('All');
-  const [searchTerm, setSearchTerm] = useState("");
   const [classList, setClassList] = useState([]);
   const [apiData, setApiData] = useState([]);
 
@@ -27,9 +26,9 @@ const RequestListAdmin = () => {
   useEffect(() => {
     dispatch(
       fetchClassList({
-        pageSize: 8,
+        pageSize: 6,
         pageIndex: currentPage,
-        search: searchTerm,
+        search: "",
         sortBy: "",
       })
     )
@@ -43,9 +42,7 @@ const RequestListAdmin = () => {
       .catch((error) => {
         console.error("Error fetching tutors:", error);
       });
-  }, [dispatch, currentPage, searchTerm]);
-
-  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+  }, [dispatch, currentPage]);
 
   const handleIncreasePage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -63,10 +60,9 @@ const RequestListAdmin = () => {
     setFilter(status);
   };
 
-  const filteredRequests = classList.filter(request => {
+  const filteredRequests = classList.filter((request) => {
     const statusMatch = filter === 'All' || request.conversationStatus.label === filter;
-    const searchMatch = request.title.toLowerCase().includes(searchTerm.toLowerCase()) || request.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return statusMatch && searchMatch;
+    return statusMatch;
   });
 
   return (
@@ -77,21 +73,9 @@ const RequestListAdmin = () => {
             <h2 className="text-3xl font-semibold leading-tight text-gray-800 bg-gradient-to-r from-blue-500 to-green-500 text-transparent bg-clip-text">
               Quản lí yêu cầu người dùng
             </h2>
-            <div className="relative w-1/3">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="text-gray-500 w-5 h-5" />
-              </span>
-              <input
-                type="text"
-                placeholder="Tìm kiếm..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
-              />
-            </div>
           </div>
           <div className="flex space-x-2 py-6">
-            {['All', 'Draft', 'Submitted to Tutor', 'Rejected', 'Refinement Required', 'Approved by Tutor'].map(status => (
+            {['All', 'Draft', 'Submitted to Tutor', 'Rejected', 'Refinement Required', 'Approved by Tutor'].map((status) => (
               <button
                 key={status}
                 onClick={() => handleFilter(status)}
@@ -124,8 +108,6 @@ const RequestListAdmin = () => {
                 </div>
               </div>
             </div>
-
-
           ))}
         </div>
       </div>
