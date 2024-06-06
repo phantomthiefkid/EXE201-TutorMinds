@@ -108,6 +108,12 @@ const CourseList = () => {
             <option value="Anh Ngữ">Anh Ngữ</option>
             <option value="Văn">Văn</option>
           </select>
+          <Link
+            to="/addcourse"
+            className="ml-auto bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
+          >
+            Add Course
+          </Link>
         </div>
 
         {filteredCourses.map((course) => (
@@ -117,7 +123,7 @@ const CourseList = () => {
             >
               <div className="col-span-12 lg:col-span-2 img box">
                 <img
-                  src={course.tutor.avatar}
+                  src={course.tutor.avatar || "https://cungdihoc.com/wp-content/uploads/2021/01/khoa-hoc-may-tinh.png"}
                   alt={course.title}
                   className="max-lg:w-full lg:w-[200px]"
                 />
@@ -169,4 +175,3 @@ const CourseList = () => {
 };
 
 export default CourseList;
-

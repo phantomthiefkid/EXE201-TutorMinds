@@ -30,6 +30,7 @@ const Header = () => {
     const confirmLogout = window.confirm("Bạn có chắc chắn muốn đăng xuất?");
     if (confirmLogout) {
       localStorage.removeItem("token");
+      setIsOpen(false)
       navigate("/");
     }
   };

@@ -9,7 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchTutorDetail } from "../../redux/TutorManagement/Tutor";
-import ModalRequest from "./ModalRequest";
+import ModalCreateRequest from "./ModalCreateRequest";
 
 const TutorDetail = () => {
   const { id } = useParams();
@@ -26,6 +26,7 @@ const TutorDetail = () => {
   useEffect(() => {
     setData(tutorDetail);
   }, [tutorDetail]);
+  console.log(">>>>>>>", tutorDetail);
 
   if (!tutorDetail) {
     return <div>Loading...</div>;
@@ -33,7 +34,11 @@ const TutorDetail = () => {
 
   return (
     <>
-      <ModalRequest onClose={handleOnClose} visible={showModalRequest} />
+      <ModalCreateRequest
+        onClose={handleOnClose}
+        visible={showModalRequest}
+        tutorId={tutorDetail.id}
+      />
       <div className="bg-gray-200 min-h-screen text-gray-800 z-0">
         <div className="relative z-0">
           <img

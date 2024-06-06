@@ -16,11 +16,9 @@ function ProfileUser() {
   const [avatarUrl, setAvatarUrl] = useState('');
   const emailToken = getEmailDataFromToken();
 
-  // Lấy token từ localStorage
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    // Lấy thông tin người dùng từ API
     axios.get(`https://fams-management.tech/api/users/${emailToken}`, {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -51,7 +49,6 @@ function ProfileUser() {
     try {
       let updatedAvatarUrl = avatarUrl;
 
-      // Nếu người dùng chọn ảnh mới, upload ảnh trước
       if (profileImage) {
         const formData = new FormData();
         formData.append('file', profileImage);
@@ -63,19 +60,18 @@ function ProfileUser() {
           },
         });
 
-        updatedAvatarUrl = imageResponse.data.url; // URL của ảnh đã upload
+        updatedAvatarUrl = imageResponse.data.url;
       }
 
-      // Cập nhật thông tin người dùng
       const userUpdateDto = {
         email,
         username,
-        password: '', // Để trống vì không cần thiết trong trường hợp này
+        password: '',
         fullName,
         phone,
         address,
-        gender: parseInt(gender, 10), // Chuyển đổi giới tính thành số nguyên
-        roleId: parseInt(roleId?.id, 10), // Chuyển đổi roleId thành số nguyên
+        gender: parseInt(gender, 10),
+        roleId: parseInt(roleId?.id, 10),
         avatar: updatedAvatarUrl,
       };
 
@@ -99,96 +95,132 @@ function ProfileUser() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-200">
-      <div className="max-w-2xl mx-auto bg-white shadow-2xl p-8 mt-12 mb-12">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="max-w-4xl w-full bg-white shadow-md rounded-lg p-8">
         <ToastContainer />
-        <h2 className="text-3xl font-extrabold mb-8 text-center text-gray-900">Cập nhật hồ sơ</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-6">
-            <label className="block text-xl font-semibold text-gray-700">Tên người dùng</label>
-            <input
-              type="text"
-              value={username}
-              disabled
-              className="mt-2 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md sm:text-base"
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-xl font-semibold text-gray-700">Email</label>
-            <input
-              type="email"
-              value={email}
-              disabled
-              className="mt-2 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md sm:text-base"
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-xl font-semibold text-gray-700">Ảnh đại diện</label>
-            <div className="mt-2 flex items-center">
-              <img
-                src={profileImage ? URL.createObjectURL(profileImage) : (avatarUrl)}
-                alt="Profile"
-                className="h-24 w-24 rounded-full object-cover border border-gray-300"
-              />
-              
+        <h2 className="text-3xl font-bold mb-4 text-gray-800">Hồ Sơ Của Tôi</h2>
+        <p className="mb-8 text-gray-600">Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-8">
+          <div>
+            <div className="mb-6">
+              <label className="block text-gray-700 font-medium">Tên đăng nhập</label>
               <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="block w-full text-sm text-gray-900 border border-gray-300 cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                type="text"
+                value={username}
+                disabled
+                className="mt-2 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md"
               />
             </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 font-medium">Tên</label>
+              <input
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 font-medium">Email</label>
+              <input
+                type="email"
+                value={email}
+                disabled
+                className="mt-2 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md"
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 font-medium">Số điện thoại</label>
+              <input
+                type="text"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 font-medium">Địa chỉ</label>
+              <input
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 font-medium">Giới tính</label>
+              <div className="mt-2 flex items-center space-x-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    value="0"
+                    checked={gender == "0"}
+                    onChange={(e) => setGender(e.target.value)}
+                    className="form-radio text-indigo-600"
+                  />
+                  <span className="ml-2">Nam</span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    value="1"
+                    checked={gender == "1"}
+                    onChange={(e) => setGender(e.target.value)}
+                    className="form-radio text-indigo-600"
+                  />
+                  <span className="ml-2">Nữ</span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    value="2"
+                    checked={gender == "2"}
+                    onChange={(e) => setGender(e.target.value)}
+                    className="form-radio text-indigo-600"
+                  />
+                  <span className="ml-2">Khác</span>
+                </label>
+              </div>
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 font-medium">Ngày sinh</label>
+              <div className="mt-2 flex space-x-4">
+                <select className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md">
+                  <option value="12">12</option>
+                  {/* Add other days */}
+                </select>
+                <select className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md">
+                  <option value="10">Tháng 10</option>
+                  {/* Add other months */}
+                </select>
+                <select className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md">
+                  <option value="2002">2002</option>
+                  {/* Add other years */}
+                </select>
+              </div>
+            </div>
           </div>
-          <div className="mb-6">
-            <label className="block text-xl font-semibold text-gray-700">Họ tên đầy đủ</label>
-            <input
-              type="text"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base"
-              required
+          <div className="flex flex-col items-center">
+            <img
+              src={profileImage ? URL.createObjectURL(profileImage) : (avatarUrl)}
+              alt="Profile"
+              className="h-32 w-32 rounded-full object-cover border-4 border-gray-300 mb-4"
             />
-          </div>
-          <div className="mb-6">
-            <label className="block text-xl font-semibold text-gray-700">Số điện thoại</label>
             <input
-              type="text"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base"
-              required
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="text-sm text-gray-600"
             />
-          </div>
-          <div className="mb-6">
-            <label className="block text-xl font-semibold text-gray-700">Địa chỉ</label>
-            <input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-xl font-semibold text-gray-700">Giới tính</label>
-            <select
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              className="mt-2 block w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base"
-              required
-            >
-              <option value="" disabled>Chọn giới tính</option>
-              <option value="0">Nam</option>
-              <option value="1">Nữ</option>
-              <option value="2">Khác</option>
-            </select>
-          </div>
-          <div className="mt-8">
+            <p className="mt-2 text-gray-500 text-sm">Dung lượng file tối đa 1 MB. Định dạng: JPEG, .PNG</p>
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md text-lg font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              className="mt-8 w-full py-3 px-4 border border-transparent rounded-md text-lg font-medium text-white bg-red-600 hover:bg-red-700"
             >
-              Cập nhật
+              Lưu
             </button>
           </div>
         </form>
