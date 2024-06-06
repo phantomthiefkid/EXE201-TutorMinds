@@ -108,6 +108,12 @@ const CourseList = () => {
             <option value="Anh Ngữ">Anh Ngữ</option>
             <option value="Văn">Văn</option>
           </select>
+          <Link
+            to="/addcourse"
+            className="ml-auto bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
+          >
+            Add Course
+          </Link>
         </div>
 
         {filteredCourses.map((course) => (
@@ -169,4 +175,3 @@ const CourseList = () => {
 };
 
 export default CourseList;
-
