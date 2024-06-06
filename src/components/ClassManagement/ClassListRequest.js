@@ -26,6 +26,7 @@ const ClassListRequest = () => {
     setSelectedClassId(classId);
     setShowModalRequest(true);
   };
+  const itemsPerPage = 8
 
   const token = localStorage.getItem("token");
   const roleName = getUserDataFromToken();
@@ -204,7 +205,7 @@ const ClassListRequest = () => {
                   >
                     <tr>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {index + 1}
+                      {index + 1 + currentPage * itemsPerPage}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
@@ -295,7 +296,7 @@ const ClassListRequest = () => {
                   >
                     <tr>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {index + 1}
+                      {index + 1 + currentPage * itemsPerPage}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
