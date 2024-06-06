@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const URL_FETCH_CLASSES = "https://fams-management.tech/api/conversation";
-const URL_FETCH_CLASSES_DETAIL ="https://fams-management.tech/api/conversation/";
-
+const URL_FETCH_CLASSES_DETAIL = "https://fams-management.tech/api/conversation/";
+const URL_UPDATE_CLASSS_DETAIL = "https://fams-management.tech/api/conversation/"
 export const fetchClassList = createAsyncThunk(
   "fetchClassList",
   async ({ search, pageSize, pageIndex, sortBy }) => {
@@ -26,13 +26,9 @@ export const fetchClassList = createAsyncThunk(
       };
 
       const response = await axios.get(URL_FETCH_CLASSES, config);
-      console.log("Response data: ", response.data);
       return response.data;
     } catch (error) {
-      console.error(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
+      
       throw error;
     }
   }
@@ -54,7 +50,6 @@ export const fetchClassDetail = createAsyncThunk(
       };
 
       const response = await axios.get(URL_FETCH_CLASSES_DETAIL + id, config);
-      console.log("Data detail:", response.data);
       return response.data;
     } catch (error) {
       console.error(
@@ -64,6 +59,28 @@ export const fetchClassDetail = createAsyncThunk(
       throw error;
     }
   }
+);
+
+export const updateClassRequest = createAsyncThunk("updateClassRequest", async ({ id, data }) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Missing token");
+    }
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    console.log("data: ", data)
+    const response = await axios.put(URL_UPDATE_CLASSS_DETAIL + id, data, config);
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
 );
 
 export const ClassData = createSlice({
@@ -95,6 +112,7 @@ export const ClassData = createSlice({
       .addCase(fetchClassDetail.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
+        console.log("data redux: ", action.payload)
         state.class = action.payload;
       })
       .addCase(fetchClassDetail.rejected, (state) => {
