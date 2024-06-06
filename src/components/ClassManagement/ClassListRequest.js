@@ -15,6 +15,7 @@ const ClassListRequest = () => {
   const [classList, setClassList] = useState([]);
   const [apiData, setApiData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("asc");
   const [filter, setFilter] = useState("");
   const [dropdownStates, setDropdownStates] = useState({});
   const [showModalRequest, setShowModalRequest] = useState(false);
@@ -40,7 +41,7 @@ const ClassListRequest = () => {
         pageSize: 8,
         pageIndex: currentPage,
         search: searchTerm,
-        sortBy: "",
+        sortBy,
       })
     )
       .then((response) => {
@@ -56,13 +57,17 @@ const ClassListRequest = () => {
       .catch((error) => {
         console.error("Error fetching tutors:", error);
       });
-  }, [dispatch, currentPage, searchTerm]);
+  }, [dispatch, currentPage, searchTerm, sortBy]);
 
   useEffect(() => {
     setClassList([...apiData]);
   }, [apiData]);
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+  };
 
   const handleIncreasePage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -112,6 +117,15 @@ const ClassListRequest = () => {
           <option value="Anh Ngữ">Anh Ngữ</option>
           <option value="Văn">Văn</option>
         </select>
+
+        {/* <select
+          onChange={handleSortChange}
+          value={sortBy}
+          className="border p-2 rounded"
+        >
+          <option value="asc">Sắp xếp tăng dần</option>
+          <option value="desc">Sắp xếp giảm dần</option>
+        </select> */}
       </div>
       <table className="my-10 mx-auto w-full max-w-7xl divide-y divide-gray-200 overflow-x-auto">
         <thead className="bg-gray-100">
