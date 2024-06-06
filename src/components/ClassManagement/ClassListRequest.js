@@ -4,13 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import ModalRequestDetail from "./ModalRequestDetail";
 import { getUserDataFromToken } from "../../redux/auth/loginSlice";
 
-import { fetchClassList } from "../../redux/ClassManagement/classSlice";
+import { fetchClassList, updateClassRequest } from "../../redux/ClassManagement/classSlice";
+import { toast, ToastContainer } from "react-toastify";
 
 const ClassListRequest = () => {
   const classAPI = useSelector((classes) => classes.class.data);
   const totalPagesAPI = useSelector((page) => page.class.data.totalPages);
   const dispatch = useDispatch();
 
+  const [flag, setFlag] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [classList, setClassList] = useState([]);
   const [apiData, setApiData] = useState([]);
@@ -58,7 +60,7 @@ const ClassListRequest = () => {
       .catch((error) => {
         console.error("Error fetching tutors:", error);
       });
-  }, [dispatch, currentPage, searchTerm, sortBy]);
+  }, [dispatch, currentPage, searchTerm, sortBy, flag]);
 
   useEffect(() => {
     setClassList([...apiData]);
@@ -93,8 +95,56 @@ const ClassListRequest = () => {
     }));
   };
 
+  const handleApprovel = async (data) => {
+    const dataUpdate = { ...data, conversationStatus: { id: 4 } };
+    const update = {
+      title: data.title,
+      teacher: { id: data.teacher.id },
+      user: { id: data.user.id },
+      address: data.address,
+      contactNumber: data.contactNumber,
+      conversationStatus: { id: 4 },
+      description: data.description
+    }
+    try {
+      console.log("Check: ", dataUpdate)
+      const response = await dispatch(updateClassRequest({ id: data.id, data: update }));
+      console.log("Update successful", response);
+      setFlag(!flag); // This will trigger useEffect to re-fetch the updated class list
+      toast.success("Update successful", { autoClose: 500 });
+    } catch (error) {
+      console.error("Update failed", error);
+      toast.error("Update failed", { autoClose: 500 });
+    }
+  };
+
+  const handleReject = async (data) => {
+    const dataUpdate = { ...data, conversationStatus: { id: 7 } };
+    const update = {
+      title: data.title,
+      teacher: { id: data.teacher.id },
+      user: { id: data.user.id },
+      address: data.address,
+      contactNumber: data.contactNumber,
+      conversationStatus: { id: 7 },
+      description: data.description
+    }
+    try {
+      console.log("Check: ", dataUpdate)
+      const response = await dispatch(updateClassRequest({ id: data.id, data: update }));
+      console.log("Update successful", response);
+      setFlag(!flag); // This will trigger useEffect to re-fetch the updated class list
+      toast.success("Update successful", { autoClose: 500 });
+    } catch (error) {
+      console.error("Update failed", error);
+      toast.error("Update failed", { autoClose: 500 });
+    }
+  };
+
+
   return (
     <>
+      <ToastContainer />
       <h2 class="text-3xl font-semibold leading-tight text-center text-white bg-gradient-to-r from-blue-500 to-green-500 rounded-lg px-4 py-2 shadow-md">
         Danh sách lớp học
       </h2>
@@ -198,7 +248,7 @@ const ClassListRequest = () => {
             {roleName === "TUTOR" && Array.isArray(classList) && (
               <>
                 {console.log("Role is TUTOR")}
-                {classList.map((classes, index) => (
+                {classList.map((classes, index) =>  (
                   <tbody
                     className="bg-white divide-y divide-gray-200"
                     key={index}
@@ -239,19 +289,18 @@ const ClassListRequest = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
-                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            classes.conversationStatus.label === "Draft"
-                              ? "bg-sky-500 text-white"
-                              : classes.conversationStatus.label === "Approve"
+                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${classes.conversationStatus.label === "Draft"
+                            ? "bg-sky-500 text-white"
+                            : classes.conversationStatus.label === "Approve"
                               ? "bg-green-500 text-white"
                               : "bg-red-500 text-white"
-                          }`}
+                            }`}
                         >
                           {classes.conversationStatus.label}
                         </span>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                        <button
+                        {classes.conversationStatus.label !== "Rejected" && (<button
                           type="button"
                           className="inline-block text-gray-500 hover:text-gray-700"
                           onClick={() => toggleDropdown(classes.id)}
@@ -262,14 +311,14 @@ const ClassListRequest = () => {
                           >
                             <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z" />
                           </svg>
-                        </button>
+                        </button>)}
                         {dropdownStates[classes.id] && (
                           <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg z-20">
                             <div className="py-1 rounded-md bg-white shadow-xs">
-                              <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
-                                Hoàn thành
+                              <button onClick={() => handleApprovel(classes)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                                Chấp nhận
                               </button>
-                              <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                              <button onClick={() => handleReject(classes)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                                 Từ chối
                               </button>
                               <button
@@ -330,19 +379,18 @@ const ClassListRequest = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
-                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            classes.conversationStatus.label === "Draft"
-                              ? "bg-sky-500 text-white"
-                              : classes.conversationStatus.label === "Approve"
+                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${classes.conversationStatus.label === "Draft"
+                            ? "bg-sky-500 text-white"
+                            : classes.conversationStatus.label === "Approve"
                               ? "bg-green-500 text-white"
                               : "bg-red-500 text-white"
-                          }`}
+                            }`}
                         >
                           {classes.conversationStatus.label}
                         </span>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                        <button
+                        {classes.conversationStatus.label !== "Rejected" && (<button
                           type="button"
                           className="inline-block text-gray-500 hover:text-gray-700"
                           onClick={() => toggleDropdown(classes.id)}
@@ -353,12 +401,12 @@ const ClassListRequest = () => {
                           >
                             <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z" />
                           </svg>
-                        </button>
-                        {dropdownStates[classes.id] && (
+                        </button>)}
+                        {dropdownStates[classes.id] && classes.conversationStatus.label !== "Rejected" && (
                           <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg z-20">
                             <div className="py-1 rounded-md bg-white shadow-xs">
                               <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
-                                Hoàn thành
+                                Chấp nhận
                               </button>
                               <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                                 Từ chối
@@ -386,6 +434,8 @@ const ClassListRequest = () => {
       <ModalRequestDetail
         onClose={handleOnClose}
         visible={showModalRequest}
+        flag={flag}
+        setFlag={setFlag}
         selectedClassId={selectedClassId}
       />
       <div className="flex justify-center mb-4">
@@ -402,27 +452,24 @@ const ClassListRequest = () => {
             {totalPagesAPI &&
               [...Array(totalPagesAPI).keys()].map((page) => (
                 <li
-                  className={`page-item ${
-                    currentPage === page ? "active" : ""
-                  }`}
+                  className={`page-item ${currentPage === page ? "active" : ""
+                    }`}
                   key={page}
                 >
                   <button
                     onClick={() => handlePageChange(page)}
-                    className={`flex items-center justify-center px-4 h-10 leading-tight text-gray-500 ${
-                      currentPage === page
-                        ? "bg-sky-300 text-white"
-                        : "bg-gray-300 "
-                    } border border-gray-300 rounded-xl mx-3`}
+                    className={`flex items-center justify-center px-4 h-10 leading-tight text-gray-500 ${currentPage === page
+                      ? "bg-sky-300 text-white"
+                      : "bg-gray-300 "
+                      } border border-gray-300 rounded-xl mx-3`}
                   >
                     {page + 1}
                   </button>
                 </li>
               ))}
             <li
-              className={`page-item ${
-                currentPage === totalPagesAPI - 1 ? "disabled" : ""
-              }`}
+              className={`page-item ${currentPage === totalPagesAPI - 1 ? "disabled" : ""
+                }`}
             >
               <button
                 onClick={handleIncreasePage}
