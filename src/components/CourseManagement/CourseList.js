@@ -123,7 +123,7 @@ const CourseList = () => {
             >
               <div className="col-span-12 lg:col-span-2 img box">
                 <img
-                  src={course.tutor.avatar}
+                  src={course.tutor.avatar || "https://cungdihoc.com/wp-content/uploads/2021/01/khoa-hoc-may-tinh.png"}
                   alt={course.title}
                   className="max-lg:w-full lg:w-[200px]"
                 />
