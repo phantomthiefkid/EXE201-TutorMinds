@@ -53,6 +53,24 @@ export const getEmailDataFromToken = () => {
   return null;
 };
 
+export const getUserIdFromToken = () => {
+  const token = localStorage.getItem("token");
+  try {
+    if (token) {
+      const payload = token.split(".")[1];
+      const decodedPayload = atob(payload);
+      const data = JSON.parse(decodedPayload);
+      if (data && data.userId) {
+        console.log("token id", data.userId);
+        return data.userId;
+      }
+    }
+  } catch (error) {
+    console.error("Error decoding or parsing token:", error.message);
+  }
+  return null;
+};
+
 export const LoginSlice = createSlice({
   name: "login",
   initialState: {

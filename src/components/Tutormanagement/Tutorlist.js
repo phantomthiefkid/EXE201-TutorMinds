@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { Book, Brush } from "react-bootstrap-icons";
 
-
 import { fetchTutorList } from "../../redux/TutorManagement/Tutor";
 
 const TutorList = () => {
@@ -15,6 +14,7 @@ const TutorList = () => {
   const [tutorList, setTutorList] = useState([]);
   const [apiData, setApiData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  
 
   console.log("tutorPage", tutorsAPI);
   console.log("totalPage", totalPagesAPI);
@@ -53,6 +53,7 @@ const TutorList = () => {
   }, [apiData]);
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
+  
 
   const handleIncreasePage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -96,6 +97,7 @@ const TutorList = () => {
           placeholder="Tìm kiếm..."
           required
         />
+       
       </div>
 
       <div class="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16">
@@ -159,10 +161,14 @@ const TutorList = () => {
                   </span>
 
                   <span class="py-1 text-xs font-regular text-gray-900 flex flex-row items-center">
-                    <Link to={`/tutordetail/${tutor.id}`}onClick={() => window.scrollTo(0, 0)} key={tutor.id}>
-                    <button class="rounded bg-sky-500 text-white px-6 py-2 text-xs font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400">
-                      Chi tiết
-                    </button>
+                    <Link
+                      to={`/tutordetail/${tutor.id}`}
+                      onClick={() => window.scrollTo(0, 0)}
+                      key={tutor.id}
+                    >
+                      <button class="rounded bg-sky-500 text-white px-6 py-2 text-xs font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400">
+                        Chi tiết
+                      </button>
                     </Link>
                   </span>
                 </div>
