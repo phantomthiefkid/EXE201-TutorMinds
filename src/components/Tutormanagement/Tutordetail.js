@@ -37,7 +37,7 @@ const TutorDetail = () => {
       <ModalCreateRequest
         onClose={handleOnClose}
         visible={showModalRequest}
-        tutorId={tutorDetail.id}
+        tutorId={tutorDetail?.id}
       />
       <div className="bg-gray-200 min-h-screen text-gray-800 z-0">
         <div className="relative z-0">
