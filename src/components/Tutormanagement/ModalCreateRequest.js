@@ -6,10 +6,12 @@ import {
   Calendar3,
   CashCoin,
   JournalCheck,
+  Brush,
 } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
 import { createClasses } from "../../redux/ClassManagement/classSlice";
 import { getUserIdFromToken } from "../../redux/auth/loginSlice";
 
@@ -18,9 +20,8 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
   const navigate = useNavigate();
   const userId = getUserIdFromToken();
 
-  console.log("teacher", tutorId);
-
   const class_initial = {
+    title: "",
     teacher: {
       id: tutorId,
     },
@@ -36,6 +37,7 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
   };
 
   const class_error = {
+    title: "",
     description: "",
     address: "",
     contactNumber: "",
@@ -62,6 +64,20 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
       isValid = true;
       return isValid;
     }
+    if (classes?.title.trim() === "") {
+      setErrorClasses((prevState) => ({
+        ...prevState,
+        title: "Tiêu đề không được bỏ trống!!!",
+      }));
+      isValid = true;
+    } else if (specialCharacters.test(classes.title)) {
+      setErrorClasses((prevState) => ({
+        ...prevState,
+        title: "Tiêu đề không được có ký tự đặc biệt!!!",
+      }));
+      isValid = true;
+    }
+
     if (classes?.description.trim() === "") {
       setErrorClasses((prevState) => ({
         ...prevState,
@@ -109,10 +125,17 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
     try {
       if (!handleValidation(classes)) {
         await dispatch(createClasses(classes));
-        toast.success("Thêm mới thành công!", { autoClose: 200 });
-        setTimeout(() => {
+        Swal.fire({
+          title: "Success!",
+          text: "Tạo yêu cầu thành công!",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "OK",
+        }).then(() => {
           onClose();
-        }, 200);
+        });
+      } else {
+        toast.error("Validation failed!", { autoClose: 200 });
       }
     } catch (error) {
       toast.error("Thêm mới thất bại!", { autoClose: 200 });
@@ -122,13 +145,22 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
   const handleSaveDraft = async (event) => {
     event.preventDefault();
     try {
-      const draftClasses = { ...classes, conversationStatus: { id: 1 } }; 
+      const draftClasses = { ...classes, conversationStatus: { id: 1 } };
       if (!handleValidation(draftClasses)) {
         await dispatch(createClasses(draftClasses));
-        toast.success("Lưu nháp thành công!", { autoClose: 200 });
-        setTimeout(() => {
+        Swal.fire({
+          title: "Success!",
+          text: "Tạo yêu cầu thành công!",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "OK",
+        }).then(() => {
           onClose();
-        }, 200);
+        });
+        // toast.success("Lưu nháp thành công!", { autoClose: 200 });
+        // setTimeout(() => {
+        //   onClose();
+        // }, 200);
       }
     } catch (error) {
       toast.error("Lưu nháp thất bại!", { autoClose: 200 });
@@ -147,10 +179,10 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
       <ToastContainer></ToastContainer>
       <div class="fixed inset-0 bg-black bg-opacity-50 z-40">
         <div class="fixed left-0 right-0 mx-auto w-2/5 justify-center z-50 inset-2 overflow-y-scroll ">
-          <div class=" bg-white rounded-3xl shadow-md p-8 ">
+          <div class=" bg-white rounded-l-3xl shadow-md p-8 ">
             <div class="flex items-center border-b-4 border-green-400">
               <img
-                src="https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-6/445551860_1884650355281087_2659972058971311210_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_ohc=afA7fdo_8IUQ7kNvgGzfXrj&_nc_ht=scontent.fsgn2-4.fna&oh=00_AYCmUH7wEEo7MOax-QUL5qPfAOwHacx1dHoWZj9UvAxK6w&oe=665DFA91"
+                src="https://storage.googleapis.com/tutormind/dev%2Ftutormindslogo.png-4pBcY7.png"
                 alt="logo"
                 class="w-48 h-36 mr-4"
               />
@@ -161,25 +193,53 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
             </div>
 
             <form class="mt-4">
-              <div class="mb-4">
-                <div className="flex items-center mb-2">
-                  <MortarboardFill className="w-5 h-5 mr-2 text-blue-500" />
-                  <label for="name" class="block text-gray-700 font-bold">
-                    Môn học:
-                  </label>
+              <div className="flex mb-4">
+                <div className="flex-1 mr-4">
+                  <div className="flex items-center mb-2">
+                    <MortarboardFill className="w-5 h-5 mr-2 text-blue-500" />
+                    <label
+                      htmlFor="name"
+                      className="block text-gray-700 font-bold"
+                    >
+                      Môn học:
+                    </label> 
+                  </div>
+                  <select
+                    className="border p-2 rounded w-full"
+                    value={filter}
+                    onChange={handleFilter}
+                  >
+                    <option value="">Chọn môn học</option>
+                    <option value="Toán">Toán</option>
+                    <option value="Lý">Lý</option>
+                    <option value="Hóa">Hóa</option>
+                    <option value="Anh Ngữ">Anh Ngữ</option>
+                    <option value="Văn">Văn</option>
+                  </select>
                 </div>
-                <select
-                  className="border p-2 rounded"
-                  value={filter}
-                  onChange={handleFilter}
-                >
-                  <option value="">Chọn môn học</option>
-                  <option value="Toán">Toán</option>
-                  <option value="Lý">Lý</option>
-                  <option value="Hóa">Hóa</option>
-                  <option value="Anh Ngữ">Anh Ngữ</option>
-                  <option value="Văn">Văn</option>
-                </select>
+
+                <div className="flex-1">
+                  <div className="flex items-center mb-2">
+                    <Brush className="w-5 h-5 mr-2 text-pink-500" />
+                    <label
+                      htmlFor="address"
+                      className="text-gray-700 font-bold"
+                    >
+                      Tiêu đề:
+                    </label>
+                  </div>
+                  <textarea
+                    id="title"
+                    name="title"
+                    type="text"
+                    onChange={getDataClass}
+                    className="w-full h-20 px-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
+                    placeholder="Nhập tiêu đề..."
+                  ></textarea>
+                  {errorClasses.title && (
+                    <span className="text-red-500">{errorClasses.title}</span>
+                  )}
+                </div>
               </div>
 
               <div class="mb-4">

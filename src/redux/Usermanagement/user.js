@@ -7,10 +7,9 @@ export const CreateNewUser = createAsyncThunk('CreateNewUser', async (data) => {
     try {
       
       const response = await axios.post(URL_CREATE_NEW_USER, data);
-      // console.log(response.data)
+      
       return response.data;
     } catch (error) {
-      console.log("here")
       throw error;
     }
   }, []);

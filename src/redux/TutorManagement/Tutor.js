@@ -21,16 +21,11 @@ export const fetchTutorList = createAsyncThunk(
           search,
         },
       };
-      const requestBody = []; // JSON array specified in the cURL command
+      const requestBody = [];
 
       const response = await axios.post(URL_FETCH_TUTOR, requestBody, config);
-      console.log("Response data:", response.data);
       return response.data;
     } catch (error) {
-      console.error(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
