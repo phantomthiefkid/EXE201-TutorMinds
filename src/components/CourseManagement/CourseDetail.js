@@ -38,6 +38,7 @@ const CourseDetail = () => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
+
   return (
     <div className="w-full max-w-full px-4 md:px-5 mx-auto mt-6">
       <div class="text-white flex flex-col h-full min-h-[280px] w-full rounded-sm !bg-gray-900 px-12 py-8">
@@ -74,35 +75,18 @@ const CourseDetail = () => {
 
       <div className="border w-2/4 mt-4 ml-14 p-6">
         <h2 className="text-3xl font-bold">Bạn sẽ học được gì?</h2>
-        <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-left">
-          <li class="flex items-start gap-2">
-            <Check2 /> Đơn vị và đại lượng: Chiều dài, khối lượng, thời gian.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Chuyển động: Vận tốc, quãng đường, thời gian.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Lực: Định nghĩa, loại lực, cách tính.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Áp suất: Định nghĩa, công thức tính.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Công và công suất: Định nghĩa, công thức tính.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Năng lượng: Định nghĩa, nguyên tắc bảo toàn.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Truyền nhiệt: Các hình thức truyền nhiệt.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Điện học cơ bản: Dòng điện, điện trở, nguyên lý mạch
-            điện.
-          </li>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-left">
+          {course.lessonsList && course.lessonsList.length > 0 ? (
+            course.lessonsList.map((lesson, index) => (
+              <li key={index} className="flex items-start gap-2">
+                <Check2 /> {lesson.title}
+              </li>
+            ))
+          ) : (
+            <li>Không có bài học nào được tìm thấy.</li>
+          )}
         </ul>
       </div>
-
       <div class="-mt-[560px] lg:px-30 xl:px-40 flex justify-end">
         <div class="flex flex-col rounded-sm bg-white text-gray-700 shadow-md lg:h-max lg:scale-110 z-10 translate-y-0 w-2/6 sticky top-0">
           <div class="p-6 text-center">
