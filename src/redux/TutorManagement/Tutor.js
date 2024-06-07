@@ -21,7 +21,7 @@ export const fetchTutorList = createAsyncThunk(
           search,
         },
       };
-      const requestBody = []; // JSON array specified in the cURL command
+      const requestBody = [];
 
       const response = await axios.post(URL_FETCH_TUTOR, requestBody, config);
       return response.data;
