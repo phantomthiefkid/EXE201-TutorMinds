@@ -38,6 +38,7 @@ const ClassListRequest = () => {
   const handleOpenModal = (classId) => {
     setSelectedClassId(classId);
     setShowModalRequest(true);
+    setDropdownStates({})
   };
   const itemsPerPage = 8;
 
@@ -304,19 +305,18 @@ const ClassListRequest = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`px-2 inline-flex text-xs leading-5 font-bold rounded-full 
-                ${
-                  classes.conversationStatus.label === "Draft"
-                    ? "text-gray-500"
-                    : classes.conversationStatus.label === "Submitted to Tutor"
-                    ? "text-sky-600"
-                    : classes.conversationStatus.label === "Rejected"
-                    ? "text-red-600"
-                    : classes.conversationStatus.label === "Refinement Required"
-                    ? "text-yellow-600"
-                    : classes.conversationStatus.label === "Approved by Tutor"
-                    ? "text-green-600"
-                    : "text-orange-500"
-                } flex items-center gap-1`}
+                ${classes.conversationStatus.label === "Draft"
+                              ? "text-gray-500"
+                              : classes.conversationStatus.label === "Submitted to Tutor"
+                                ? "text-sky-600"
+                                : classes.conversationStatus.label === "Rejected"
+                                  ? "text-red-600"
+                                  : classes.conversationStatus.label === "Refinement Required"
+                                    ? "text-yellow-600"
+                                    : classes.conversationStatus.label === "Approved by Tutor"
+                                      ? "text-green-600"
+                                      : "text-orange-500"
+                            } flex items-center gap-1`}
                         >
                           {classes.conversationStatus.label === "Draft" && (
                             <FileText />
@@ -334,7 +334,7 @@ const ClassListRequest = () => {
                         </span>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                        {classes.conversationStatus.label !== "Rejected" && (
+                        {classes.conversationStatus.label !== "Rejected" && classes.conversationStatus.label !== "Refinement Required" && classes.conversationStatus.label !== "Draft" && (
                           <button
                             type="button"
                             className="inline-block text-gray-500 hover:text-gray-700"
@@ -422,19 +422,18 @@ const ClassListRequest = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`px-2 inline-flex text-xs leading-5 font-bold rounded-full 
-                ${
-                  classes.conversationStatus.label === "Draft"
-                    ? "text-gray-500"
-                    : classes.conversationStatus.label === "Submitted to Tutor"
-                    ? "text-sky-600"
-                    : classes.conversationStatus.label === "Rejected"
-                    ? "text-red-600"
-                    : classes.conversationStatus.label === "Refinement Required"
-                    ? "text-yellow-600"
-                    : classes.conversationStatus.label === "Approved by Tutor"
-                    ? "text-green-600"
-                    : "text-orange-500"
-                } flex items-center gap-1`}
+                ${classes.conversationStatus.label === "Draft"
+                              ? "text-gray-500"
+                              : classes.conversationStatus.label === "Submitted to Tutor"
+                                ? "text-sky-600"
+                                : classes.conversationStatus.label === "Rejected"
+                                  ? "text-red-600"
+                                  : classes.conversationStatus.label === "Refinement Required"
+                                    ? "text-yellow-600"
+                                    : classes.conversationStatus.label === "Approved by Tutor"
+                                      ? "text-green-600"
+                                      : "text-orange-500"
+                            } flex items-center gap-1`}
                         >
                           {classes.conversationStatus.label === "Draft" && (
                             <FileText />
@@ -452,7 +451,7 @@ const ClassListRequest = () => {
                         </span>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                        {classes.conversationStatus.label !== "Rejected" && (
+                        {classes.conversationStatus.label !== "Approved by Tutor" && classes.conversationStatus.label !== "Rejected" && classes.conversationStatus.label !== "Submitted to Tutor" && (
                           <button
                             type="button"
                             className="inline-block text-gray-500 hover:text-gray-700"
@@ -466,6 +465,7 @@ const ClassListRequest = () => {
                             </svg>
                           </button>
                         )}
+                        
                         {dropdownStates[classes.id] &&
                           classes.conversationStatus.label !== "Rejected" && (
                             <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg z-20">
@@ -517,27 +517,24 @@ const ClassListRequest = () => {
             {totalPagesAPI &&
               [...Array(totalPagesAPI).keys()].map((page) => (
                 <li
-                  className={`page-item ${
-                    currentPage === page ? "active" : ""
-                  }`}
+                  className={`page-item ${currentPage === page ? "active" : ""
+                    }`}
                   key={page}
                 >
                   <button
                     onClick={() => handlePageChange(page)}
-                    className={`flex items-center justify-center px-4 h-10 leading-tight text-gray-500 ${
-                      currentPage === page
-                        ? "bg-sky-300 text-white"
-                        : "bg-gray-300 "
-                    } border border-gray-300 rounded-xl mx-3`}
+                    className={`flex items-center justify-center px-4 h-10 leading-tight text-gray-500 ${currentPage === page
+                      ? "bg-sky-300 text-white"
+                      : "bg-gray-300 "
+                      } border border-gray-300 rounded-xl mx-3`}
                   >
                     {page + 1}
                   </button>
                 </li>
               ))}
             <li
-              className={`page-item ${
-                currentPage === totalPagesAPI - 1 ? "disabled" : ""
-              }`}
+              className={`page-item ${currentPage === totalPagesAPI - 1 ? "disabled" : ""
+                }`}
             >
               <button
                 onClick={handleIncreasePage}
