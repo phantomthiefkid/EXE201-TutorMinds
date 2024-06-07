@@ -40,11 +40,10 @@ const Header = () => {
       <ModalSignIn onClose={handleOnClose} visible={showModalLogin} />
       <nav className="bg-white p-4 shadow-lg w-full z-50">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Logo */}
           <div className="flex items-center">
             <Link to="/">
               <img
-                src="https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/444151589_1877086456037477_1111746622231164736_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFWMFxBN3oBRpFAMIm2sGJSsVmeo7cxhPKxWZ6jtzGE8jXgbkR5Nk2mWoD5kF9PiAabOJAjeXYkWFn-nmXA01la&_nc_ohc=Fsyfk4v-IV8Q7kNvgF-qwdh&_nc_ht=scontent.fsgn8-3.fna&oh=00_AYCkl8n8ubrb6rqo8AK9wqIInkz5N7yDB0xjTXAN_3xqpQ&oe=6664ED8A"
+                src="https://storage.googleapis.com/tutormind/dev%2Ftutormindslogo.png-4pBcY7.png"
                 alt="Logo"
                 className="h-12 w-12 rounded-full"
               />
@@ -53,8 +52,6 @@ const Header = () => {
               TutorMinds
             </Link>
           </div>
-
-          {/* Search Bar */}
           <div className="flex-grow mx-8 hidden md:block">
             <div className="relative">
               <input
@@ -65,8 +62,6 @@ const Header = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>
           </div>
-
-          {/* Menu Items */}
           <div className="hidden md:flex space-x-6 items-center">
             <Link
               to="/"

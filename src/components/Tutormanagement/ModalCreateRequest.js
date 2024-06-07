@@ -182,7 +182,7 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
           <div class=" bg-white rounded-l-3xl shadow-md p-8 ">
             <div class="flex items-center border-b-4 border-green-400">
               <img
-                src="https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-6/445551860_1884650355281087_2659972058971311210_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_ohc=afA7fdo_8IUQ7kNvgGzfXrj&_nc_ht=scontent.fsgn2-4.fna&oh=00_AYCmUH7wEEo7MOax-QUL5qPfAOwHacx1dHoWZj9UvAxK6w&oe=665DFA91"
+                src="https://storage.googleapis.com/tutormind/dev%2Ftutormindslogo.png-4pBcY7.png"
                 alt="logo"
                 class="w-48 h-36 mr-4"
               />

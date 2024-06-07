@@ -6,7 +6,6 @@ const URL_UPLOAD = "https://fams-management.tech/api/files";
 export const uploadFileImage = createAsyncThunk('uploadFileImage', async (file) => {
     try {
         const token = localStorage.getItem('token');
-        console.log("File anh o day: ", file)
         const config = {
             headers: {
                 'Custom-Header': 'value',
@@ -14,7 +13,6 @@ export const uploadFileImage = createAsyncThunk('uploadFileImage', async (file) 
             }
         }
         const response = await axios.post(URL_UPLOAD, file, config)
-        console.log("Redux: ", response.data)
         return response.data
     } catch (error) {
         throw (error)

@@ -103,7 +103,7 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
         <div className="bg-white rounded-l-3xl shadow-md p-8">
           <div className="flex items-center border-b-4 border-green-400">
             <img
-              src="https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/444151589_1877086456037477_1111746622231164736_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFWMFxBN3oBRpFAMIm2sGJSsVmeo7cxhPKxWZ6jtzGE8jXgbkR5Nk2mWoD5kF9PiAabOJAjeXYkWFn-nmXA01la&_nc_ohc=by9nhm2WyUsQ7kNvgEDkoz-&_nc_ht=scontent.fsgn8-3.fna&oh=00_AYC52JwWQBA9PNLKtmPw5WCqA8NlC47TL0hqTAK1ol1UKg&oe=6667908A"
+              src="https://storage.googleapis.com/tutormind/dev%2Ftutormindslogo.png-4pBcY7.png"
               alt="logo"
               className="w-48 h-36 mr-4"
             />
