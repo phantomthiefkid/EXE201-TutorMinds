@@ -27,7 +27,7 @@ export const fetchClassList = createAsyncThunk(
           pageIndex,
           pageSize,
           search,
-          sortBy,
+          sortBy
         },
       };
 

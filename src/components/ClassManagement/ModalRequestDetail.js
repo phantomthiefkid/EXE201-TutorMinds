@@ -232,7 +232,7 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
                 type="button"
                 className="px-10 bg-green-500 text-white p-2 rounded-md hover:bg-green-600 ml-5"
               >
-                Đăng ký
+                Gửi yêu cầu
               </button>
             </div>
           </form>
