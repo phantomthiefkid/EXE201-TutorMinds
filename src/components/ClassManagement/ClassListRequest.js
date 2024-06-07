@@ -119,16 +119,14 @@ const ClassListRequest = () => {
       description: data.description,
     };
     try {
-      console.log("Check: ", dataUpdate);
       const response = await dispatch(
         updateClassRequest({ id: data.id, data: update })
       );
-      console.log("Update successful", response);
+      setDropdownStates({})
       setFlag(!flag); // This will trigger useEffect to re-fetch the updated class list
-      toast.success("Update successful", { autoClose: 500 });
+      toast.success("Gửi yêu cầu thành công!!!", { autoClose: 500 });
     } catch (error) {
-      console.error("Update failed", error);
-      toast.error("Update failed", { autoClose: 500 });
+      toast.error("Gửi yêu cầu thất bại!!!", { autoClose: 500 });
     }
   };
 
@@ -148,12 +146,13 @@ const ClassListRequest = () => {
       const response = await dispatch(
         updateClassRequest({ id: data.id, data: update })
       );
+      setDropdownStates({})
       console.log("Update successful", response);
       setFlag(!flag); // This will trigger useEffect to re-fetch the updated class list
-      toast.success("Update successful", { autoClose: 500 });
+      toast.success("Gửi yêu cầu thành công!", { autoClose: 500 });
     } catch (error) {
       console.error("Update failed", error);
-      toast.error("Update failed", { autoClose: 500 });
+      toast.error("Gửi yêu cầu thất bại!", { autoClose: 500 });
     }
   };
 
@@ -300,7 +299,7 @@ const ClassListRequest = () => {
                         {classes.user.phone}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {classes.price}
+                        300.000/buổi
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
@@ -417,7 +416,7 @@ const ClassListRequest = () => {
                         {classes.teacher.phone}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {classes.price}
+                        300.000/buổi
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
@@ -465,7 +464,7 @@ const ClassListRequest = () => {
                             </svg>
                           </button>
                         )}
-                        
+
                         {dropdownStates[classes.id] &&
                           classes.conversationStatus.label !== "Rejected" && (
                             <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg z-20">
