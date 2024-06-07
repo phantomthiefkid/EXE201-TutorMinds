@@ -40,7 +40,6 @@ const Header = () => {
       <ModalSignIn onClose={handleOnClose} visible={showModalLogin} />
       <nav className="bg-white p-4 shadow-lg w-full z-50">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Logo */}
           <div className="flex items-center">
             <Link to="/">
               <img
@@ -53,8 +52,6 @@ const Header = () => {
               TutorMinds
             </Link>
           </div>
-
-          {/* Search Bar */}
           <div className="flex-grow mx-8 hidden md:block">
             <div className="relative">
               <input
@@ -65,8 +62,6 @@ const Header = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>
           </div>
-
-          {/* Menu Items */}
           <div className="hidden md:flex space-x-6 items-center">
             <Link
               to="/"
