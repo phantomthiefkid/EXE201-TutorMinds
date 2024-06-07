@@ -18,6 +18,8 @@ import ClassListRequest from "./components/ClassManagement/ClassListRequest";
 import { getUserDataFromToken } from "./redux/auth/loginSlice";
 import RequestListAdmin from "./components/Admin/RequestListAdmin";
 import AddCourse from "./components/CourseManagement/AddCourse";
+import LessonVideo from "./components/CourseManagement/LessonVideo";
+import TestURL from "./components/CourseManagement/TestURL";
 function App() {
   const roleName = getUserDataFromToken();
 
@@ -38,6 +40,8 @@ function App() {
         <Route path="/profileuser" element={<ProfileUser />}></Route>
         <Route path="/classlist" element={<ClassListRequest />}></Route>
         <Route path="/addcourse" element={<AddCourse />}></Route>
+        <Route path="/video" element={<LessonVideo/>}></Route>
+        <Route path="/test" element={<TestURL/>}></Route>
         <Route
           path="/requestlistadmin"
           element={<RequiestListWithSidebar></RequiestListWithSidebar>}
