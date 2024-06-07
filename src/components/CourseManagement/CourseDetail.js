@@ -72,7 +72,6 @@ const CourseDetail = () => {
         </span>
         <span className="mt-4">Cập nhật gần nhất {course.updatedDate}</span>
       </div>
-
       <div className="border w-2/4 mt-4 ml-14 p-6">
         <h2 className="text-3xl font-bold">Bạn sẽ học được gì?</h2>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-left">
