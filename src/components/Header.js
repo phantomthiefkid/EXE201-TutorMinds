@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   BoxArrowRight,
@@ -21,6 +21,7 @@ const Header = () => {
   const navigate = useNavigate();
   const user = getUserNameFromToken();
   const roleName = getUserDataFromToken();
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -30,10 +31,32 @@ const Header = () => {
     const confirmLogout = window.confirm("Bạn có chắc chắn muốn đăng xuất?");
     if (confirmLogout) {
       localStorage.removeItem("token");
-      setIsOpen(false)
+      setIsOpen(false);
       navigate("/");
     }
   };
+
+  const closeDropdown = () => {
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        closeDropdown();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
     <>
@@ -92,7 +115,7 @@ const Header = () => {
             )}
 
             {token ? (
-              <div className="relative">
+              <div className="relative" ref={dropdownRef}>
                 <div
                   onClick={toggleDropdown}
                   className="flex items-center cursor-pointer"
@@ -110,7 +133,7 @@ const Header = () => {
                 {isOpen && (
                   <div className="absolute z-50 right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
                     {roleName === "ADMIN" && (
-                      <Link to="/userlist">
+                      <Link to="/userlist" onClick={closeDropdown}>
                         <div className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
                           <Gear size={20} className="mr-2" />
                           Quản lý
@@ -121,7 +144,7 @@ const Header = () => {
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                       onClick={() => window.scrollTo(0, 0)}
                     >
-                      <Link to="/profileuser">
+                      <Link to="/profileuser" onClick={closeDropdown}>
                         <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
                           <Person size={20} className="mr-2" />
                           Hồ sơ
@@ -133,7 +156,7 @@ const Header = () => {
                         className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                         onClick={() => window.scrollTo(0, 0)}
                       >
-                        <Link to="/classlist">
+                        <Link to="/classlist" onClick={closeDropdown}>
                           <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
                             <Book size={20} className="mr-2" />
                             Lớp học của tôi
