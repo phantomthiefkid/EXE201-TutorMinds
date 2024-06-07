@@ -28,7 +28,6 @@ const TutorDetail = () => {
   useEffect(() => {
     setData(tutorDetail);
   }, [tutorDetail]);
-  console.log(">>>>>>>", tutorDetail);
 
   if (!tutorDetail) {
     return <div>Loading...</div>;
@@ -155,7 +154,7 @@ const TutorDetail = () => {
                 </div>
                 <div className="bg-white border border-gray-300 p-6 hover:shadow-lg transition-shadow duration-300">
                   <p className="font-semibold text-gray-900">
-                    Dương Quá
+                    Âu Dương Phong
                     <span className="flex">
                       <StarFill className="w-4 h-4 mr-1 text-yellow-500" />
                       <StarFill className="w-4 h-4 mr-1 text-yellow-500" />
