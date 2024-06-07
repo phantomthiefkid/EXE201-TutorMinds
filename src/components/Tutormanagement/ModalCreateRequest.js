@@ -20,8 +20,6 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
   const navigate = useNavigate();
   const userId = getUserIdFromToken();
 
-  console.log("teacher", tutorId);
-
   const class_initial = {
     title: "",
     teacher: {
@@ -204,7 +202,7 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
                       className="block text-gray-700 font-bold"
                     >
                       Môn học:
-                    </label>
+                    </label> 
                   </div>
                   <select
                     className="border p-2 rounded w-full"
