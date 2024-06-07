@@ -28,7 +28,6 @@ const TutorDetail = () => {
   useEffect(() => {
     setData(tutorDetail);
   }, [tutorDetail]);
-  console.log(">>>>>>>", tutorDetail);
 
   if (!tutorDetail) {
     return <div>Loading...</div>;
