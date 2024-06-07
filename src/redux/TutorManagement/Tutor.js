@@ -26,10 +26,6 @@ export const fetchTutorList = createAsyncThunk(
       const response = await axios.post(URL_FETCH_TUTOR, requestBody, config);
       return response.data;
     } catch (error) {
-      console.error(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
       throw error;
     }
   }
