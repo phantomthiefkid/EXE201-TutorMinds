@@ -21,17 +21,17 @@ const TutorDetail = () => {
   const role = getUserDataFromToken();
   const handleOnClose = () => setShowModalRequest(false);
 
-  useEffect(() => {
-    dispatch(fetchTutorDetail({ id }));
-  }, [dispatch, id]);
+    useEffect(() => {
+        dispatch(fetchTutorDetail({ id }));
+    }, [dispatch, id]);
 
   useEffect(() => {
     setData(tutorDetail);
   }, [tutorDetail]);
 
-  if (!tutorDetail) {
-    return <div>Loading...</div>;
-  }
+    if (!tutorDetail) {
+        return <div>Loading...</div>;
+    }
 
   return (
     <>
