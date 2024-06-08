@@ -87,7 +87,7 @@ const CourseDetail = () => {
           )}
         </ul>
       </div>
-      <div class="-mt-[560px] lg:px-30 xl:px-40 flex justify-end">
+      <div class="-mt-[390px] lg:px-30 xl:px-40 flex justify-end">
         <div class="flex flex-col rounded-sm bg-white text-gray-700 shadow-md lg:h-max lg:scale-110 z-10 translate-y-0 w-2/6 sticky top-0">
           <div class="p-6 text-center">
             <img
