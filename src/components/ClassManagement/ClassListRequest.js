@@ -115,7 +115,7 @@ const ClassListRequest = () => {
       user: { id: data.user.id },
       address: data.address,
       contactNumber: data.contactNumber,
-      conversationStatus: { id: 4 },
+      conversationStatus: { id: roleName === "TUTOR" ? 6 : 2},
       description: data.description,
     };
     try {
@@ -469,10 +469,10 @@ const ClassListRequest = () => {
                           classes.conversationStatus.label !== "Rejected" && (
                             <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg z-20">
                               <div className="py-1 rounded-md bg-white shadow-xs">
-                                <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                                <button onClick={() => handleApprovel(classes)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                                   Chấp nhận
                                 </button>
-                                <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                                <button onClick={() => handleReject(classes)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                                   Từ chối
                                 </button>
                                 <button
