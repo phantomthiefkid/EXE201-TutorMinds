@@ -1,25 +1,53 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   Check2,
   Laptop,
   FileEarmarkArrowDown,
   Shield,
 } from "react-bootstrap-icons";
+import { useParams } from "react-router-dom";
 
 const CourseDetail = () => {
+  const { id } = useParams();
   const [activeIndex, setActiveIndex] = useState(null);
+  const [course, setCourse] = useState(null);
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.get(`https://fams-management.tech/course/${id}` , {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setCourse(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching course:", error);
+      }
+    };
+
+    fetchCourse();
+  }, []);
+  if (!course) {
+    return <div>Loading...</div>;
+  }
 
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
+
+
   return (
     <div className="w-full max-w-full px-4 md:px-5 mx-auto mt-6">
       <div class="text-white flex flex-col h-full min-h-[280px] w-full rounded-sm !bg-gray-900 px-12 py-8">
-        <h2 class="text-3xl mb-4">Vật lý lớp 7</h2>
+        <h2 class="text-3xl mb-4">{course.title}</h2>
         <p class="text-xl">
-          Khóa học vật lý trực tiếp phù hợp cho học sinh cần nắm vững
+          {course.description}
           <br />
-          kiến thức và tư duy logic với những bài học.
+          {course.simpleDescription}
         </p>
         <div class="flex gap-0.5 my-4">
           <p className="text-lg mr-2 text-yellow-400">4.7</p>
@@ -41,42 +69,24 @@ const CourseDetail = () => {
           <p className="text-lg ml-2"> 30 học viên</p>
         </div>
         <span className="flex">
-          Được tạo bởi <p className="text-indigo-300 px-2">Hoàng Thiện</p>
+          Được tạo bởi <p className="text-indigo-300 px-2">{course.tutor.fullName}</p>
         </span>
-        <span className="mt-4">Cập nhật gần nhất 20/9/2023</span>
+        <span className="mt-4">Cập nhật gần nhất {course.updatedDate}</span>
       </div>
-
       <div className="border w-2/4 mt-4 ml-14 p-6">
         <h2 className="text-3xl font-bold">Bạn sẽ học được gì?</h2>
-        <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-left">
-          <li class="flex items-start gap-2">
-            <Check2 /> Đơn vị và đại lượng: Chiều dài, khối lượng, thời gian.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Chuyển động: Vận tốc, quãng đường, thời gian.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Lực: Định nghĩa, loại lực, cách tính.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Áp suất: Định nghĩa, công thức tính.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Công và công suất: Định nghĩa, công thức tính.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Năng lượng: Định nghĩa, nguyên tắc bảo toàn.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Truyền nhiệt: Các hình thức truyền nhiệt.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Điện học cơ bản: Dòng điện, điện trở, nguyên lý mạch
-            điện.
-          </li>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-left">
+          {course.lessonsList && course.lessonsList.length > 0 ? (
+            course.lessonsList.map((lesson, index) => (
+              <li key={index} className="flex items-start gap-2">
+                <Check2 /> {lesson.title}
+              </li>
+            ))
+          ) : (
+            <li>Không có bài học nào được tìm thấy.</li>
+          )}
         </ul>
       </div>
-
       <div class="-mt-[560px] lg:px-30 xl:px-40 flex justify-end">
         <div class="flex flex-col rounded-sm bg-white text-gray-700 shadow-md lg:h-max lg:scale-110 z-10 translate-y-0 w-2/6 sticky top-0">
           <div class="p-6 text-center">
@@ -86,7 +96,7 @@ const CourseDetail = () => {
               class="w-full h-auto"
             />
             <h3 class="antialiased tracking-normal font-sans text-3xl font-semibold leading-snug text-blue-gray-900 flex justify-center mt-5 mb-2">
-              400.000 VNĐ
+              {course.price} VNĐ
             </h3>
             <button class="border w-full py-3 bg-purple-500 text-white font-bold hover:bg-purple-700">
               Thêm vào giỏ hàng
@@ -119,149 +129,57 @@ const CourseDetail = () => {
           <p className="">16 phần • 51 bài học • 9h 30m tổng thời gian</p>
           <p className="text-blue-600 font-bold">Mở rộng tất cả phần</p>
         </div>
-        {/* -------------------------------------------------------------------------------------------- */}
 
-        <div id="accordion-collapse" data-accordion="collapse">
-          <h2 id="accordion-collapse-heading-1">
-            <button
-              type="button"
-              className="flex items-center w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 gap-3"
-              onClick={() => toggleAccordion(1)}
-              aria-expanded={activeIndex === 1}
-              aria-controls="accordion-collapse-body-1"
-            >
-              <svg
-                className={`w-3 h-3 ${
-                  activeIndex === 1 ? "rotate-0" : "rotate-180"
-                } shrink-0 transition-transform`}
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 10 6"
+        {course.lessonsList && course.lessonsList.length > 0 ? (
+          course.lessonsList.map((lesson, index) => (
+            <div id={`accordion-collapse-${index}`} data-accordion="collapse" key={index}>
+              <h2 id={`accordion-collapse-heading-${index}`}>
+                <button
+                  type="button"
+                  className="flex items-center w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 gap-3"
+                  onClick={() => toggleAccordion(index)}
+                  aria-expanded={activeIndex === index}
+                  aria-controls={`accordion-collapse-body-${index}`}
+                >
+                  <svg
+                    className={`w-3 h-3 ${
+                      activeIndex === index ? "rotate-0" : "rotate-180"
+                    } shrink-0 transition-transform`}
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 5 5 1 1 5"
+                    />
+                  </svg>
+                  <span className="font-bold">
+                    {lesson.description}
+                  </span>
+                </button>
+              </h2>
+              <div
+                id={`accordion-collapse-body-${index}`}
+                className={`${
+                  activeIndex === index ? "block" : "hidden"
+                } p-5 border border-b-0 border-gray-200`}
+                aria-labelledby={`accordion-collapse-heading-${index}`}
               >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 5 5 1 1 5"
-                />
-              </svg>
-              <span className="font-bold">
-                Đơn vị và đại lượng: Giải thích khái niệm về đơn vị và đại lượng
-                vật lý?
-              </span>
-            </button>
-          </h2>
-          <div
-            id="accordion-collapse-body-1"
-            className={`${
-              activeIndex === 1 ? "block" : "hidden"
-            } p-5 border border-b-0 border-gray-200 `}
-            aria-labelledby="accordion-collapse-heading-1"
-          >
-            <div className="mb-2 text-gray-500 dark:text-gray-400">
-              Đơn vị là tiêu chuẩn để đo lường đại lượng vật lý như mét (đo độ
-              dài) và kilogram (đo khối lượng). Đại lượng là đặc tính có thể đo
-              lường được của vật, như độ dài và khối lượng. Đơn vị và đại lượng
-              giúp mô tả và đo lường hiện tượng tự nhiên.
+                <div className="mb-2 text-gray-500 dark:text-gray-400">
+                  {lesson.title}
+                </div>
+              </div>
             </div>
-          </div>
+          ))
+        ) : (
+          <li>Không có bài học nào được tìm thấy.</li>
+        )}
 
-          <h2 id="accordion-collapse-heading-2">
-            <button
-              type="button"
-              className="flex items-center w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 gap-3"
-              onClick={() => toggleAccordion(2)}
-              aria-expanded={activeIndex === 2}
-              aria-controls="accordion-collapse-body-2"
-            >
-              <svg
-                className={`w-3 h-3 ${
-                  activeIndex === 2 ? "rotate-0" : "rotate-180"
-                } shrink-0 transition-transform`}
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 10 6"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 5 5 1 1 5"
-                />
-              </svg>
-              <span className="font-bold">
-                Chuyển động: khái niệm về chuyển động, vận tốc, gia tốc và cách
-                tính?
-              </span>
-            </button>
-          </h2>
-          <div
-            id="accordion-collapse-body-2"
-            className={`${
-              activeIndex === 2 ? "block" : "hidden"
-            } p-5 border border-b-0 `}
-            aria-labelledby="accordion-collapse-heading-2"
-          >
-            <div className="mb-2 text-gray-500 dark:text-gray-400">
-              Chuyển động là sự thay đổi vị trí của vật. Vận tốc là tỷ lệ thay
-              đổi vị trí theo thời gian. Gia tốc là sự thay đổi vận tốc. Cách
-              tính vận tốc: vận tốc = quãng đường / thời gian. Cách tính gia
-              tốc: gia tốc = thay đổi vận tốc / thời gian.
-            </div>
-          </div>
-
-          <h2 id="accordion-collapse-heading-3">
-            <button
-              type="button"
-              className="flex items-center w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 gap-3"
-              onClick={() => toggleAccordion(3)}
-              aria-expanded={activeIndex === 3}
-              aria-controls="accordion-collapse-body-3"
-            >
-              <svg
-                className={`w-3 h-3 ${
-                  activeIndex === 3 ? "rotate-0" : "rotate-180"
-                } shrink-0 transition-transform`}
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 10 6"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 5 5 1 1 5"
-                />
-              </svg>
-              <span className="font-bold">
-                Áp suất: Định nghĩa áp suất, cách tính và các ứng dụng trong
-                cuộc sống?
-              </span>
-            </button>
-          </h2>
-          <div
-            id="accordion-collapse-body-3"
-            className={`${
-              activeIndex === 3 ? "block" : "hidden"
-            } p-5 border border-t-0 border-gray-200`}
-            aria-labelledby="accordion-collapse-heading-3"
-          >
-            <div className="mb-2 text-gray-500 dark:text-gray-400">
-              Áp suất là lực tác động lên một diện tích nhất định. Cách tính áp
-              suất: Áp suất = Lực / Diện tích. Trong cuộc sống, áp suất được sử
-              dụng để đo lường hơi và nước trong các bình chứa, hoạt động của
-              máy nén và cảm biến áp suất trong thiết bị y tế.
-            </div>
-          </div>
-        </div>
-
-        {/*-----------------------------------------------------------------------------------------------------------*/}
         <h2 className="text-3xl font-bold py-5">Yêu cầu</h2>
         <ul class="list-disc list-inside ml-4 space-y-2">
           <li>
@@ -281,22 +199,10 @@ const CourseDetail = () => {
       <div className="w-full max-w-7xl mx-14 mb-5">
         <h2 className="text-3xl font-bold">Mô tả</h2>
         <div className="my-2">
-          Vật lý lớp 7 giới thiệu kiến thức cơ bản về các đại lượng vật lý như
-          chuyển động, lực, áp suất và nhiệt độ. Học sinh học về các định luật
-          cơ bản của vật lý và làm thí nghiệm để hiểu rõ hơn về các hiện tượng
-          tự nhiên xung quanh họ, khám phá cách các vật thể tương tác và di
-          chuyển trong không gian. Trong vật lý lớp 7, học sinh cũng được khuyến
-          khích phát triển khả năng quan sát và suy luận thông qua các thí
-          nghiệm và bài tập thực hành. Họ học cách áp dụng kiến thức toán học
-          vào vật lý, từ việc tính toán vận tốc đến đo lường áp suất. Vật lý lớp
-          7 là cơ sở quan trọng cho sự hiểu biết sâu rộng hơn về thế giới xung
-          quanh.
+          {course.description}
         </div>
         <p>
-          Vật lý lớp 7 cung cấp nền tảng quan trọng cho học sinh để hiểu và khám
-          phá thế giới xung quanh thông qua việc áp dụng kiến thức về đại lượng
-          vật lý và các định luật cơ bản, đồng thời phát triển khả năng quan
-          sát, suy luận và áp dụng toán học vào vật lý.
+          {course.simpleDescription}
         </p>
 
         <h2 className="text-3xl font-bold py-5">Khóa học này dành cho ai:</h2>
