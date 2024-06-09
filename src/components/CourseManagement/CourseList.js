@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { getUserDataFromToken } from "../../redux/auth/loginSlice";
 
 const CourseList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("");
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const role = getUserDataFromToken();
   useEffect(() => {
     const fetchCourses = async () => {
       const token = localStorage.getItem('token'); // Get the token from localStorage
@@ -108,12 +109,12 @@ const CourseList = () => {
             <option value="Anh Ngữ">Anh Ngữ</option>
             <option value="Văn">Văn</option>
           </select>
-          <Link
+          {role === "TUTOR" && (<Link
             to="/addcourse"
             className="ml-auto bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
           >
             Tạo khóa học
-          </Link>
+          </Link>)}
         </div>
 
         {filteredCourses.map((course) => (
@@ -147,8 +148,8 @@ const CourseList = () => {
                   <div className="flex items-center gap-4">
                     <div className="flex gap-0.5">
                       <p className="text-lg mr-2">Rating: {course.rating ? course.rating : "N/A"}</p>
-                      {course.rating ?                         renderStars(course.rating)
-                      :
+                      {course.rating ? renderStars(course.rating)
+                        :
                         [...Array(5)].map((_, i) => (
                           <svg
                             key={i}
