@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import uploadFileImage from "../../redux/uploadFile/uploadFile";
 import { useDispatch } from "react-redux";
+
 const UpdateUser = ({ visible, onClose, user, fetchUsers }) => {
   const [userUpdate, setUserUpdate] = useState({
     email: user ? user.email : ""
@@ -20,14 +20,34 @@ const UpdateUser = ({ visible, onClose, user, fetchUsers }) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setImageAvatar(file);
-    }
+    setImageAvatar(file);
   };
 
-  const convertFileUpload = async (file) => {
-
-  }
+  const handleUploadAvatar = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("files", file);
+    try {
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      const response = await axios.post("https://fams-management.tech/api/files", formData, config);
+      if (response) {
+        console.log(response.data)
+      }
+      setUserUpdate((pre) => ({ ...pre, avatar: response.data }));
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        toast.error("Bạn không có quyền thực hiện thao tác này. Vui lòng đăng nhập lại.");
+        // Optionally, redirect to login page
+      } else {
+        toast.error("Đã xảy ra lỗi khi tải lên ảnh đại diện.");
+      }
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -59,12 +79,12 @@ const UpdateUser = ({ visible, onClose, user, fetchUsers }) => {
       const encodedEmail = encodeURIComponent(userUpdate.email);
       const response = await axios.put(
         `https://fams-management.tech/api/users/users?email=${encodedEmail}`, userUpdate, {
-        headers: {
-          'accept': '*/*',
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        }
-      });
+          headers: {
+            'accept': '*/*',
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          }
+        });
       if (response.status === 200) {
         toast.success("Cập nhật thành công!");
         onClose();
@@ -73,7 +93,12 @@ const UpdateUser = ({ visible, onClose, user, fetchUsers }) => {
         toast.error("Cập nhật thất bại!");
       }
     } catch (error) {
-      toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+      if (error.response && error.response.status === 403) {
+        toast.error("Bạn không có quyền thực hiện thao tác này. Vui lòng đăng nhập lại.");
+        // Optionally, redirect to login page
+      } else {
+        toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+      }
     }
   };
 
@@ -105,12 +130,11 @@ const UpdateUser = ({ visible, onClose, user, fetchUsers }) => {
                     name='avatar'
                     accept='image/*'
                     className='hidden'
-                    onChange={handleFileChange}
+                    onChange={handleUploadAvatar}
                   />
                 </label>
               </div>
             </div>
-
 
             <div className="grid grid-cols-1 gap-4">
               <div>
@@ -237,6 +261,7 @@ const UpdateUser = ({ visible, onClose, user, fetchUsers }) => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

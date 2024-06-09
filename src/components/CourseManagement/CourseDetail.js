@@ -1,25 +1,52 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   Check2,
   Laptop,
   FileEarmarkArrowDown,
   Shield,
 } from "react-bootstrap-icons";
+import { useParams } from "react-router-dom";
 
 const CourseDetail = () => {
+  const { id } = useParams();
   const [activeIndex, setActiveIndex] = useState(null);
+  const [course, setCourse] = useState(null);
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.get(`https://fams-management.tech/course/${id}` , {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setCourse(response.data);
+      } catch (error) {
+        console.error("Error fetching course:", error);
+      }
+    };
+
+    fetchCourse();
+  }, []);
+  if (!course) {
+    return <div>Loading...</div>;
+  }
 
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
+
+
   return (
     <div className="w-full max-w-full px-4 md:px-5 mx-auto mt-6">
       <div class="text-white flex flex-col h-full min-h-[280px] w-full rounded-sm !bg-gray-900 px-12 py-8">
-        <h2 class="text-3xl mb-4">Vật lý lớp 7</h2>
+        <h2 class="text-3xl mb-4">{course.title}</h2>
         <p class="text-xl">
-          Khóa học vật lý trực tiếp phù hợp cho học sinh cần nắm vững
+          {course.description}
           <br />
-          kiến thức và tư duy logic với những bài học.
+          {course.simpleDescription}
         </p>
         <div class="flex gap-0.5 my-4">
           <p className="text-lg mr-2 text-yellow-400">4.7</p>
@@ -41,44 +68,26 @@ const CourseDetail = () => {
           <p className="text-lg ml-2"> 30 học viên</p>
         </div>
         <span className="flex">
-          Được tạo bởi <p className="text-indigo-300 px-2">Hoàng Thiện</p>
+          Được tạo bởi <p className="text-indigo-300 px-2">{course.tutor.fullName}</p>
         </span>
-        <span className="mt-4">Cập nhật gần nhất 20/9/2023</span>
+        <span className="mt-4">Cập nhật gần nhất {course.updatedDate}</span>
       </div>
-
       <div className="border w-2/4 mt-4 ml-14 p-6">
         <h2 className="text-3xl font-bold">Bạn sẽ học được gì?</h2>
-        <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-left">
-          <li class="flex items-start gap-2">
-            <Check2 /> Đơn vị và đại lượng: Chiều dài, khối lượng, thời gian.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Chuyển động: Vận tốc, quãng đường, thời gian.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Lực: Định nghĩa, loại lực, cách tính.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Áp suất: Định nghĩa, công thức tính.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Công và công suất: Định nghĩa, công thức tính.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Năng lượng: Định nghĩa, nguyên tắc bảo toàn.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Truyền nhiệt: Các hình thức truyền nhiệt.
-          </li>
-          <li class="flex items-start gap-2">
-            <Check2 /> Điện học cơ bản: Dòng điện, điện trở, nguyên lý mạch
-            điện.
-          </li>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-left">
+          {course.lessonsList && course.lessonsList.length > 0 ? (
+            course.lessonsList.map((lesson, index) => (
+              <li key={index} className="flex items-start gap-2">
+                <Check2 /> {lesson.title}
+              </li>
+            ))
+          ) : (
+            <li>Không có bài học nào được tìm thấy.</li>
+          )}
         </ul>
       </div>
-
       <div class="-mt-[560px] lg:px-30 xl:px-40 flex justify-end">
-        <div class="flex flex-col rounded-sm bg-white text-gray-700 shadow-md lg:h-max lg:scale-110 z-10 translate-y-0 w-2/6 sticky top-0">
+        <div class="flex flex-col rounded-sm bg-white text-gray-700 shadow-md lg:h-max lg:scale-110 z-10 translate-y-0 w-2/6 sticky mt-48">
           <div class="p-6 text-center">
             <img
               src="https://www.macobserver.com/wp-content/uploads/2019/07/workfeatured-zoom.png"
@@ -86,7 +95,7 @@ const CourseDetail = () => {
               class="w-full h-auto"
             />
             <h3 class="antialiased tracking-normal font-sans text-3xl font-semibold leading-snug text-blue-gray-900 flex justify-center mt-5 mb-2">
-              400.000 VNĐ
+              {course.price} VNĐ
             </h3>
             <button class="border w-full py-3 bg-purple-500 text-white font-bold hover:bg-purple-700">
               Thêm vào giỏ hàng

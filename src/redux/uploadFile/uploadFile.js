@@ -8,11 +8,14 @@ export const uploadFileImage = createAsyncThunk('uploadFileImage', async (file) 
         const token = localStorage.getItem('token');
         const config = {
             headers: {
-                'Custom-Header': 'value',
-                'Authorization': `Bearer ${token}`
-            }
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+              }
         }
         const response = await axios.post(URL_UPLOAD, file, config)
+        if (response) {
+            console.log(response.data)
+        }
         return response.data
     } catch (error) {
         throw (error)
