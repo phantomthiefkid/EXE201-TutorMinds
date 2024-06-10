@@ -21,25 +21,27 @@ const TutorDetail = () => {
   const role = getUserDataFromToken();
   const handleOnClose = () => setShowModalRequest(false);
 
-    useEffect(() => {
-        dispatch(fetchTutorDetail({ id }));
-    }, [dispatch, id]);
+  useEffect(() => {
+    dispatch(fetchTutorDetail({ id }));
+  }, [dispatch, id]);
 
   useEffect(() => {
     setData(tutorDetail);
   }, [tutorDetail]);
 
-    if (!tutorDetail) {
-        return <div>Loading...</div>;
-    }
+  if (!tutorDetail) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
-      <ModalCreateRequest
-        onClose={handleOnClose}
-        visible={showModalRequest}
-        tutorId={tutorDetail?.id}
-      />
+      {showModalRequest && (
+        <ModalCreateRequest
+          onClose={handleOnClose}
+          visible={showModalRequest}
+          tutorId={tutorDetail?.id}
+        />
+      )}
       <div className="bg-gray-200 min-h-screen text-gray-800 z-0">
         <div className="relative z-0">
           <img
@@ -86,12 +88,14 @@ const TutorDetail = () => {
             <div className="flex items-center justify-center mt-2">
               <ChatDots className="w-8 h-8 text-green-500 mx-5" />
 
-              {role === "STUDENT" && (<button
-                onClick={() => setShowModalRequest(true)}
-                className="rounded bg-sky-500 text-white px-6 py-2 text-xs font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400"
-              >
-                Đăng ký
-              </button>)}
+              {role === "STUDENT" && (
+                <button
+                  onClick={() => setShowModalRequest(true)}
+                  className="rounded bg-sky-500 text-white px-6 py-2 text-xs font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400"
+                >
+                  Đăng ký
+                </button>
+              )}
             </div>
             <div className="mt-4 text-md">
               <p>

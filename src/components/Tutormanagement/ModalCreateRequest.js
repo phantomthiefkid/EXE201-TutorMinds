@@ -7,15 +7,20 @@ import {
   CashCoin,
   JournalCheck,
   Brush,
+  ArrowDownCircle,
 } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "../Tutormanagement/ModalCreate.css";
 import { createClasses } from "../../redux/ClassManagement/classSlice";
 import { getUserIdFromToken } from "../../redux/auth/loginSlice";
 
 const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
+  const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userId = getUserIdFromToken();
@@ -28,6 +33,8 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
     user: {
       id: userId,
     },
+    schedule: [],
+    totalPrice: "",
     description: "",
     address: "",
     contactNumber: "",
@@ -37,6 +44,7 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
   };
 
   const class_error = {
+    totalPrice: "",
     title: "",
     description: "",
     address: "",
@@ -44,7 +52,54 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
   };
   const [classes, setClasses] = useState(class_initial);
   const [errorClasses, setErrorClasses] = useState(class_error);
-  const token = localStorage.getItem("token");
+
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [selectedDates, setSelectedDates] = useState([]);
+  const [initialPrice, setInitialPrice] = useState(0);
+
+  const handleDateClick = (date) => {
+    const dateStr = date.toDateString("en-CA");
+    if (selectedDates.includes(dateStr)) {
+      setSelectedDates(selectedDates.filter((d) => d !== dateStr));
+    } else {
+      setSelectedDates([...selectedDates, dateStr]);
+    }
+  };
+
+  useEffect(() => {
+    const formattedSelectedDates = selectedDates.map((dateStr) =>
+      new Date(dateStr).toLocaleDateString("en-CA")
+    );
+    setClasses((prevClasses) => ({
+      ...prevClasses,
+      schedule: formattedSelectedDates,
+    }));
+
+    const totalPrice = initialPrice * formattedSelectedDates.length;
+    setClasses((prevClasses) => ({
+      ...prevClasses,
+      totalPrice: Math.round(totalPrice),
+    }));
+    console.log(JSON.stringify({ schedule: formattedSelectedDates }));
+  }, [selectedDates, initialPrice]);
+
+  const getDataClass = (e) => {
+    const { name, value } = e.target;
+    let newClasses = { ...classes };
+
+    if (name === "totalPrice") {
+      const price = parseFloat(value);
+      setInitialPrice(price); // Cập nhật giá tiền ban đầu
+      newClasses.totalPrice = price;
+    } else {
+      newClasses[name] = value;
+    }
+
+    setClasses(newClasses);
+  };
+  // const getDataClass = (e) => {
+  //   setClasses({ ...classes, [e.target.name]: e.target.value });
+  // };
 
   useEffect(() => {
     if (!token) {
@@ -52,13 +107,12 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
     }
   }, [token]);
 
-  const getDataClass = (e) => {
-    setClasses({ ...classes, [e.target.name]: e.target.value });
-  };
+  console.log("Data->>>", classes);
 
   const handleValidation = (classes) => {
     setErrorClasses({ ...class_error });
     const specialCharacters = /[@#$%^&*+\=\[\]{}':"\\|<>\/]+/;
+    const onlyDigits = /^\d+$/;
     let isValid = false;
     if (!classes) {
       isValid = true;
@@ -117,6 +171,19 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
       }));
       isValid = true;
     }
+    if (String(classes.totalPrice).trim() === "") {
+      setErrorClasses((prevState) => ({
+        ...prevState,
+        totalPrice: "Giá tiền không được bỏ trống!!!",
+      }));
+      isValid = true;
+    } else if (specialCharacters.test(classes.totalPrice)) {
+      setErrorClasses((prevState) => ({
+        ...prevState,
+        totalPrice: "Giá tiền không được có ký tự đặc biệt!!!",
+      }));
+      isValid = true;
+    }
     return isValid;
   };
 
@@ -168,12 +235,6 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
     }
   };
 
-  const [filter, setFilter] = useState("");
-  if (!visible) return null;
-
-  const handleFilter = (e) => {
-    setFilter(e.target.value);
-  };
   return (
     <>
       <ToastContainer></ToastContainer>
@@ -193,69 +254,59 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
             </div>
 
             <form class="mt-4">
-              <div className="flex mb-4">
-                <div className="flex-1 mr-4">
-                  <div className="flex items-center mb-2">
-                    <MortarboardFill className="w-5 h-5 mr-2 text-blue-500" />
-                    <label
-                      htmlFor="name"
-                      className="block text-gray-700 font-bold"
-                    >
-                      Môn học:
-                    </label> 
-                  </div>
-                  <select
-                    className="border p-2 rounded w-full"
-                    value={filter}
-                    onChange={handleFilter}
-                  >
-                    <option value="">Chọn môn học</option>
-                    <option value="Toán">Toán</option>
-                    <option value="Lý">Lý</option>
-                    <option value="Hóa">Hóa</option>
-                    <option value="Anh Ngữ">Anh Ngữ</option>
-                    <option value="Văn">Văn</option>
-                  </select>
-                </div>
-
-                <div className="flex-1">
-                  <div className="flex items-center mb-2">
-                    <Brush className="w-5 h-5 mr-2 text-pink-500" />
-                    <label
-                      htmlFor="address"
-                      className="text-gray-700 font-bold"
-                    >
-                      Tiêu đề:
-                    </label>
-                  </div>
-                  <textarea
-                    id="title"
-                    name="title"
-                    type="text"
-                    onChange={getDataClass}
-                    className="w-full h-20 px-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
-                    placeholder="Nhập tiêu đề..."
-                  ></textarea>
-                  {errorClasses.title && (
-                    <span className="text-red-500">{errorClasses.title}</span>
-                  )}
-                </div>
-              </div>
-
               <div class="mb-4">
                 <div className="flex items-center mb-2">
-                  <Calendar3 className="w-5 h-5 mr-2 text-orange-500" />
-                  <label for="day" class="block text-gray-700 font-bold">
-                    Ngày học:
+                  <Brush className="w-5 h-5 mr-2 text-purple-600" />
+                  <label for="address" class="block text-gray-700 font-bold">
+                    Tiêu đề:
                   </label>
                 </div>
                 <textarea
-                  id="day"
-                  name="day"
-                  class="w-full h-28 pt-2 pb-2 px-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
-                  placeholder="Nhập ngày học mà bạn mong muốn..."
+                  id="title"
+                  name="title"
+                  type="text"
+                  onChange={getDataClass}
+                  class="w-full pt-2 pb-2 px-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
+                  placeholder="Hãy nhập tiêu đề..."
                 ></textarea>
+                {errorClasses.title && (
+                  <span className="text-red-500">{errorClasses.title}</span>
+                )}
               </div>
+
+              <div className="mb-4">
+                <div className="flex items-center mb-2">
+                  <Calendar3 className="w-5 h-5 mr-2 text-orange-500" />
+                  <label
+                    htmlFor="day"
+                    className="block text-gray-700 font-bold"
+                    //onClick={() => setIsDropdownVisible(!isDropdownVisible)}
+                  >
+                    Ngày học:
+                  </label>
+                </div>
+                {/* {isDropdownVisible && ( */}
+                <div className="container rounded-b-lg border border-gray-200 shadow-md bg-white">
+                  <div className="flex justify-center">
+                    <DatePicker
+                      calendarClassName="custom-calendar"
+                      selected={null}
+                      onChange={handleDateClick}
+                      inline
+                      required
+                      dayClassName={(date) => {
+                        const dateStr = date.toDateString("en-CA");
+                        return selectedDates.includes(dateStr)
+                          ? "selected"
+                          : "schedule";
+                      }}
+                      monthsShown={2}
+                    />
+                  </div>
+                </div>
+                {/* )} */}
+              </div>
+
               <div class="mb-4 flex justify-between space-x-4">
                 <div class="flex-1">
                   <div className="flex items-center mb-2">
@@ -308,12 +359,18 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
                   </label>
                 </div>
                 <input
-                  type="price"
-                  id="price"
-                  name="price"
+                  type="totalPrice"
+                  id="totalPrice"
+                  name="totalPrice"
+                  onChange={getDataClass}
                   class="w-full p-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
                   placeholder="300.000VNĐ/buổi"
                 />
+                {errorClasses.totalPrice && (
+                  <span className="text-red-500">
+                    {errorClasses.totalPrice}
+                  </span>
+                )}
               </div>
               <div class="mb-4">
                 <div className="flex items-center mb-2">
