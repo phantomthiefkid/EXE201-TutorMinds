@@ -80,7 +80,6 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
       ...prevClasses,
       totalPrice: Math.round(totalPrice),
     }));
-    console.log(JSON.stringify({ schedule: formattedSelectedDates }));
   }, [selectedDates, initialPrice]);
 
   const getDataClass = (e) => {
