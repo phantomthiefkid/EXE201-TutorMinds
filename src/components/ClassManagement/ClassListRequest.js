@@ -115,7 +115,7 @@ const ClassListRequest = () => {
       user: { id: data.user.id },
       address: data.address,
       contactNumber: data.contactNumber,
-      conversationStatus: { id: 4 },
+      conversationStatus: { id: roleName === "TUTOR" ? 6 : 2},
       description: data.description,
     };
     try {
@@ -205,7 +205,7 @@ const ClassListRequest = () => {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Tên môn học
+              Tiêu đề
             </th>
             {token ? (
               <>
@@ -299,7 +299,7 @@ const ClassListRequest = () => {
                         {classes.user.phone}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        300.000/buổi
+                        {classes.totalPrice}/buổi
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
@@ -416,7 +416,7 @@ const ClassListRequest = () => {
                         {classes.teacher.phone}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        300.000/buổi
+                      {classes.totalPrice}/buổi
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
@@ -469,10 +469,10 @@ const ClassListRequest = () => {
                           classes.conversationStatus.label !== "Rejected" && (
                             <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg z-20">
                               <div className="py-1 rounded-md bg-white shadow-xs">
-                                <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                                <button onClick={() => handleApprovel(classes)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                                   Chấp nhận
                                 </button>
-                                <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                                <button onClick={() => handleReject(classes)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                                   Từ chối
                                 </button>
                                 <button
