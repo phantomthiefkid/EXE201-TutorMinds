@@ -205,7 +205,7 @@ const ClassListRequest = () => {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Tên môn học
+              Tiêu đề
             </th>
             {token ? (
               <>
@@ -299,7 +299,7 @@ const ClassListRequest = () => {
                         {classes.user.phone}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        300.000/buổi
+                        {classes.totalPrice}/buổi
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
@@ -416,7 +416,7 @@ const ClassListRequest = () => {
                         {classes.teacher.phone}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        300.000/buổi
+                      {classes.totalPrice}/buổi
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
