@@ -33,6 +33,10 @@ const LessonVideo = () => {
         fetchData();
     }, [token]);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const handleClickVideo = (url) => {
         setCurrentVideoUrl(url);
         setAutoPlay(true);
