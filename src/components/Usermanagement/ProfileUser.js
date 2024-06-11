@@ -12,30 +12,31 @@ function ProfileUser() {
   const [gender, setGender] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [roleId, setRoleId] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
   const emailToken = getEmailDataFromToken();
-
   const token = localStorage.getItem('token');
 
-  useEffect(() => {
+  const fetchUserData = () => {
     axios.get(`https://fams-management.tech/api/users/${emailToken}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     })
       .then(response => {
-        const { fullName, phone, address, gender, username, email, roleId, avatar } = response.data;
+        const { fullName, phone, address, gender, username, email, avatar } = response.data;
         setFullName(fullName);
         setPhone(phone);
         setAddress(address);
         setGender(gender);
         setUsername(username);
         setEmail(email);
-        setRoleId(roleId);
         setAvatarUrl(avatar);
       })
       .catch(error => console.error('Lỗi khi lấy thông tin hồ sơ người dùng:', error));
+  };
+
+  useEffect(() => {
+    fetchUserData();
   }, [token, emailToken]);
 
   const handleImageChange = (e) => {
@@ -51,31 +52,30 @@ function ProfileUser() {
 
       if (profileImage) {
         const formData = new FormData();
-        formData.append('file', profileImage);
+        formData.append('files', profileImage, profileImage.name);
 
-        const imageResponse = await axios.post('/api/upload/avatar', formData, {
+        const imageResponse = await axios.post('http://35.72.46.118/api/files', formData, {
           headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${token}`
+            'accept': '*/*',
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
           },
         });
 
-        updatedAvatarUrl = imageResponse.data.url;
+        updatedAvatarUrl = imageResponse.data;
       }
 
-      const userUpdateDto = {
+      const userDto = {
         email,
         username,
-        password: '',
         fullName,
         phone,
         address,
         gender: parseInt(gender, 10),
-        roleId: parseInt(roleId?.id, 10),
         avatar: updatedAvatarUrl,
       };
 
-      const response = await axios.put(`https://fams-management.tech/api/users/users?email=${encodeURIComponent(email)}`, userUpdateDto, {
+      const response = await axios.put(`https://fams-management.tech/api/users/users?email=${encodeURIComponent(email)}`, userDto, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
@@ -83,7 +83,8 @@ function ProfileUser() {
       });
 
       if (response.status === 200) {
-        console.log(response);
+        setAvatarUrl(updatedAvatarUrl);
+        fetchUserData(); // Refresh user data
         toast.success('Cập nhật thành công');
       } else {
         toast.error('Có lỗi xảy ra');
@@ -157,7 +158,7 @@ function ProfileUser() {
                   <input
                     type="radio"
                     value="0"
-                    checked={gender == "0"}
+                    checked={gender === "0"}
                     onChange={(e) => setGender(e.target.value)}
                     className="form-radio text-indigo-600"
                   />
@@ -167,7 +168,7 @@ function ProfileUser() {
                   <input
                     type="radio"
                     value="1"
-                    checked={gender == "1"}
+                    checked={gender === "1"}
                     onChange={(e) => setGender(e.target.value)}
                     className="form-radio text-indigo-600"
                   />
@@ -177,7 +178,7 @@ function ProfileUser() {
                   <input
                     type="radio"
                     value="2"
-                    checked={gender == "2"}
+                    checked={gender === "2"}
                     onChange={(e) => setGender(e.target.value)}
                     className="form-radio text-indigo-600"
                   />
@@ -205,7 +206,7 @@ function ProfileUser() {
           </div>
           <div className="flex flex-col items-center">
             <img
-              src={profileImage ? URL.createObjectURL(profileImage) : (avatarUrl)}
+              src={profileImage ? URL.createObjectURL(profileImage) : avatarUrl}
               alt="Profile"
               className="h-32 w-32 rounded-full object-cover border-4 border-gray-300 mb-4"
             />
