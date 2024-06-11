@@ -12,8 +12,7 @@ const AddCourse = () => {
     simpleDescription: "",
     tutorId: 0,
     price: 0,
-    img: "", // Thêm field img
-    lessons: []
+    img: ""
   });
 
   const [lessons, setLessons] = useState([{ title: "", description: "", url: "" }]);
@@ -27,10 +26,10 @@ const AddCourse = () => {
       }
     })
       .then(response => {
-        setCourse({
-          ...course, // Giữ nguyên các giá trị khác của course
+        setCourse((prevCourse) => ({
+          ...prevCourse, // Giữ nguyên các giá trị khác của course
           tutorId: response.data.id
-        })
+        }));
       })
       .catch(error => console.error('Lỗi khi lấy thông tin hồ sơ người dùng:', error));
   }, [token, emailToken]);
@@ -67,24 +66,31 @@ const AddCourse = () => {
     }
   };
 
+  const uploadCourseImage = async () => {
+    if (!courseImageFile) return "";
+
+    const formData = new FormData();
+    formData.append('files', courseImageFile, courseImageFile.name);
+
+    const response = await axios.post('http://35.72.46.118/api/files', formData, {
+      headers: {
+        'accept': '*/*',
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    return response.data;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Upload course image
-      if (courseImageFile) {
-        const formData = new FormData();
-        formData.append('files', courseImageFile, courseImageFile.name);
-        
-        const response = await axios.post('http://35.72.46.118/api/files', formData, {
-          headers: {
-            'accept': '*/*',
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+      // Upload course image and get URL
+      const imgURL = await uploadCourseImage();
 
-        setCourse({ ...course, img: response.data.url });
-      }
+      // Update course with img URL
+      const updatedCourse = { ...course, img: imgURL };
 
       // Upload lesson videos
       for (let i = 0; i < lessonVideoFiles.length; i++) {
@@ -101,18 +107,18 @@ const AddCourse = () => {
           });
 
           const newLessons = [...lessons];
-          newLessons[i].url = response.data.url;
+          newLessons[i].url = response.data;
           setLessons(newLessons);
         }
       }
 
-      // Tạo URL cho course
-      const url = `https://fams-management.tech/course?id=${course.id}&title=${encodeURIComponent(course.title)}&description=${encodeURIComponent(course.description)}&simpleDescription=${encodeURIComponent(course.simpleDescription)}&tutorId=${course.tutorId}&price=${course.price}&img=${encodeURIComponent(course.img)}`;
-
       // Gửi request POST để thêm course
-      const courseResponse = await axios.post(url, {}, {
+        console.log(course)
+      
+      const courseResponse = await axios.post('https://fams-management.tech/course', updatedCourse, {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       });
 
@@ -120,9 +126,11 @@ const AddCourse = () => {
 
       // Gửi từng request POST để thêm các lesson
       for (let lesson of lessons) {
+        console.log(lesson)
         await axios.post(`https://fams-management.tech/api/lesson/${courseId}`, [lesson], {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         });
       }
