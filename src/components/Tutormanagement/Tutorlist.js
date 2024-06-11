@@ -111,12 +111,12 @@ const TutorList = () => {
                 <div class="relative">
                   <img
                     class="w-full"
-                    src="https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg"
+                    src={tutor.avatar || "https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg"}
                     alt="Sunset in the mountains"
                   />
                 </div>
                 <div class="px-6 py-2 mb-auto">
-                  <span class="font-medium text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">
+                  <span class="font-medium text-lg hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">
                     Gia sư: {tutor.fullName}
                   </span>
 
