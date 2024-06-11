@@ -54,7 +54,7 @@ function ProfileUser() {
         const formData = new FormData();
         formData.append('files', profileImage, profileImage.name);
 
-        const imageResponse = await axios.post('http://35.72.46.118/api/files', formData, {
+        const imageResponse = await axios.post('https://fams-management.tech/api/files', formData, {
           headers: {
             'accept': '*/*',
             'Authorization': `Bearer ${token}`,

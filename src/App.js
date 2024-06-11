@@ -12,7 +12,7 @@ import Dashboard from "./components/Admin/Dashboard";
 import Tutorlist from "./components/Tutormanagement/Tutorlist";
 import CourseList from "./components/CourseManagement/CourseList";
 import CourseDetail from "./components/CourseManagement/CourseDetail";
-import TutorDetail from "./components/Tutormanagement/TutorDetail.js";
+import TutorDetail from "./components/Tutormanagement/Tutordetail.js";
 import ProfileUser from "./components/Usermanagement/ProfileUser";
 import ClassListRequest from "./components/ClassManagement/ClassListRequest";
 import { getUserDataFromToken } from "./redux/auth/loginSlice";
@@ -40,8 +40,7 @@ function App() {
         <Route path="/profileuser" element={<ProfileUser />}></Route>
         <Route path="/classlist" element={<ClassListRequest />}></Route>
         <Route path="/addcourse" element={<AddCourse />}></Route>
-        <Route path="/video" element={<LessonVideo/>}></Route>
-        
+        <Route path="/video/:id" element={<LessonVideo/>}></Route>        
         <Route
           path="/requestlistadmin"
           element={<RequiestListWithSidebar></RequiestListWithSidebar>}
