@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const LessonVideo = () => {
-    const URL = "https://fams-management.tech/course/1";
+    const {id} = useParams();
+    
+    const URL = `https://fams-management.tech/course/${id}`;
     const token = localStorage.getItem('token');
     const [lessons, setLessons] = useState([]);
     const [activeIndex, setActiveIndex] = useState(null);
-    const [currentVideoUrl, setCurrentVideoUrl] = useState("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
+    const [currentVideoUrl, setCurrentVideoUrl] = useState();
     const [autoPlay, setAutoPlay] = useState(false);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -21,6 +23,7 @@ const LessonVideo = () => {
                 const data = response.data;
                 if (data) {
                     setLessons(data.lessonsList);
+                    setCurrentVideoUrl(data.lessonsList[0].url)
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -125,7 +128,7 @@ const LessonVideo = () => {
                     <h3 className="text-xl text-blue-500 font-semibold mb-6">Danh sách video bài giảng</h3>
                     <div id="accordion-collapse" className="space-y-4">
                         {lessons.map((lesson, index) => (
-                            <div key={lesson.id} className=" w-full">
+                            <div key={lesson.id} className={`${currentVideoUrl === lesson.url ? "bg-slate-200" : ''} w-full`}>
                                 <h2 id={`accordion-collapse-heading-${lesson.id}`}>
                                     <button
                                         type="button"
@@ -134,7 +137,7 @@ const LessonVideo = () => {
                                         aria-expanded={activeIndex === index}
                                         aria-controls={`accordion-collapse-body-${lesson.id}`}
                                     >
-                                        <span>Bài giảng {++index}</span>
+                                        <span>{lesson.title}</span>
                                         <svg
                                             className={`w-4 h-4 transform ${activeIndex === index ? "rotate-180" : ""}`}
                                             fill="none"
@@ -154,7 +157,7 @@ const LessonVideo = () => {
                                     <p className=" text-gray-500">{lesson.description}: </p>
 
                                     <button
-                                        onClick={() => handleClickVideo("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4")}
+                                        onClick={() => handleClickVideo(lesson.url)}
                                         className="text-blue-500 hover:underline focus:outline-none"
                                     >
                                         Xem video bài giảng
