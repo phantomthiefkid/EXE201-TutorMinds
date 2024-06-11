@@ -72,7 +72,7 @@ const AddCourse = () => {
     const formData = new FormData();
     formData.append('files', courseImageFile, courseImageFile.name);
 
-    const response = await axios.post('http://35.72.46.118/api/files', formData, {
+    const response = await axios.post('https://fams-management.tech/api/files', formData, {
       headers: {
         'accept': '*/*',
         'Authorization': `Bearer ${token}`,
