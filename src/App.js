@@ -40,8 +40,7 @@ function App() {
         <Route path="/profileuser" element={<ProfileUser />}></Route>
         <Route path="/classlist" element={<ClassListRequest />}></Route>
         <Route path="/addcourse" element={<AddCourse />}></Route>
-        <Route path="/video" element={<LessonVideo/>}></Route>
-        
+        <Route path="/video/:id" element={<LessonVideo/>}></Route>        
         <Route
           path="/requestlistadmin"
           element={<RequiestListWithSidebar></RequiestListWithSidebar>}
