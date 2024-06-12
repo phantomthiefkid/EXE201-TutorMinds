@@ -4,7 +4,7 @@ import axios from 'axios';
 import { getUserDataFromToken } from "../../redux/auth/loginSlice";
 import ModalUpdateCourse from "./ModalUpdateCourse";
 
-const CourseList = () => {
+const CourseList = ({ idTutor }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("");
   const [courses, setCourses] = useState([]);
@@ -14,9 +14,15 @@ const CourseList = () => {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const token = localStorage.getItem('token'); 
+      const token = localStorage.getItem('token'); // Get the token from localStorage
+      let url = 'https://fams-management.tech/course?pageNo=0&pageSize=10';
+      
+      if (idTutor) {
+        url = `https://fams-management.tech/course/tutor/${idTutor}?pageNo=0&pageSize=10`;
+      }
+
       try {
-        const response = await axios.get('https://fams-management.tech/course?pageNo=0&pageSize=10', {
+        const response = await axios.get(url, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -30,7 +36,7 @@ const CourseList = () => {
     };
 
     fetchCourses();
-  }, []);
+  }, [idTutor]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);

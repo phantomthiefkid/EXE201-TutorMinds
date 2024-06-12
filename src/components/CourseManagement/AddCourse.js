@@ -18,6 +18,7 @@ const AddCourse = () => {
   const [lessons, setLessons] = useState([{ title: "", description: "", url: "" }]);
   const [courseImageFile, setCourseImageFile] = useState(null); // State để lưu trữ tạm thời ảnh khóa học
   const [lessonVideoFiles, setLessonVideoFiles] = useState([]); // State để lưu trữ tạm thời video bài học
+  const [previewImage, setPreviewImage] = useState(null); // State để lưu trữ URL ảnh xem trước
 
   useEffect(() => {
     axios.get(`https://fams-management.tech/api/users/${emailToken}`, {
@@ -54,6 +55,7 @@ const AddCourse = () => {
     const file = e.target.files[0];
     if (file) {
       setCourseImageFile(file); // Lưu tạm thời ảnh khóa học
+      setPreviewImage(URL.createObjectURL(file)); // Tạo URL ảnh xem trước và cập nhật state
     }
   };
 
@@ -113,7 +115,7 @@ const AddCourse = () => {
       }
 
       // Gửi request POST để thêm course
-        console.log(course)
+      console.log(course)
       
       const courseResponse = await axios.post('https://fams-management.tech/course', updatedCourse, {
         headers: {
@@ -209,6 +211,15 @@ const AddCourse = () => {
                     />
                     </div>
                     <div className="sm:col-span-2">
+                    {previewImage && (
+                      <div className="flex justify-center">
+                        <img 
+                          src={previewImage} 
+                          alt="Course Preview" 
+                          className="mt-4 rounded-full border border-gray-300 w-40 h-40 object-cover"
+                        />
+                      </div>
+                    )}
                     <label className="block text-sm font-medium text-gray-700">Ảnh Khóa Học</label>
                     <input
                     type="file"
@@ -217,6 +228,7 @@ const AddCourse = () => {
                     onChange={handleCourseImageUpload}
                     className="mt-1 block w-full p-3 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg bg-gray-300 bg-opacity-30"
                     />
+                    
                     </div>
                     </div>
                     </div>
