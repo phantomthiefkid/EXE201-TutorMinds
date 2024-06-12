@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Select from "react-select";
 import "../Tutormanagement/ModalCreate.css";
 import { createClasses } from "../../redux/ClassManagement/classSlice";
 import { getUserIdFromToken } from "../../redux/auth/loginSlice";
@@ -33,7 +34,11 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
     user: {
       id: userId,
     },
-    schedule: [],
+    // schedule: [],
+    dayOfWeek: [],
+    dateFrom: "",
+    dateTo: "",
+    slot: "",
     totalPrice: "",
     description: "",
     address: "",
@@ -57,6 +62,22 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
   const [selectedDates, setSelectedDates] = useState([]);
   const [initialPrice, setInitialPrice] = useState(0);
 
+  // useEffect(() => {
+  //   const formattedSelectedDates = selectedDates.map((dateStr) =>
+  //     new Date(dateStr).toLocaleDateString("en-CA")
+  //   );
+  //   setClasses((prevClasses) => ({
+  //     ...prevClasses,
+  //     schedule: formattedSelectedDates,
+  //   }));
+
+  //   const totalPrice = initialPrice * formattedSelectedDates.length;
+  //   setClasses((prevClasses) => ({
+  //     ...prevClasses,
+  //     totalPrice: Math.round(totalPrice),
+  //   }));
+  // }, [selectedDates, initialPrice]);
+
   const handleDateClick = (date) => {
     const dateStr = date.toDateString("en-CA");
     if (selectedDates.includes(dateStr)) {
@@ -66,21 +87,30 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
     }
   };
 
+  function findDateFromDateTo(dates) {
+    if (dates.length === 0) {
+      return { dateFrom: null, dateTo: null };
+    }
+    const sortedDates = dates
+      .map((dateStr) => new Date(dateStr))
+      .sort((a, b) => a - b);
+    const dateFrom = sortedDates[0];
+    const dateTo = sortedDates[sortedDates.length - 1];
+    return { dateFrom, dateTo };
+  }
+
   useEffect(() => {
+    const { dateFrom, dateTo } = findDateFromDateTo(selectedDates);
     const formattedSelectedDates = selectedDates.map((dateStr) =>
       new Date(dateStr).toLocaleDateString("en-CA")
     );
-    setClasses((prevClasses) => ({
-      ...prevClasses,
-      schedule: formattedSelectedDates,
-    }));
-
-    const totalPrice = initialPrice * formattedSelectedDates.length;
-    setClasses((prevClasses) => ({
-      ...prevClasses,
-      totalPrice: Math.round(totalPrice),
-    }));
-  }, [selectedDates, initialPrice]);
+    setClasses({
+      ...classes,
+      dateFrom: dateFrom ? new Date(dateFrom).toLocaleDateString("en-CA") : "",
+      dateTo: dateTo ? new Date(dateTo).toLocaleDateString("en-CA") : "",
+      dayOfWeek: formattedSelectedDates,
+    });
+  }, [selectedDates]);
 
   const getDataClass = (e) => {
     const { name, value } = e.target;
@@ -88,7 +118,7 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
 
     if (name === "totalPrice") {
       const price = parseFloat(value);
-      setInitialPrice(price); // Cập nhật giá tiền ban đầu
+      setInitialPrice(price);
       newClasses.totalPrice = price;
     } else {
       newClasses[name] = value;
@@ -96,6 +126,16 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
 
     setClasses(newClasses);
   };
+
+  const handleSlotChange = (selectedOption) => {
+    setClasses({ ...classes, slot: selectedOption.value });
+  };
+
+  const handleDayOfWeek = (selectedOptionDay) => {
+    const selectedDays = selectedOptionDay.map(option => option.value);
+    setClasses({ ...classes, dayOfWeek: selectedDays });
+  };
+
   // const getDataClass = (e) => {
   //   setClasses({ ...classes, [e.target.name]: e.target.value });
   // };
@@ -279,13 +319,80 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
                   <label
                     htmlFor="day"
                     className="block text-gray-700 font-bold"
-                    //onClick={() => setIsDropdownVisible(!isDropdownVisible)}
                   >
                     Ngày học:
                   </label>
                 </div>
-                {/* {isDropdownVisible && ( */}
-                <div className="container rounded-b-lg border border-gray-200 shadow-md bg-white">
+
+                <div className="flex items-center space-x-4 justify-center">
+                  <div className="custom-date-info">
+                    <label
+                      for="startDate"
+                      class="mr-2 font-medium text-gray-700"
+                    >
+                      Ngày bắt đầu:
+                    </label>
+                    <input
+                      type="date"
+                      id="dateFrom"
+                      name="dateFrom"
+                      required
+                      onChange={getDataClass}
+                      class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="custom-date-info">
+                    <label
+                      for="startDate"
+                      class="mr-2 font-medium text-gray-700"
+                    >
+                      Ngày kết thúc:
+                    </label>
+                    <input
+                      type="date"
+                      id="dateTo"
+                      name="dateTo"
+                      required
+                      onChange={getDataClass}
+                      class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4 justify-center">
+                  <div className="w-2/4 mt-4">
+                    <Select
+                      placeholder="Chọn thứ trong tuần"
+                      isMulti
+                      required
+                      options={[
+                        { value: "1", label: "Thứ Hai" },
+                        { value: "2", label: "Thứ Ba" },
+                        { value: "3", label: "Thứ Tư" },
+                        { value: "4", label: "Thứ Năm" },
+                        { value: "5", label: "Thứ Sáu" },
+                      ]}
+                      onChange={handleDayOfWeek}
+                    />
+                  </div>
+                  <div className="w-2/4 mt-4">
+                    <Select
+                      placeholder="Chọn khung giờ học"
+                      isMulti={false}
+                      required
+                      options={[
+                        { value: "1", label: "7h30 - 9h30" },
+                        { value: "2", label: "10h - 12h" },
+                        { value: "3", label: "12h30 - 15h" },
+                        { value: "4", label: "15h30 - 16h30" },
+                        { value: "5", label: "17h - 19h" },
+                        { value: "6", label: "19h30 - 21h30" },
+                      ]}
+                      onChange={handleSlotChange}
+                    />
+                  </div>
+                </div>
+
+                {/* <div className="container rounded-b-lg bg-white mt-4">
                   <div className="flex justify-center">
                     <DatePicker
                       calendarClassName="custom-calendar"
@@ -297,13 +404,12 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
                         const dateStr = date.toDateString("en-CA");
                         return selectedDates.includes(dateStr)
                           ? "selected"
-                          : "schedule";
+                          : "dayOfWeek";
                       }}
                       monthsShown={2}
                     />
                   </div>
-                </div>
-                {/* )} */}
+                </div> */}
               </div>
 
               <div class="mb-4 flex justify-between space-x-4">
@@ -354,7 +460,7 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
                 <div className="flex items-center mb-2">
                   <CashCoin className="w-5 h-5 mr-2 text-yellow-500" />
                   <label for="price" class="block text-gray-700 font-bold">
-                    Giá tiền(1 buổi học):
+                    Giá tiền:
                   </label>
                 </div>
                 <input
@@ -363,7 +469,7 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
                   name="totalPrice"
                   onChange={getDataClass}
                   class="w-full p-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
-                  placeholder="300.000VNĐ/buổi"
+                  placeholder="300.000VNĐ"
                 />
                 {errorClasses.totalPrice && (
                   <span className="text-red-500">
