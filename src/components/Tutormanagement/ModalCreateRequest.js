@@ -62,31 +62,6 @@ const ModalCreateRequest = ({ visible, onClose, tutorId }) => {
   const [selectedDates, setSelectedDates] = useState([]);
   const [initialPrice, setInitialPrice] = useState(0);
 
-  // useEffect(() => {
-  //   const formattedSelectedDates = selectedDates.map((dateStr) =>
-  //     new Date(dateStr).toLocaleDateString("en-CA")
-  //   );
-  //   setClasses((prevClasses) => ({
-  //     ...prevClasses,
-  //     schedule: formattedSelectedDates,
-  //   }));
-
-  //   const totalPrice = initialPrice * formattedSelectedDates.length;
-  //   setClasses((prevClasses) => ({
-  //     ...prevClasses,
-  //     totalPrice: Math.round(totalPrice),
-  //   }));
-  // }, [selectedDates, initialPrice]);
-
-  const handleDateClick = (date) => {
-    const dateStr = date.toDateString("en-CA");
-    if (selectedDates.includes(dateStr)) {
-      setSelectedDates(selectedDates.filter((d) => d !== dateStr));
-    } else {
-      setSelectedDates([...selectedDates, dateStr]);
-    }
-  };
-
   function findDateFromDateTo(dates) {
     if (dates.length === 0) {
       return { dateFrom: null, dateTo: null };
