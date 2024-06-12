@@ -74,7 +74,6 @@ function ProfileUser() {
         gender: parseInt(gender, 10),
         avatar: updatedAvatarUrl,
       };
-
       const response = await axios.put(`https://fams-management.tech/api/users/users?email=${encodeURIComponent(email)}`, userDto, {
         headers: {
           'Content-Type': 'application/json',
