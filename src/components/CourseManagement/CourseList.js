@@ -3,17 +3,24 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import { getUserDataFromToken } from "../../redux/auth/loginSlice";
 
-const CourseList = () => {
+const CourseList = ({ idTutor }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("");
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const role = getUserDataFromToken();
+
   useEffect(() => {
     const fetchCourses = async () => {
       const token = localStorage.getItem('token'); // Get the token from localStorage
+      let url = 'https://fams-management.tech/course?pageNo=0&pageSize=10';
+      
+      if (idTutor) {
+        url = `https://fams-management.tech/course/tutor/${idTutor}?pageNo=0&pageSize=10`;
+      }
+
       try {
-        const response = await axios.get('https://fams-management.tech/course?pageNo=0&pageSize=10', {
+        const response = await axios.get(url, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -27,7 +34,7 @@ const CourseList = () => {
     };
 
     fetchCourses();
-  }, []);
+  }, [idTutor]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -109,12 +116,14 @@ const CourseList = () => {
             <option value="Anh Ngữ">Anh Ngữ</option>
             <option value="Văn">Văn</option>
           </select>
-          {role === "TUTOR" && (<Link
-            to="/addcourse"
-            className="ml-auto bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
-          >
-            Tạo khóa học
-          </Link>)}
+          {role === "TUTOR" && (
+            <Link
+              to="/addcourse"
+              className="ml-auto bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
+            >
+              Tạo khóa học
+            </Link>
+          )}
         </div>
 
         {filteredCourses.map((course) => (
