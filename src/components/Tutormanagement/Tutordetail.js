@@ -8,7 +8,6 @@ import {
 } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getUserDataFromToken } from "../../redux/auth/loginSlice";
 import { fetchTutorDetail } from "../../redux/TutorManagement/Tutor";
 import ModalCreateRequest from "./ModalCreateRequest";
 import ModalCalendar from "./ModalCalendar";
@@ -19,10 +18,9 @@ const TutorDetail = () => {
   const tutorDetail = useSelector((state) => state.tutor.tutor);
   const [data, setData] = useState(null);
   const [showModalRequest, setShowModalRequest] = useState(false);
-  const [showModalSchedule, setShowModalSchedule] = useState(false);
-  const role = getUserDataFromToken();
   const handleOnClose = () => setShowModalRequest(false);
-  const handleOnCloseCalendar = () => setShowModalSchedule(false);
+  const [showModalCalendar, setShowModalCalendar] = useState(false);
+  const handleOnCloseCalendar = () => setShowModalCalendar(false);
 
   useEffect(() => {
     dispatch(fetchTutorDetail({ id }));
@@ -31,11 +29,12 @@ const TutorDetail = () => {
   useEffect(() => {
     setData(tutorDetail);
   }, [tutorDetail]);
+  console.log(">>>>>>>", tutorDetail);
 
   if (!tutorDetail) {
     return <div>Loading...</div>;
   }
-console.log(tutorDetail);
+
   return (
     <>
       {showModalRequest && (
@@ -45,7 +44,7 @@ console.log(tutorDetail);
           tutorId={tutorDetail?.id}
         />
       )}
-      {showModalSchedule && (
+      {showModalCalendar && (
         <ModalCalendar
           onClose={handleOnCloseCalendar}
           email={tutorDetail?.email}
@@ -97,20 +96,18 @@ console.log(tutorDetail);
             <div className="flex items-center justify-center mt-2">
               <ChatDots className="w-8 h-8 text-green-500 mx-5" />
               <button
-                onClick={() => setShowModalSchedule(true)}
-                className=" mx-3 rounded bg-sky-500 text-white px-6 py-2 text-xs font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400"
+                onClick={() => setShowModalCalendar(true)}
+                className=" mx-4 rounded bg-sky-500 text-white px-6 py-2 text-xs font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400"
               >
                 Lịch dạy của gia sư
               </button>
 
-              {role === "STUDENT" && (
-                <button
-                  onClick={() => setShowModalRequest(true)}
-                  className="rounded bg-sky-500 text-white px-6 py-2 text-xs font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400"
-                >
-                  Đăng ký
-                </button>
-              )}
+              <button
+                onClick={() => setShowModalRequest(true)}
+                className="rounded bg-sky-500 text-white px-6 py-2 text-xs font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400"
+              >
+                Đăng ký
+              </button>
             </div>
             <div className="mt-4 text-md">
               <p>
@@ -173,7 +170,7 @@ console.log(tutorDetail);
                 </div>
                 <div className="bg-white border border-gray-300 p-6 hover:shadow-lg transition-shadow duration-300">
                   <p className="font-semibold text-gray-900">
-                    Âu Dương Phong
+                    Dương Quá
                     <span className="flex">
                       <StarFill className="w-4 h-4 mr-1 text-yellow-500" />
                       <StarFill className="w-4 h-4 mr-1 text-yellow-500" />
