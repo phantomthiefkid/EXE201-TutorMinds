@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import { getUserDataFromToken } from "../../redux/auth/loginSlice";
 import { fetchTutorDetail } from "../../redux/TutorManagement/Tutor";
 import ModalCreateRequest from "./ModalCreateRequest";
+import ModalCalendar from "./ModalCalendar";
 
 const TutorDetail = () => {
   const { id } = useParams();
@@ -18,8 +19,10 @@ const TutorDetail = () => {
   const tutorDetail = useSelector((state) => state.tutor.tutor);
   const [data, setData] = useState(null);
   const [showModalRequest, setShowModalRequest] = useState(false);
+  const [showModalSchedule, setShowModalSchedule] = useState(false);
   const role = getUserDataFromToken();
   const handleOnClose = () => setShowModalRequest(false);
+  const handleOnCloseCalendar = () => setShowModalSchedule(false);
 
   useEffect(() => {
     dispatch(fetchTutorDetail({ id }));
@@ -32,7 +35,7 @@ const TutorDetail = () => {
   if (!tutorDetail) {
     return <div>Loading...</div>;
   }
-
+console.log(tutorDetail);
   return (
     <>
       {showModalRequest && (
@@ -40,6 +43,12 @@ const TutorDetail = () => {
           onClose={handleOnClose}
           visible={showModalRequest}
           tutorId={tutorDetail?.id}
+        />
+      )}
+      {showModalSchedule && (
+        <ModalCalendar
+          onClose={handleOnCloseCalendar}
+          email={tutorDetail?.email}
         />
       )}
       <div className="bg-gray-200 min-h-screen text-gray-800 z-0">
@@ -87,6 +96,12 @@ const TutorDetail = () => {
             </div>
             <div className="flex items-center justify-center mt-2">
               <ChatDots className="w-8 h-8 text-green-500 mx-5" />
+              <button
+                onClick={() => setShowModalSchedule(true)}
+                className=" mx-3 rounded bg-sky-500 text-white px-6 py-2 text-xs font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400"
+              >
+                Lịch dạy của gia sư
+              </button>
 
               {role === "STUDENT" && (
                 <button
