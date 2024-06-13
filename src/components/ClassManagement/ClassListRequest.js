@@ -8,7 +8,7 @@ import {
   Search,
   FileText,
 } from "react-bootstrap-icons";
-
+import ModalInformationRequest from "./ModalInformationRequest";
 import ModalRequestDetail from "./ModalRequestDetail";
 import { getUserDataFromToken } from "../../redux/auth/loginSlice";
 
@@ -34,7 +34,8 @@ const ClassListRequest = () => {
   const [showModalRequest, setShowModalRequest] = useState(false);
   const [selectedClassId, setSelectedClassId] = useState(null);
   const handleOnClose = () => setShowModalRequest(false);
-
+  const handleOnCloseInformationRequest = () => { setShowModalInformationRequest(false) }
+  const [showModalInformationRequest, setShowModalInformationRequest] = useState(false);
   const handleOpenModal = (classId) => {
     setSelectedClassId(classId);
     setShowModalRequest(true);
@@ -44,6 +45,11 @@ const ClassListRequest = () => {
 
   const token = localStorage.getItem("token");
   const roleName = getUserDataFromToken();
+
+  const handleOpenInformationModal = (classId) => {
+    setSelectedClassId(classId)
+    setShowModalInformationRequest(true)
+  }
 
   useEffect(() => {
     if (Array.isArray(classAPI)) {
@@ -115,7 +121,7 @@ const ClassListRequest = () => {
       user: { id: data.user.id },
       address: data.address,
       contactNumber: data.contactNumber,
-      conversationStatus: { id: roleName === "TUTOR" ? 6 : 2},
+      conversationStatus: { id: roleName === "TUTOR" ? 6 : 2 },
       description: data.description,
     };
     try {
@@ -273,7 +279,7 @@ const ClassListRequest = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
-                          {classes.title}
+                        <button onClick={() => handleOpenInformationModal(classes.id)}>{classes.title}</button>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -333,7 +339,7 @@ const ClassListRequest = () => {
                         </span>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                        {classes.conversationStatus.label !== "Rejected" && classes.conversationStatus.label !== "Refinement Required" && classes.conversationStatus.label !== "Draft" && (
+                        {classes.conversationStatus.label !== "Approved" && classes.conversationStatus.label !== "Rejected" && classes.conversationStatus.label !== "Refinement Required" && classes.conversationStatus.label !== "Draft" && (
                           <button
                             type="button"
                             className="inline-block text-gray-500 hover:text-gray-700"
@@ -350,7 +356,7 @@ const ClassListRequest = () => {
                         {dropdownStates[classes.id] && (
                           <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg z-20">
                             <div className="py-1 rounded-md bg-white shadow-xs">
-                              <button
+                              {/* <button
                                 onClick={() => handleApprovel(classes)}
                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                               >
@@ -361,12 +367,18 @@ const ClassListRequest = () => {
                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                               >
                                 Từ chối
-                              </button>
+                              </button> */}
                               <button
                                 onClick={() => handleOpenModal(classes.id)}
                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                               >
                                 Làm lại yêu cầu
+                              </button>
+                              <button
+                               
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                              >
+                                Khác
                               </button>
                             </div>
                           </div>
@@ -390,7 +402,7 @@ const ClassListRequest = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
-                          {classes.title}
+                          <button onClick={() => handleOpenInformationModal(classes.id)}>{classes.title}</button>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -416,7 +428,7 @@ const ClassListRequest = () => {
                         {classes.teacher.phone}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {classes.totalPrice}/buổi
+                        {classes.totalPrice}/buổi
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
@@ -450,7 +462,7 @@ const ClassListRequest = () => {
                         </span>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                        {classes.conversationStatus.label !== "Approved by Tutor" && classes.conversationStatus.label !== "Rejected" && classes.conversationStatus.label !== "Submitted to Tutor" && (
+                        {classes.conversationStatus.label !== "Approved" && classes.conversationStatus.label !== "Approved by Tutor" && classes.conversationStatus.label !== "Rejected" && classes.conversationStatus.label !== "Submitted to Tutor" && (
                           <button
                             type="button"
                             className="inline-block text-gray-500 hover:text-gray-700"
@@ -469,17 +481,23 @@ const ClassListRequest = () => {
                           classes.conversationStatus.label !== "Rejected" && (
                             <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg z-20">
                               <div className="py-1 rounded-md bg-white shadow-xs">
-                                <button onClick={() => handleApprovel(classes)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                                {/* <button onClick={() => handleApprovel(classes)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                                   Chấp nhận
                                 </button>
                                 <button onClick={() => handleReject(classes)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                                   Từ chối
-                                </button>
+                                </button> */}
                                 <button
                                   onClick={() => handleOpenModal(classes.id)}
                                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                                 >
                                   Làm lại yêu cầu
+                                </button>
+                                <button
+                                 
+                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                >
+                                  Khác
                                 </button>
                               </div>
                             </div>
@@ -502,6 +520,8 @@ const ClassListRequest = () => {
         setFlag={setFlag}
         selectedClassId={selectedClassId}
       />
+      <ModalInformationRequest flag={flag}
+        setFlag={setFlag} selectedClassId={selectedClassId} isOpen={showModalInformationRequest} onClose={handleOnCloseInformationRequest} />
       <div className="flex justify-center mb-4">
         <nav aria-label="">
           <ul className="flex items-center -space-x-px h-10 text-base">
