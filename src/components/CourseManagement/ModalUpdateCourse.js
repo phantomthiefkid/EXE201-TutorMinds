@@ -23,7 +23,7 @@ const ModalUpdateCourse = ({ course, onClose }) => {
     };
     
     try {
-      await axios.put(
+      const res = await axios.put(
         `https://fams-management.tech/course/${id}`,
         updatedCourse,
         {
@@ -34,9 +34,10 @@ const ModalUpdateCourse = ({ course, onClose }) => {
           }
         }
       );
-      toast.success('Course updated successfully!', {
-        onClose: () => onClose()
-      });
+      if (res.status === 200) {
+        toast.success("Thành công!")
+        onClose();
+      }
     } catch (error) {
       toast.error('Error updating course: ' + error.message);
       console.error("Error updating course:", error);

@@ -4,6 +4,7 @@ import UsersData from "./Usermanagement/user";
 import TutorsData from "./TutorManagement/Tutor";
 import UploadData from "./uploadFile/uploadFile";
 import ClassData from "./ClassManagement/classSlice";
+import Calendar from "./calendar/Calendar";
 export default configureStore({
   reducer: {
     login: LoginSlice,
@@ -11,5 +12,6 @@ export default configureStore({
     tutor: TutorsData,
     upload: UploadData,
     class: ClassData,
+    calendar: Calendar
   },
 });

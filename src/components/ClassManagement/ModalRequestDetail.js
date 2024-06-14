@@ -5,17 +5,18 @@ import {
   Telephone,
   CashCoin,
   JournalCheck,
+  Calendar3,
 } from "react-bootstrap-icons";
+import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { fetchClassDetail, updateClassRequest } from "../../redux/ClassManagement/classSlice";
+import { fetchClassDetail, updateClassRequest, updateStatus } from "../../redux/ClassManagement/classSlice";
 import { getUserDataFromToken } from "../../redux/auth/loginSlice";
 
 const initial = {
   id: 0,
   title: "",
-  subject: "",
   teacher: {
     id: 0,
   },
@@ -25,10 +26,31 @@ const initial = {
   description: "",
   address: "",
   contactNumber: "",
+  dateFrom: "",
+  dateTo: "",
   conversationStatus: {
     id: 0,
   },
+  dayOfWeek: [],
+  slot: 0,
 };
+
+const dayOptions = [
+  { value: 1, label: "Thứ Hai" },
+  { value: 2, label: "Thứ Ba" },
+  { value: 3, label: "Thứ Tư" },
+  { value: 4, label: "Thứ Năm" },
+  { value: 5, label: "Thứ Sáu" },
+];
+
+const timeSlotOptions = [
+  { value: "1", label: "7h30 - 9h30" },
+  { value: "2", label: "10h - 12h" },
+  { value: "3", label: "12h30 - 15h" },
+  { value: "4", label: "15h30 - 16h30" },
+  { value: "5", label: "17h - 19h" },
+  { value: "6", label: "19h30 - 21h30" },
+];
 
 const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }) => {
   const { id } = useParams();
@@ -36,6 +58,7 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
   const dispatch = useDispatch();
   const classDetail = useSelector((state) => state.class.class);
   const [dataClass, setDataClass] = useState(initial);
+  const [remark, setRemark] = useState("");
 
   useEffect(() => {
     if (selectedClassId) {
@@ -49,6 +72,7 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
         ...prevData,
         ...classDetail,
       }));
+      setRemark(classDetail?.remark || "");
     }
   }, [classDetail]);
 
@@ -70,18 +94,63 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
     }));
   };
 
+  const handleDayOfWeek = (selectedOptions) => {
+    setDataClass((prevData) => ({
+      ...prevData,
+      dayOfWeek: selectedOptions.map((option) => option.value),
+    }));
+  };
+
+  const handleSlotChange = (selectedOption) => {
+    setDataClass((prevData) => ({
+      ...prevData,
+      slot: selectedOption.value,
+    }));
+  };
+
+  const handleOnChangeRemark = (e) => {
+    setRemark(e.target.value);
+  };
+
+  const handleTutorRefinment = async () => {
+    const statusUpdate = {
+      id: dataClass.id,
+      statusId: 3,
+      remark: remark,
+    };
+
+    try {
+      const response = await dispatch(updateStatus(statusUpdate));
+
+      if (response) {
+        toast.success('Gửi yêu cầu thành công!!!');
+        setTimeout(() => {
+          onClose();
+          setFlag(!flag);
+        }, 500);
+      }
+    } catch (error) {
+      toast.error('Đã xảy ra lỗi khi gửi yêu cầu.');
+    }
+  };
+
   const handleSubmit = async () => {
     const payload = {
       id: dataClass.id,
       title: dataClass.title,
-      subject: dataClass.subject,
       teacher: { id: dataClass.teacher.id },
       user: { id: dataClass.user.id },
       description: dataClass.description,
       address: dataClass.address,
       contactNumber: dataClass.contactNumber,
       conversationStatus: { id: role === "STUDENT" ? 2 : 3 },
+      dayOfWeek: dataClass.dayOfWeek,
+      slot: Number(dataClass.slot),
+      dateFrom: dataClass.dateFrom,
+      dateTo: dataClass.dateTo,
+      totalPrice: Number(dataClass.totalPrice),
     };
+
     try {
       const response = await dispatch(updateClassRequest({ id: dataClass.id, data: payload }));
       if (response) {
@@ -94,7 +163,16 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
     } catch (error) {
       toast.error('Đã xảy ra lỗi khi gửi yêu cầu.');
     }
+    console.log(payload);
   };
+
+  const defaultDayValues = dataClass.dayOfWeek && dataClass.dayOfWeek.map((day) =>
+    dayOptions.find((option) => option.value === day)
+  );
+
+  const defaultSlotValue = timeSlotOptions.find(
+    (option) => option.value === String(dataClass.slot)
+  );
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
@@ -125,6 +203,7 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
                 type="text"
                 id="title"
                 name="title"
+                disabled={role === "TUTOR"}
                 className="w-full py-2 px-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
                 value={dataClass?.title || ""}
                 onChange={handleChange}
@@ -133,24 +212,68 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
 
             <div className="mb-4">
               <div className="flex items-center mb-2">
-                <MortarboardFill className="w-5 h-5 mr-2 text-blue-500" />
-                <label htmlFor="subject" className="block text-gray-700 font-bold">
-                  Môn học:
+                <Calendar3 className="w-5 h-5 mr-2 text-orange-500" />
+                <label htmlFor="day" className="block text-gray-700 font-bold">
+                  Ngày học:
                 </label>
               </div>
-              <select
-                className="border p-2 rounded"
-                value={dataClass?.subject || ""}
-                onChange={handleFilter}
-                name="subject"
-              >
-                <option value="">Chọn môn học</option>
-                <option value="Toán">Toán</option>
-                <option value="Lý">Lý</option>
-                <option value="Hóa">Hóa</option>
-                <option value="Anh Ngữ">Anh Ngữ</option>
-                <option value="Văn">Văn</option>
-              </select>
+
+              <div className="flex items-center space-x-4 justify-center">
+                <div className="custom-date-info">
+                  <label htmlFor="startDate" className="mr-2 font-medium text-gray-700">
+                    Ngày bắt đầu:
+                  </label>
+                  <input
+                    type="date"
+                    id="dateFrom"
+                    name="dateFrom"
+                    disabled={role === "TUTOR"}
+                    required
+                    value={dataClass?.dateFrom || ""}
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="custom-date-info">
+                  <label htmlFor="endDate" className="mr-2 font-medium text-gray-700">
+                    Ngày kết thúc:
+                  </label>
+                  <input
+                    type="date"
+                    id="dateTo"
+                    name="dateTo"
+                    required
+                    disabled={role === "TUTOR"}
+                    value={dataClass?.dateTo || ""}
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="flex items-center space-x-4 justify-center">
+                <div className="w-2/4 mt-4">
+                  <Select
+                    placeholder="Chọn thứ trong tuần"
+                    isMulti
+                    required
+                    options={dayOptions}
+                    value={defaultDayValues}
+                    onChange={handleDayOfWeek}
+                    isDisabled={role === "TUTOR"}
+                  />
+                </div>
+                <div className="w-2/4 mt-4">
+                  <Select
+                    placeholder="Chọn khung giờ học"
+                    isMulti={false}
+                    required
+                    options={timeSlotOptions}
+                    value={defaultSlotValue}
+                    onChange={handleSlotChange}
+                    isDisabled={role === "TUTOR"}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="mb-4">
@@ -163,6 +286,7 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
               <textarea
                 id="address"
                 name="address"
+                disabled={role === "TUTOR"}
                 className="w-full h-28 pt-2 pb-2 px-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
                 value={dataClass?.address || ""}
                 onChange={handleChange}
@@ -180,6 +304,7 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
                 type="text"
                 id="contactNumber"
                 name="contactNumber"
+                disabled={role === "TUTOR"}
                 className="w-full py-2 px-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
                 value={dataClass?.contactNumber || ""}
                 onChange={handleChange}
@@ -194,12 +319,13 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
                 </label>
               </div>
               <input
-                type="text"
+                type="number"
                 id="price"
-                name="price"
+                name="totalPrice"
+                disabled={role === "TUTOR"}
                 className="w-full p-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
-                value="300.000VNĐ/buổi"
-                readOnly
+                value={dataClass?.totalPrice || ""}
+                onChange={handleChange}
               />
             </div>
 
@@ -213,11 +339,30 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
               <textarea
                 id="description"
                 name="description"
+                disabled={role === "TUTOR"}
                 className="w-full h-28 pt-2 pb-2 px-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
                 value={dataClass?.description || ""}
                 onChange={handleChange}
               />
             </div>
+
+            {role === "TUTOR" && (
+              <div className="mb-4">
+                <div className="flex items-center mb-2">
+                  <JournalCheck className="w-5 h-5 mr-2 text-purple-600" />
+                  <label htmlFor="remark" className="block text-red-500 font-bold">
+                    Yêu cầu điều chỉnh từ gia sư
+                  </label>
+                </div>
+                <textarea
+                  id="remark"
+                  name="remark"
+                  className="w-full h-28 pt-2 pb-2 px-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
+                  value={remark}
+                  onChange={handleOnChangeRemark}
+                />
+              </div>
+            )}
 
             <div className="flex items-center justify-end">
               <button
@@ -227,13 +372,24 @@ const ModalRequestDetail = ({ visible, onClose, flag, setFlag, selectedClassId }
               >
                 Hủy
               </button>
-              <button
-                onClick={handleSubmit}
-                type="button"
-                className="px-10 bg-green-500 text-white p-2 rounded-md hover:bg-green-600 ml-5"
-              >
-                Gửi yêu cầu
-              </button>
+              {role === "STUDENT" && (
+                <button
+                  onClick={handleSubmit}
+                  type="button"
+                  className="px-10 bg-green-500 text-white p-2 rounded-md hover:bg-green-600 ml-5"
+                >
+                  Gửi yêu cầu
+                </button>
+              )}
+              {role === "TUTOR" && (
+                <button
+                  onClick={handleTutorRefinment}
+                  type="button"
+                  className="px-10 bg-green-500 text-white p-2 rounded-md hover:bg-green-600 ml-5"
+                >
+                  Yêu cầu chỉnh sửa
+                </button>
+              )}
             </div>
           </form>
         </div>

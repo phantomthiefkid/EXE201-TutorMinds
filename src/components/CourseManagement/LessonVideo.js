@@ -4,13 +4,14 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 const LessonVideo = () => {
-    const {id} = useParams();
-    
+    const { id } = useParams();
+
     const URL = `https://fams-management.tech/course/${id}`;
     const token = localStorage.getItem('token');
     const [lessons, setLessons] = useState([]);
     const [activeIndex, setActiveIndex] = useState(null);
     const [currentVideoUrl, setCurrentVideoUrl] = useState();
+    const [currentLessonTitle, setCurrentLessonTitle] = useState();
     const [autoPlay, setAutoPlay] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
@@ -24,6 +25,7 @@ const LessonVideo = () => {
                 if (data) {
                     setLessons(data.lessonsList);
                     setCurrentVideoUrl(data.lessonsList[0].url)
+                    setCurrentLessonTitle(data.lessonsList[0].title);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -37,8 +39,9 @@ const LessonVideo = () => {
         window.scrollTo(0, 0);
     }, []);
 
-    const handleClickVideo = (url) => {
+    const handleClickVideo = (url, title) => {
         setCurrentVideoUrl(url);
+        setCurrentLessonTitle(title)
         setAutoPlay(true);
     };
 
@@ -48,9 +51,13 @@ const LessonVideo = () => {
 
     return (
         <div className='w-full bg-slate-50'>
+            <h2 className="text-4xl text-center font-bold text-blue-800">{currentLessonTitle}</h2>
+
             <div className="flex flex-col md:flex-row justify-center items-start gap-6 md:mx-20">
+
                 <div className="w-full md:w-9/12">
                     <div className="relative mt-10" style={{ paddingTop: '60%' }}>
+
                         <ReactPlayer
                             url={currentVideoUrl}
                             controls={true}
@@ -61,6 +68,7 @@ const LessonVideo = () => {
                         />
                     </div>
                     <div className="mt-4 p-4">
+                    <h2 className="text-3xl mb-10 font-bold text-blue-800">{currentLessonTitle}</h2>
                         <h3 className="text-xl font-semibold mb-4">Đánh giá</h3>
                         {/* Feedback 1 */}
                         <div className="flex items-start space-x-4 mb-4 p-4 shadow-md">
@@ -161,7 +169,7 @@ const LessonVideo = () => {
                                     <p className=" text-gray-500">{lesson.description}: </p>
 
                                     <button
-                                        onClick={() => handleClickVideo(lesson.url)}
+                                        onClick={() => handleClickVideo(lesson.url, lesson.title)}
                                         className="text-blue-500 hover:underline focus:outline-none"
                                     >
                                         Xem video bài giảng
