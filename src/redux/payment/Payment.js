@@ -50,14 +50,11 @@ export const topToWallet = createAsyncThunk("topToWallet", async (data) => {
       },
       ballance: data.ballance
     }
-    console.log("Redux: ", data)
+   
     const response = await axios.post(URL_POST_WALLET + data.userId, wallet, config);
     return response.data;
   } catch (error) {
-    console.error(
-      "Error:",
-      error.response ? error.response.data : error.message
-    );
+   
     throw error;
   }
 });
