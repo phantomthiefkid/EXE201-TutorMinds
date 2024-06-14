@@ -9,12 +9,16 @@ import {
   CalendarCheck,
   Wallet,
   Bank,
+  Coin,
 } from "react-bootstrap-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import ModalSignIn from "./Account.js/ModalSignIn";
 import {
   getUserDataFromToken,
-  getUserNameFromToken,
+  getUserIdFromToken,
 } from "../redux/auth/loginSlice";
+import { fetchWallet } from "../redux/payment/Payment";
 
 const Header = () => {
   const [showModalLogin, setShowModalLogin] = useState(false);
@@ -22,8 +26,21 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const user = getUserNameFromToken();
+  const dispatch = useDispatch();
   const roleName = getUserDataFromToken();
+  const id = getUserIdFromToken();
+  const walletDetail = useSelector((state) => state.wallet.wallet);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    dispatch(fetchWallet({ id }));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    setData(walletDetail);
+  }, [walletDetail]);
+  console.log("---------->", walletDetail);
+
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
@@ -108,6 +125,15 @@ const Header = () => {
               Danh sách khóa học
             </Link>
 
+            {token && roleName === "STUDENT" && (
+              <div className="flex items-center">
+                <Coin className="text-yellow-500 mr-2" size={25} />
+                <p className="text-lg text-blue-600 font-bold">
+                  {walletDetail?.ballance ?? 0} VNĐ
+                </p>
+              </div>
+            )}
+
             {!token && (
               <Link
                 to="/registerUser"
@@ -167,32 +193,32 @@ const Header = () => {
                         </Link>
                       </div>
                     )}
-                    {(roleName === "STUDENT") && (
+                    {roleName === "STUDENT" && (
                       <div
                         className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                         onClick={() => window.scrollTo(0, 0)}
                       >
                         <Link to="/toptowallet" onClick={closeDropdown}>
                           <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
-                          <Wallet size={20} className="mr-2" />
+                            <Wallet size={20} className="mr-2" />
                             Nạp tiền
                           </div>
                         </Link>
                       </div>
                     )}
-                    {(roleName === "STUDENT") && (
+                    {roleName === "STUDENT" && (
                       <div
                         className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                         onClick={() => window.scrollTo(0, 0)}
                       >
                         <Link to="/payment" onClick={closeDropdown}>
                           <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
-                          <Bank size={20} className="mr-2" />
+                            <Bank size={20} className="mr-2" />
                             Lịch sử giao dịch
                           </div>
                         </Link>
                       </div>
-                  )}
+                    )}
                     {roleName === "TUTOR" && (
                       <Link to="/calendar" onClick={closeDropdown}>
                         <div className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
@@ -201,7 +227,7 @@ const Header = () => {
                         </div>
                       </Link>
                     )}
-                    
+
                     <div
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                       onClick={handleLogout}

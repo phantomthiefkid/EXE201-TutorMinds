@@ -305,7 +305,7 @@ const ClassListRequest = () => {
                         {classes.user.phone}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {classes.totalPrice}
+                        {classes.totalPrice} VNĐ
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
@@ -428,7 +428,7 @@ const ClassListRequest = () => {
                         {classes.teacher.phone}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {classes.totalPrice}/buổi
+                        {classes.totalPrice} VNĐ
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
