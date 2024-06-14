@@ -3,9 +3,10 @@ import ModalDetailPaymentHistory from './ModalDetailPaymentHistory';
 import axios from 'axios';
 import { Wallet } from 'react-bootstrap-icons';
 import TopToWalletForUser from './TopToWalletForUser';
+import { getIdOfUser } from '../../redux/auth/loginSlice';
 
 const URL_TRANSACTION_LIST = "https://fams-management.tech/api/transaction/";
-
+const adminId = getIdOfUser()
 const getStatusColor = (status) => {
     switch (status) {
         case 'Đang xử lý':
@@ -48,7 +49,7 @@ const PaymentHistoryAdmin = () => {
 
     const fetchTransactions = async () => {
         try {
-            const response = await axiosInstance.get(`${32}`);
+            const response = await axiosInstance.get(`${adminId}`);
             if (response) {
                 setTransactions(response.data.content);
             }
@@ -72,12 +73,13 @@ const PaymentHistoryAdmin = () => {
                 <h1 className="text-2xl font-semibold">Lịch sử giao dịch</h1>
             </div>
             <div className="mx-auto flex justify-center">
-                <div className="w-5/6 p-4">
+                <div className="w-full p-6">
                     {transactions && transactions.map((transaction, index) => (
-                        <div key={index} className="flex flex-col p-4 mb-4 bg-gradient-to-r from-blue-200 via-slate-200 to-gray-200 rounded-lg shadow hover:shadow-lg">
+                        <div key={index} className="flex flex-col transition transform hover:-translate-y-1 p-4 mb-4 bg-gradient-to-r from-blue-200 via-slate-200 to-green-200 rounded-lg shadow hover:shadow-lg">
                             <div className="flex justify-between items-center mb-2">
                                 <div className="flex items-center w-1/6">
-                                    <img src={transaction.createBy.avatar} alt="Avatar" className="w-14 h-14 rounded-full" />
+                                    {/* Replace image with text "Yêu cầu giao dịch" */}
+                                    <p className="text-gray-600 font-semibold">Yêu cầu giao dịch</p>
                                 </div>
                                 <div className="flex flex-col w-2/3 ml-4">
                                     <p className="text-gray-600">Người chuyển: {transaction?.createBy.fullName}</p>
@@ -93,6 +95,7 @@ const PaymentHistoryAdmin = () => {
                                 </div>
                             </div>
                         </div>
+
                     ))}
                     <div className="flex justify-between items-center mt-4">
                         <button className="text-purple-500 hover:underline">&larr; Trước</button>
