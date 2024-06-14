@@ -14,7 +14,6 @@ const TutorList = () => {
   const [tutorList, setTutorList] = useState([]);
   const [apiData, setApiData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  
 
   console.log("tutorPage", tutorsAPI);
   console.log("totalPage", totalPagesAPI);
@@ -53,7 +52,6 @@ const TutorList = () => {
   }, [apiData]);
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
-  
 
   const handleIncreasePage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -97,7 +95,6 @@ const TutorList = () => {
           placeholder="Tìm kiếm..."
           required
         />
-       
       </div>
 
       <div class="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16">
@@ -108,10 +105,13 @@ const TutorList = () => {
                 key={index}
                 class="rounded overflow-hidden shadow-lg flex flex-col"
               >
-                <div class="relative">
+                <div class="relative ">
                   <img
-                    class="w-full"
-                    src={tutor.avatar || "https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg"}
+                    class="w-full h-48 object-cover"
+                    src={
+                      tutor.avatar ||
+                      "https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg"
+                    }
                     alt="Sunset in the mountains"
                   />
                 </div>

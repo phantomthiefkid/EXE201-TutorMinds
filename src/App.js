@@ -12,7 +12,7 @@ import Dashboard from "./components/Admin/Dashboard";
 import Tutorlist from "./components/Tutormanagement/Tutorlist";
 import CourseList from "./components/CourseManagement/CourseList";
 import CourseDetail from "./components/CourseManagement/CourseDetail";
-import TutorDetail from "./components/Tutormanagement/TutorDetail.js";
+import TutorDetail from "./components/Tutormanagement/Tutordetail.js";
 import ProfileUser from "./components/Usermanagement/ProfileUser";
 import ClassListRequest from "./components/ClassManagement/ClassListRequest";
 import { getUserDataFromToken } from "./redux/auth/loginSlice";
@@ -21,6 +21,8 @@ import AddCourse from "./components/CourseManagement/AddCourse";
 import LessonVideo from "./components/CourseManagement/LessonVideo";
 import PaymentHistory from "./components/Payment/PaymentHistory.js";
 
+import Calendar from "./components/Tutormanagement/CalendarTutor.js";
+import TopToWallet from "./components/Usermanagement/TopToWallet";
 function App() {
   const roleName = getUserDataFromToken();
 
@@ -47,6 +49,10 @@ function App() {
           path="/requestlistadmin"
           element={<RequiestListWithSidebar></RequiestListWithSidebar>}
         ></Route>
+        <Route path="/video/:id" element={<LessonVideo />}></Route>
+        <Route path="/calendar" element={<Calendar />}></Route>
+        <Route path="/requestlistadmin" element={<RequiestListWithSidebar></RequiestListWithSidebar>}></Route>
+        <Route path="/toptowallet" element={<TopToWallet></TopToWallet>}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
@@ -92,5 +98,7 @@ function App() {
     );
   }
 }
+
+
 
 export default App;

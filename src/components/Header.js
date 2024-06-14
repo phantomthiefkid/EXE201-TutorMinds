@@ -6,6 +6,8 @@ import {
   Person,
   Search,
   Book,
+  CalendarCheck,
+  Wallet,
 } from "react-bootstrap-icons";
 import ModalSignIn from "./Account.js/ModalSignIn";
 import {
@@ -145,7 +147,7 @@ const Header = () => {
                       onClick={() => window.scrollTo(0, 0)}
                     >
                       <Link to="/profileuser" onClick={closeDropdown}>
-                        <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                        <div className="flex items-center text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
                           <Person size={20} className="mr-2" />
                           Hồ sơ
                         </div>
@@ -187,7 +189,16 @@ const Header = () => {
                           </div>
                         </Link>
                       </div>
+                  )}
+                    {roleName === "TUTOR" && (
+                      <Link to="/calendar" onClick={closeDropdown}>
+                        <div className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                          <CalendarCheck size={20} className="mr-2" />
+                          Lịch dạy của tôi
+                        </div>
+                      </Link>
                     )}
+                    
                     <div
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                       onClick={handleLogout}
