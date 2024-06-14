@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import { getUserDataFromToken } from "../../redux/auth/loginSlice";
+import { getUserDataFromToken, getUserIdFromToken } from "../../redux/auth/loginSlice";
 
 const CourseList = ({ idTutor }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -9,19 +9,21 @@ const CourseList = ({ idTutor }) => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const role = getUserDataFromToken();
+  const id = getUserIdFromToken();
 
   useEffect(() => {
     const fetchCourses = async () => {
       const token = localStorage.getItem('token'); // Get the token from localStorage
       let url = 'https://fams-management.tech/course?pageNo=0&pageSize=10';
       
-      if (idTutor) {
-        url = `https://fams-management.tech/course/tutor/${idTutor}?pageNo=0&pageSize=10`;
+      if (id) {
+        url = `https://fams-management.tech/course/tutor?pageNo=0&pageSize=10&tutorId=${id}`;
       }
 
       try {
         const response = await axios.get(url, {
-          headers: {
+          headers: { 
+            'accept': '*/*', 
             'Authorization': `Bearer ${token}`
           }
         });
@@ -34,7 +36,7 @@ const CourseList = ({ idTutor }) => {
     };
 
     fetchCourses();
-  }, [idTutor]);
+  }, [id]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
