@@ -61,7 +61,6 @@ export const getUserIdFromToken = () => {
       const decodedPayload = atob(payload);
       const data = JSON.parse(decodedPayload);
       if (data && data.userId) {
-        console.log("token id", data.userId);
         return data.userId;
       }
     }
