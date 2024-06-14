@@ -32,6 +32,9 @@ const Header = () => {
   const walletDetail = useSelector((state) => state.wallet.wallet);
   const [data, setData] = useState(null);
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+  };
   useEffect(() => {
     dispatch(fetchWallet({ id }));
   }, [dispatch, id]);
@@ -126,10 +129,10 @@ const Header = () => {
             </Link>
 
             {token && roleName === "STUDENT" && (
-              <div className="flex items-center">
+              <div className="flex items-center border border-gray-300 rounded-full p-1">
                 <Coin className="text-yellow-500 mr-2" size={25} />
                 <p className="text-lg text-blue-600 font-bold">
-                  {walletDetail?.ballance ?? 0} VNĐ
+                  {formatCurrency(walletDetail?.ballance ?? 0)}
                 </p>
               </div>
             )}

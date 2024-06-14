@@ -36,6 +36,22 @@ export const getUserDataFromToken = () => {
   return null;
 };
 
+export const getIdOfUser = () => {
+  const token = localStorage.getItem("token");
+  try {
+    if (token) {
+      const payload = token.split(".")[1];
+      const decodedPayload = atob(payload);
+      const data = JSON.parse(decodedPayload);
+      if (data && data.userId) {
+        return data.userId;
+      }
+    }
+  } catch (error) {
+    throw (error)
+  }
+}
+
 export const getEmailDataFromToken = () => {
   const token = localStorage.getItem("token");
   try {
@@ -78,7 +94,7 @@ export const LoginSlice = createSlice({
     isError: false,
   },
   reducers: {},
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => { },
 });
 
 export default LoginSlice.reducer;

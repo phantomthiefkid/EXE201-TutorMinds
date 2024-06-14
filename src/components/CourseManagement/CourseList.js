@@ -17,7 +17,7 @@ const CourseList = ({ idTutor }) => {
       let url = 'https://fams-management.tech/course?pageNo=0&pageSize=10';
       
       if (id) {
-        url = `https://fams-management.tech/course/tutor?pageNo=0&pageSize=10&tutorId=${id}`;
+        url = `https://fams-management.tech/course?pageNo=0&pageSize=10`;
       }
 
       try {

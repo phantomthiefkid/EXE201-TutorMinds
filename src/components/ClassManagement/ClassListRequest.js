@@ -278,8 +278,8 @@ const ClassListRequest = () => {
                         {index + 1 + currentPage * itemsPerPage}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">
-                        <button onClick={() => handleOpenInformationModal(classes.id)}>{classes.title}</button>
+                        <div className="text-sm hover:text-blue-400 text-gray-900">
+                          <button onClick={() => handleOpenInformationModal(classes.id)}>{classes.title}</button>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -339,7 +339,7 @@ const ClassListRequest = () => {
                         </span>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                        {classes.conversationStatus.label !== "Approved" && classes.conversationStatus.label !== "Rejected" && classes.conversationStatus.label !== "Refinement Required" && classes.conversationStatus.label !== "Draft" && (
+                        {classes.conversationStatus.label !== "Approved by Tutor" && classes.conversationStatus.label !== "Approved" && classes.conversationStatus.label !== "Rejected" && classes.conversationStatus.label !== "Refinement Required" && classes.conversationStatus.label !== "Draft" && (
                           <button
                             type="button"
                             className="inline-block text-gray-500 hover:text-gray-700"
@@ -375,7 +375,7 @@ const ClassListRequest = () => {
                                 Làm lại yêu cầu
                               </button>
                               <button
-                               
+
                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                               >
                                 Khác
@@ -494,7 +494,7 @@ const ClassListRequest = () => {
                                   Làm lại yêu cầu
                                 </button>
                                 <button
-                                 
+
                                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                                 >
                                   Khác
