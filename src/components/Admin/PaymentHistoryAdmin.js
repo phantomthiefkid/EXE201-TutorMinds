@@ -1,52 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ModalDetailPaymentHistory from './ModalDetailPaymentHistory';
-const transactions = [
-    {
-        status: 'Đang xử lý',
-        amount: '₫15,340,000',
-        date: '10 Tháng 7, 2022',
-        sender: 'Nguyễn Văn A',
-        paymentMethod: 'MoMo',
-        gender: 'Nam',
-        email: 'nguyenvana@example.com',
-        phone: '0912345678',
-        address: '123 Đường ABC, Quận 1, TP.HCM',
-    },
-    {
-        status: 'Thành công',
-        amount: '₫8,250,000',
-        date: '1 Tháng 7, 2022',
-        sender: 'Nguyễn Văn A',
-        paymentMethod: 'MoMo',
-        gender: 'Nam',
-        email: 'nguyenvana@example.com',
-        phone: '0912345678',
-        address: '123 Đường ABC, Quận 1, TP.HCM',
-    },
-    {
-        status: 'Đã hủy',
-        amount: '₫5,000,000',
-        date: '27 Tháng 6, 2022',
-        sender: 'Nguyễn Văn A',
-        paymentMethod: 'MoMo',
-        gender: 'Nam',
-        email: 'nguyenvana@example.com',
-        phone: '0912345678',
-        address: '123 Đường ABC, Quận 1, TP.HCM',
-    },
-    {
-        status: 'Đã hủy',
-        amount: '₫10,250,000',
-        date: '8 Tháng 6, 2022',
-        sender: 'Nguyễn Văn A',
-        paymentMethod: 'MoMo',
-        gender: 'Nam',
-        email: 'nguyenvana@example.com',
-        phone: '0912345678',
-        address: '123 Đường ABC, Quận 1, TP.HCM',
-    }
-];
+import axios from 'axios';
+import { Wallet } from 'react-bootstrap-icons';
+import TopToWalletForUser from './TopToWalletForUser';
 
+const URL_TRANSACTION_LIST = "https://fams-management.tech/api/transaction/";
 
 const getStatusColor = (status) => {
     switch (status) {
@@ -62,7 +20,51 @@ const getStatusColor = (status) => {
 };
 
 const PaymentHistoryAdmin = () => {
-    const [selectedTransaction, setSelectedTransaction] = useState(null)
+    const [selectedTransaction, setSelectedTransaction] = useState(null);
+    const [selectedTransactionTopToWallet, setSelectedTransactionTopToWallet] = useState(null);
+    const [transactions, setTransactions] = useState([]);
+    const [showTopUpModal, setShowTopUpModal] = useState(false);
+
+    const axiosInstance = axios.create({
+        baseURL: URL_TRANSACTION_LIST,
+    });
+
+    axiosInstance.interceptors.request.use(
+        (config) => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        }
+    );
+
+    useEffect(() => {
+        fetchTransactions();
+    }, []);
+
+    const fetchTransactions = async () => {
+        try {
+            const response = await axiosInstance.get(`${32}`);
+            if (response) {
+                setTransactions(response.data.content);
+            }
+        } catch (error) {
+            console.error('Error fetching transactions:', error);
+        }
+    };
+
+    const handleTopUp = (transaction) => {
+        setSelectedTransactionTopToWallet(transaction);
+        setShowTopUpModal(true);
+    };
+
+    const handleCloseTopUpModal = () => {
+        setShowTopUpModal(false);
+    };
 
     return (
         <div className="bg-gray-100 mx-auto p-6">
@@ -70,31 +72,24 @@ const PaymentHistoryAdmin = () => {
                 <h1 className="text-2xl font-semibold">Lịch sử giao dịch</h1>
             </div>
             <div className="mx-auto flex justify-center">
-
-
                 <div className="w-5/6 p-4">
-                    {transactions.map((transaction, index) => (
-                        <div key={index} className="flex flex-col p-4 mb-4 bg-white rounded-lg shadow hover:shadow-lg">
+                    {transactions && transactions.map((transaction, index) => (
+                        <div key={index} className="flex flex-col p-4 mb-4 bg-gradient-to-r from-blue-200 via-slate-200 to-gray-200 rounded-lg shadow hover:shadow-lg">
                             <div className="flex justify-between items-center mb-2">
-                                <div className="flex items-center">
-                                    <div className={`w-4 h-4 rounded-full ${getStatusColor(transaction.status)}`}></div>
-                                    <div className="ml-3">
-                                        <h4 className="font-semibold">{transaction.status}</h4>
-                                        <p className="text-gray-600">{transaction.date}</p>
-                                    </div>
+                                <div className="flex items-center w-1/6">
+                                    <img src={transaction.createBy.avatar} alt="Avatar" className="w-14 h-14 rounded-full" />
                                 </div>
-                                <button onClick={() => setSelectedTransaction(transaction)} className="ml-4 text-orange-500 hover:underline">
-                                    Chi tiết
-                                </button>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <div>
-                                    <p className="text-gray-600">Người chuyển: {transaction.sender}</p>
-                                    <p className="text-gray-600">Số tiền: {transaction.amount}</p>
+                                <div className="flex flex-col w-2/3 ml-4">
+                                    <p className="text-gray-600">Người chuyển: {transaction?.createBy.fullName}</p>
+                                    <p className="text-gray-600">Ngày chuyển: {transaction.createDate}</p>
                                 </div>
-                                <div className="text-right">
-                                    <p className="text-gray-600">Ngày chuyển: {transaction.date}</p>
-                                    <p className="text-gray-600">{transaction.description}</p>
+                                <div className="flex justify-end w-1/6">
+                                    <button onClick={() => handleTopUp(transaction)} className='mr-4'>
+                                        <Wallet color='green' size={30} />
+                                    </button>
+                                    <button onClick={() => setSelectedTransaction(transaction)} className="text-orange-500 hover:underline">
+                                        Chi tiết
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -114,12 +109,18 @@ const PaymentHistoryAdmin = () => {
                         &copy; 2022, Bling Cloud Technologies LLC. All Rights Reserved.
                     </div>
                 </div>
-
             </div>
             {selectedTransaction && (
                 <ModalDetailPaymentHistory
                     onClose={() => setSelectedTransaction(null)}
                     transaction={selectedTransaction}
+                />
+            )}
+            {showTopUpModal && (
+                <TopToWalletForUser
+                    show={showTopUpModal}
+                    handleClose={handleCloseTopUpModal}
+                    transaction={selectedTransactionTopToWallet}
                 />
             )}
         </div>
