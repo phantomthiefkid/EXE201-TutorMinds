@@ -20,7 +20,7 @@ import RequestListAdmin from "./components/Admin/RequestListAdmin";
 import AddCourse from "./components/CourseManagement/AddCourse";
 import LessonVideo from "./components/CourseManagement/LessonVideo";
 import Calendar from "./components/Tutormanagement/CalendarTutor.js";
-
+import TopToWallet from "./components/Usermanagement/TopToWallet";
 function App() {
   const roleName = getUserDataFromToken();
 
@@ -43,10 +43,8 @@ function App() {
         <Route path="/addcourse" element={<AddCourse />}></Route>
         <Route path="/video/:id" element={<LessonVideo />}></Route>
         <Route path="/calendar" element={<Calendar />}></Route>
-        <Route
-          path="/requestlistadmin"
-          element={<RequiestListWithSidebar></RequiestListWithSidebar>}
-        ></Route>
+        <Route path="/requestlistadmin" element={<RequiestListWithSidebar></RequiestListWithSidebar>}></Route>
+        <Route path="/toptowallet" element={<TopToWallet></TopToWallet>}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
@@ -92,5 +90,7 @@ function App() {
     );
   }
 }
+
+
 
 export default App;
