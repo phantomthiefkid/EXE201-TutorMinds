@@ -23,6 +23,7 @@ import PaymentHistory from "./components/Payment/PaymentHistory.js";
 
 import Calendar from "./components/Tutormanagement/CalendarTutor.js";
 import TopToWallet from "./components/Usermanagement/TopToWallet";
+import PaymentHistoryAdmin from "./components/Admin/PaymentHistoryAdmin";
 function App() {
   const roleName = getUserDataFromToken();
 
@@ -53,6 +54,7 @@ function App() {
         <Route path="/calendar" element={<Calendar />}></Route>
         <Route path="/requestlistadmin" element={<RequiestListWithSidebar></RequiestListWithSidebar>}></Route>
         <Route path="/toptowallet" element={<TopToWallet></TopToWallet>}></Route>
+        <Route path="/paymenthistoryadmin" element={<SidebarAdmin><PaymentHistoryAdmin></PaymentHistoryAdmin></SidebarAdmin>}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
