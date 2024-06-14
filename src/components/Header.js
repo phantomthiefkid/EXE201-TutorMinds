@@ -8,6 +8,7 @@ import {
   Book,
   CalendarCheck,
   Wallet,
+  Bank,
 } from "react-bootstrap-icons";
 import ModalSignIn from "./Account.js/ModalSignIn";
 import {
@@ -171,20 +172,22 @@ const Header = () => {
                         className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                         onClick={() => window.scrollTo(0, 0)}
                       >
-                        <Link to="" onClick={closeDropdown}>
+                        <Link to="/toptowallet" onClick={closeDropdown}>
                           <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                          <Wallet size={20} className="mr-2" />
                             Nạp tiền
                           </div>
                         </Link>
                       </div>
                     )}
-                    {(roleName === "STUDENT" && roleName === "ADMIN") && (
+                    {(roleName === "STUDENT") && (
                       <div
                         className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                         onClick={() => window.scrollTo(0, 0)}
                       >
                         <Link to="/payment" onClick={closeDropdown}>
                           <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                          <Bank size={20} className="mr-2" />
                             Lịch sử giao dịch
                           </div>
                         </Link>
