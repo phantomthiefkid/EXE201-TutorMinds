@@ -39,6 +39,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardWithSidebar />}></Route>
         <Route path="/tutorlist" element={<Tutorlist />}></Route>
         <Route path="/courselist" element={<CourseList />}></Route>
+        <Route path="/toturcourse/:id" element={<CourseList />}></Route>
         <Route path="/tutordetail/:id" element={<TutorDetail />}></Route>
         <Route path="/coursedetail/:id" element={<CourseDetail />}></Route>
         <Route path="/profileuser" element={<ProfileUser />}></Route>

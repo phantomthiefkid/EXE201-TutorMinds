@@ -10,6 +10,7 @@ import {
   Wallet,
   Bank,
   Coin,
+  BookmarkCheck,
 } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -194,6 +195,19 @@ const Header = () => {
                             Lớp học của tôi
                           </div>
                         </Link>
+                      </div>
+                    )}
+                    {(roleName === "TUTOR") && (
+                      <div
+                        className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
+                        onClick={() => window.scrollTo(0, 0)}
+                      >
+                        <Link to={`/toturcourse/${id}`} onClick={closeDropdown}>
+                        <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                          <BookmarkCheck size={20} className="mr-2" />
+                          Khóa học của tôi
+                        </div>
+                      </Link>
                       </div>
                     )}
                     {roleName === "STUDENT" && (

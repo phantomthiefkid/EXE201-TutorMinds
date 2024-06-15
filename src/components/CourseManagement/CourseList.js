@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from 'axios';
 import { getUserDataFromToken, getUserIdFromToken } from "../../redux/auth/loginSlice";
 
@@ -9,7 +9,8 @@ const CourseList = ({ idTutor }) => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const role = getUserDataFromToken();
-  const id = getUserIdFromToken();
+  const {id} = useParams();
+  console.log(id)
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -17,7 +18,7 @@ const CourseList = ({ idTutor }) => {
       let url = 'https://fams-management.tech/course?pageNo=0&pageSize=10';
       
       if (id) {
-        url = `https://fams-management.tech/course?pageNo=0&pageSize=10`;
+        url = `https://fams-management.tech/course/tutor?pageNo=0&pageSize=10&&tutorId=${id}`;
       }
 
       try {
