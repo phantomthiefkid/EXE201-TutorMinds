@@ -50,7 +50,7 @@ const PaymentHistory = () => {
               <div className="flex items-center">
                 <div className={`w-4 h-4 rounded-full ${getStatusColor(transaction.status)}`}></div>
                 <div className="ml-3">
-                  <p className="text-gray-600">{transaction.createDate}</p>
+                  <p className="text-gray-600">{transaction.createDate}</p> 
                 </div>
               </div>
               <button className="ml-4 text-blue-500 hover:underline">Chi tiết</button>
