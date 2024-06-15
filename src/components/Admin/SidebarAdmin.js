@@ -6,7 +6,7 @@ const SidebarAdmin = ({ children }) => {
     
     return (
         <div className='grid grid-cols-12'>
-            <div className="h-screen col-span-2 bg-white  text-gray-600 w-64 space-y-6 py-7 px-2 shadow-md">
+            <div className="h-screen col-span-2 bg-white  text-gray-600 w-64 space-y-6 py-7 px-2">
                 <span href="" className="text-blue-500 flex items-center space-x-2 px-4">
                     <span className="text-2xl font-extrabold">Admin</span>
                 </span>
@@ -20,9 +20,9 @@ const SidebarAdmin = ({ children }) => {
                     <Link to={`/requestlistadmin`} className="flex items-start py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200 hover:text-blue-600 text-md">
                       <Laptop className='mr-2'size={20}/>  Quản lí yêu cầu
                     </Link>
-                    <a href="#" className="flex items-start py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200 hover:text-blue-600 text-md">
-                    <Book className='mr-2'size={20}/> Môn học
-                    </a>
+                    <Link to={`/paymenthistoryadmin`} className="flex items-start py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200 hover:text-blue-600 text-md">
+                    <Book className='mr-2'size={20}/> Quản lí lịch sử giao dịch
+                    </Link>
                     <a href="#" className="flex items-start py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200 hover:text-blue-600 text-md">
                      <ClipboardDataFill className='mr-2'size={20}/>   Hóa đơn
                     </a>

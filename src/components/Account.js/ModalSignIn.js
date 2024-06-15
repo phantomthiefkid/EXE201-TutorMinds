@@ -26,6 +26,7 @@ const ModalSignIn = ({ visible, onClose }) => {
       localStorage.setItem("token", token.accessToken);
       const storedToken = localStorage.getItem("token");
       onClose();
+      window.location.reload(true);
       navigate("/");
     } catch (error) {
       console.error("Đăng nhập thất bại", error);

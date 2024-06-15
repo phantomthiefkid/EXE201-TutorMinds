@@ -8,12 +8,20 @@ import {
   Book,
   CalendarCheck,
   Wallet,
+  Bank,
+  Coin,
+  BookmarkCheck,
 } from "react-bootstrap-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import ModalSignIn from "./Account.js/ModalSignIn";
 import {
   getUserDataFromToken,
-  getUserNameFromToken,
+  getUserIdFromToken,
+  getEmailDataFromToken,
 } from "../redux/auth/loginSlice";
+import { fetchUser } from "../redux/Usermanagement/user";
+import { fetchWallet } from "../redux/payment/Payment";
 
 const Header = () => {
   const [showModalLogin, setShowModalLogin] = useState(false);
@@ -21,8 +29,38 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const user = getUserNameFromToken();
+  const dispatch = useDispatch();
   const roleName = getUserDataFromToken();
+  const id = getUserIdFromToken();
+  const email = getEmailDataFromToken();
+  const walletDetail = useSelector((state) => state.wallet.wallet);
+  const fetchUserDetail = useSelector((state) => state.user.user);
+  const [data, setData] = useState(null);
+  const [dataUser, setDataUser] = useState(null);
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(value);
+  };
+  useEffect(() => {
+    dispatch(fetchWallet({ id }));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    setData(walletDetail);
+  }, [walletDetail]);
+
+  useEffect(() => {
+    dispatch(fetchUser({ email }));
+  }, [dispatch, email]);
+
+  useEffect(() => {
+    setDataUser(fetchUserDetail);
+  }, [fetchUserDetail]);
+
+
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
@@ -107,6 +145,15 @@ const Header = () => {
               Danh sách khóa học
             </Link>
 
+            {token && (roleName === "STUDENT" || roleName === "TUTOR") && (
+              <div className="flex items-center border border-gray-300 rounded-full p-1">
+                <Coin className="text-yellow-500 mr-2" size={25} />
+                <p className="text-lg text-blue-600 font-bold">
+                  {formatCurrency(walletDetail?.balance ?? 0)}
+                </p>
+              </div>
+            )}
+
             {!token && (
               <Link
                 to="/registerUser"
@@ -123,11 +170,15 @@ const Header = () => {
                   className="flex items-center cursor-pointer"
                 >
                   <div className="text-blue-600 hover:text-blue-800 mr-2 text-lg">
-                    {roleName}
+                    {fetchUserDetail?.fullName}
                   </div>
                   <img
                     className="rounded-full h-12 w-12"
-                    src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                    src={
+                      fetchUserDetail?.avatar
+                        ? fetchUserDetail.avatar
+                        : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                    }
                     alt="profile"
                   />
                 </div>
@@ -166,30 +217,45 @@ const Header = () => {
                         </Link>
                       </div>
                     )}
-                    {(roleName === "STUDENT") && (
+                    {roleName === "TUTOR" && (
                       <div
                         className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                         onClick={() => window.scrollTo(0, 0)}
                       >
-                        <Link to="" onClick={closeDropdown}>
+                        <Link to={`/toturcourse/${id}`} onClick={closeDropdown}>
                           <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                            <BookmarkCheck size={20} className="mr-2" />
+                            Khóa học của tôi
+                          </div>
+                        </Link>
+                      </div>
+                    )}
+                    {roleName === "STUDENT" && (
+                      <div
+                        className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
+                        onClick={() => window.scrollTo(0, 0)}
+                      >
+                        <Link to="/toptowallet" onClick={closeDropdown}>
+                          <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                            <Wallet size={20} className="mr-2" />
                             Nạp tiền
                           </div>
                         </Link>
                       </div>
                     )}
-                    {(roleName === "STUDENT" && roleName === "ADMIN") && (
+                    {roleName === "STUDENT" && (
                       <div
                         className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                         onClick={() => window.scrollTo(0, 0)}
                       >
                         <Link to="/payment" onClick={closeDropdown}>
                           <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                            <Bank size={20} className="mr-2" />
                             Lịch sử giao dịch
                           </div>
                         </Link>
                       </div>
-                  )}
+                    )}
                     {roleName === "TUTOR" && (
                       <Link to="/calendar" onClick={closeDropdown}>
                         <div className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
@@ -198,7 +264,7 @@ const Header = () => {
                         </div>
                       </Link>
                     )}
-                    
+
                     <div
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                       onClick={handleLogout}

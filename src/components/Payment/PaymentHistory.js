@@ -2,38 +2,74 @@ import React from 'react';
 
 const transactions = [
   {
-    status: 'Processing',
-    amount: '₱15,340.00',
-    date: '10 July 2022',
-    description: 'Demo Booking at...',
+    status: 'Đang xử lý',
+    amount: '₫15,340,000',
+    date: '10 Tháng 7, 2022',
+    sender: 'Nguyễn Văn A',
   },
   {
-    status: 'Successful',
-    amount: '₱8,250.00',
-    date: '1 July 2022',
-    description: 'Demo Booking at...',
+    status: 'Thành công',
+    amount: '₫8,250,000',
+    date: '1 Tháng 7, 2022',
+    sender: 'Nguyễn Văn A',
   },
   {
-    status: 'Cancelled',
-    amount: '₱5,000.00',
-    date: '27 June 2022',
-    description: 'Demo Booking at...',
+    status: 'Đã hủy',
+    amount: '₫5,000,000',
+    date: '27 Tháng 6, 2022',
+    sender: 'Nguyễn Văn A',
   },
   {
-    status: 'Cancelled',
-    amount: '₱10,250.00',
-    date: '8 June 2022',
-    description: 'Demo Booking at...',
+    status: 'Đã hủy',
+    amount: '₫10,250,000',
+    date: '8 Tháng 6, 2022',
+    sender: 'Nguyễn Văn A',
+  },
+  {
+    status: 'Thành công',
+    amount: '₫12,500,000',
+    date: '20 Tháng 5, 2022',
+    sender: 'Nguyễn Văn A',
+  },
+  {
+    status: 'Đang xử lý',
+    amount: '₫6,750,000',
+    date: '15 Tháng 5, 2022',
+    sender: 'Nguyễn Văn A',
+  },
+  {
+    status: 'Thành công',
+    amount: '₫9,300,000',
+    date: '10 Tháng 5, 2022',
+    sender: 'Nguyễn Văn A',
+  },
+  {
+    status: 'Đang xử lý',
+    amount: '₫4,200,000',
+    date: '5 Tháng 5, 2022',
+    sender: 'Nguyễn Văn A',
+  },
+  {
+    status: 'Thành công',
+    amount: '₫11,800,000',
+    date: '30 Tháng 4, 2022',
+    sender: 'Nguyễn Văn A',
+  },
+  {
+    status: 'Đã hủy',
+    amount: '₫7,900,000',
+    date: '25 Tháng 4, 2022',
+    sender: 'Nguyễn Văn A',
   },
 ];
 
 const getStatusColor = (status) => {
   switch (status) {
-    case 'Processing':
+    case 'Đang xử lý':
       return 'bg-yellow-500';
-    case 'Successful':
+    case 'Thành công':
       return 'bg-green-500';
-    case 'Cancelled':
+    case 'Đã hủy':
       return 'bg-red-500';
     default:
       return 'bg-gray-500';
@@ -42,27 +78,17 @@ const getStatusColor = (status) => {
 
 const PaymentHistory = () => {
   return (
-    <div className="bg-gray-100 p-4 flex justify-center w-80vw" >
-      <div className="mx-auto w-full bg-white shadow-lg rounded-lg overflow-hidden" style={{
-        "width": "80vw"
-    }}>
-        <div className="flex items-center p-4 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white">
-          <img src="profile_picture_url" alt="Profile" className="w-12 h-12 rounded-full border-2 border-white" />
-          <div className="ml-3">
-            <h2 className="text-xl font-semibold">Mhoreen</h2>
-            <button className="text-blue-200 hover:underline">Follow</button>
-          </div>
-        </div>
-        <div className="flex">
-          <div className="w-1/4 bg-purple-100 p-4">
-            <a href="#" className="flex items-center text-gray-600 bg-white p-2 rounded-md mb-4 shadow">
-              <span className="ml-2">Payment History</span>
-            </a>
-            <button className="text-purple-500 hover:underline mt-8 block">Logout</button>
-          </div>
-          <div className="w-3/4 p-4">
-            {transactions.map((transaction, index) => (
-              <div key={index} className="flex justify-between items-center p-4 mb-4 bg-gray-100 rounded-lg shadow">
+    <div className="bg-gray-100 mx-auto ">
+      <div className="p-4 text-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white">
+        <h1 className="text-2xl font-semibold">Lịch sử giao dịch</h1>
+      </div>
+      <div className="mx-auto flex justify-center">
+
+
+        <div className="w-5/6 p-4">
+          {transactions.map((transaction, index) => (
+            <div key={index} className="flex flex-col p-4 mb-4 bg-white rounded-lg shadow hover:shadow-lg">
+              <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center">
                   <div className={`w-4 h-4 rounded-full ${getStatusColor(transaction.status)}`}></div>
                   <div className="ml-3">
@@ -70,29 +96,36 @@ const PaymentHistory = () => {
                     <p className="text-gray-600">{transaction.date}</p>
                   </div>
                 </div>
+                <button className="ml-4 text-orange-500 hover:underline">Chi tiết</button>
+              </div>
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-gray-600">Người chuyển: {transaction.sender}</p>
+                  <p className="text-gray-600">Số tiền: {transaction.amount}</p>
+                </div>
                 <div className="text-right">
-                  <h4 className="font-semibold">{transaction.amount}</h4>
+                  <p className="text-gray-600">Ngày chuyển: {transaction.date}</p>
                   <p className="text-gray-600">{transaction.description}</p>
                 </div>
-                <button className="ml-4 text-orange-500 hover:underline">Details</button>
               </div>
-            ))}
-            <div className="flex justify-between items-center mt-4">
-              <button className="text-purple-500 hover:underline">&larr; Previous</button>
-              <div className="space-x-2">
-                <button className="text-purple-500 hover:underline">1</button>
-                <button className="text-purple-500 hover:underline">2</button>
-                <button className="text-purple-500 hover:underline">3</button>
-                <button className="text-purple-500 hover:underline">4</button>
-                <button className="text-purple-500 hover:underline">...</button>
-              </div>
-              <button className="text-purple-500 hover:underline">Next &rarr;</button>
             </div>
-            <div className="p-4 text-center text-gray-600 mt-8">
-              &copy; 2022, Bling Cloud Technologies LLC. All Rights Reserved.
+          ))}
+          <div className="flex justify-between items-center mt-4">
+            <button className="text-purple-500 hover:underline">&larr; Trước</button>
+            <div className="space-x-2">
+              <button className="text-purple-500 hover:underline">1</button>
+              <button className="text-purple-500 hover:underline">2</button>
+              <button className="text-purple-500 hover:underline">3</button>
+              <button className="text-purple-500 hover:underline">4</button>
+              <button className="text-purple-500 hover:underline">...</button>
             </div>
+            <button className="text-purple-500 hover:underline">Sau &rarr;</button>
+          </div>
+          <div className="p-4 text-center text-gray-600 mt-8">
+            &copy; 2022, Bling Cloud Technologies LLC. All Rights Reserved.
           </div>
         </div>
+
       </div>
     </div>
   );

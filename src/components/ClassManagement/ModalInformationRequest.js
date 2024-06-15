@@ -35,6 +35,11 @@ const ModalInformationRequest = ({ selectedClassId, isOpen, onClose, flag, setFl
   const dispatch = useDispatch();
   const classDetail = useSelector((state) => state.class.class);
   const role = getUserDataFromToken();
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+  };
+
   useEffect(() => {
     if (isOpen && selectedClassId) {
       dispatch(fetchClassDetail({ id: selectedClassId }));
@@ -79,18 +84,23 @@ const ModalInformationRequest = ({ selectedClassId, isOpen, onClose, flag, setFl
   const handleSubmitRequest = async (classId, remake) => {
     const data = {
       id: classId,
-      statusId: role === "TUTOR" ? 4 : 2,
+      statusId: role === "TUTOR" ? 6 : 2,
       remark: remake
     }
     try {
       if (data) {
-        const response = await dispatch(updateStatus(data)).then(() => {
-          toast.success('Gửi yêu cầu thành công!!!');
-          setTimeout(() => {
-            onClose();
-            setFlag(!flag)
-          }, 500)
-        })
+        const response = await dispatch(updateStatus(data))
+        if (response) {
+          toast.success("Duyệt yêu cầu thành công!!")
+        }
+
+
+        setTimeout(() => {
+          onClose();
+          setFlag(!flag)
+        }, 500)
+
+
 
       }
     } catch (error) {
@@ -245,7 +255,7 @@ const ModalInformationRequest = ({ selectedClassId, isOpen, onClose, flag, setFl
                 id="totalPrice"
                 name="totalPrice"
                 disabled
-                value={classDetail?.totalPrice}
+                value={formatCurrency(classDetail?.totalPrice)}
                 class="w-full p-2 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
               />
             </div>

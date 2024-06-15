@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from 'axios';
 import { getUserDataFromToken, getUserIdFromToken } from "../../redux/auth/loginSlice";
 import ModalUpdateCourse from "./ModalUpdateCourse";
@@ -11,7 +11,8 @@ const CourseList = ({ idTutor }) => {
   const [loading, setLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState(null); 
   const role = getUserDataFromToken();
-  const id = getUserIdFromToken();
+  const {id} = useParams();
+  console.log(id)
 
   useEffect(() => {
     const fetchCourses = async () => {
