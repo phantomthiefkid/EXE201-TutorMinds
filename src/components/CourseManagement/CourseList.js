@@ -12,32 +12,31 @@ const CourseList = ({ idTutor }) => {
   const [selectedCourse, setSelectedCourse] = useState(null); 
   const role = getUserDataFromToken();
   const {id} = useParams();
-  console.log(id)
+
+  const fetchCourses = async () => {
+    const token = localStorage.getItem('token'); 
+    let url = 'https://fams-management.tech/course?pageNo=0&pageSize=10';
+    
+    if (idTutor) {
+      url = `https://fams-management.tech/course/tutor?pageNo=0&pageSize=10&tutorId=${id}`;
+    }
+
+    try {
+      const response = await axios.get(url, {
+        headers: { 
+          'accept': '*/*', 
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setCourses(response.data.content);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching course data:", error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      const token = localStorage.getItem('token'); // Get the token from localStorage
-      let url = 'https://fams-management.tech/course?pageNo=0&pageSize=10';
-      
-      if (idTutor) {
-        url = `https://fams-management.tech/course/tutor?pageNo=0&pageSize=10&tutorId=${id}`;
-      }
-
-      try {
-        const response = await axios.get(url, {
-          headers: { 
-            'accept': '*/*', 
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        setCourses(response.data.content);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching course data:", error);
-        setLoading(false);
-      }
-    };
-
     fetchCourses();
   }, [id]);
 
@@ -47,6 +46,10 @@ const CourseList = ({ idTutor }) => {
 
   const handleFilter = (e) => {
     setFilter(e.target.value);
+  };
+
+  const onUpdateSuccess = () => {
+    fetchCourses();
   };
 
   const filteredCourses = courses.filter((course) => {
@@ -104,6 +107,7 @@ const CourseList = ({ idTutor }) => {
         <ModalUpdateCourse
           course={selectedCourse}
           onClose={() => setSelectedCourse(null)}
+          onUpdateSuccess={onUpdateSuccess}
         />
       )}
       <div className="w-full max-w-7xl px-4 md:px-5 mx-auto mt-10">
@@ -144,7 +148,11 @@ const CourseList = ({ idTutor }) => {
             >
               <div className="col-span-12 lg:col-span-2 img box">
                 <img
-                  src={"https://foundr.com/wp-content/uploads/2021/09/Best-online-course-platforms.png"}
+                  src={
+                    course?.image
+                      ? course.image
+                      : "https://foundr.com/wp-content/uploads/2021/09/Best-online-course-platforms.png"
+                  }
                   alt={course.title}
                   className="max-lg:w-full lg:w-[200px]"
                 />
