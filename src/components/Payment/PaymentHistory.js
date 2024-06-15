@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { getIdOfUser } from '../../redux/auth/loginSlice';
 import axios from 'axios';
 const id = getIdOfUser();
+console.log(id);
 
 const transactions = [
   {

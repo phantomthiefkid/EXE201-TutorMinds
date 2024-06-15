@@ -10,7 +10,8 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
   const [image, setImage] = useState(course.image);
   const [description, setDescription] = useState(course.description);
   const [simpleDescription, setSimpleDescription] = useState(course.simpleDescription);
-  const [lessons, setLessons] = useState(course.lessons || []);
+  const [lessons, setLessons] = useState([]);
+  const [lessonVideoFiles, setLessonVideoFiles] = useState([]);
   const [newImageFile, setNewImageFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
@@ -33,7 +34,7 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
     };
 
     fetchLessons();
-  }, []);
+  }, [id]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -59,6 +60,71 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
     });
 
     return response.data;
+  };
+
+  const uploadLessonVideo = async (index) => {
+    if (!lessonVideoFiles[index]) return lessons[index].url;
+
+    const formData = new FormData();
+    formData.append('files', lessonVideoFiles[index], lessonVideoFiles[index].name);
+
+    const token = localStorage.getItem('token');
+    const response = await axios.post('https://fams-management.tech/api/files', formData, {
+      headers: {
+        'accept': '*/*',
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    return response.data;
+  };
+
+  const handleLessonVideoChange = (index, e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const updatedLessonVideoFiles = [...lessonVideoFiles];
+      updatedLessonVideoFiles[index] = file;
+      setLessonVideoFiles(updatedLessonVideoFiles);
+    }
+  };
+
+  const handleLessonChange = (index, field, value) => {
+    const updatedLessons = [...lessons];
+    updatedLessons[index][field] = value;
+    setLessons(updatedLessons);
+  };
+
+  const handleLessonUpdate = async (index) => {
+    const uploadedVideoUrl = await uploadLessonVideo(index);
+
+    const updatedLessonData = {
+      id: lessons[index].id,
+      title: lessons[index].title,
+      description: lessons[index].description,
+      url: uploadedVideoUrl || lessons[index].url
+    };
+
+    const token = localStorage.getItem('token');
+    try {
+      const res = await axios.put(
+        `https://fams-management.tech/api/lesson/${id}`,
+        [updatedLessonData],
+        {
+          headers: {
+            'accept': '*/*',
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+      if (res.status === 200) {
+        toast.success(`Lesson ${index + 1} updated successfully!`);
+      }
+    } catch (error) {
+      toast.error('Error updating lesson: ' + error.message);
+      console.error("Error updating lesson:", error);
+    }
   };
 
   const handleUpdate = async (event) => {
@@ -95,21 +161,6 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
     } catch (error) {
       toast.error('Error updating course: ' + error.message);
       console.error("Error updating course:", error);
-    }
-  };
-
-  const handleLessonChange = (index, event) => {
-    const updatedLessons = [...lessons];
-    updatedLessons[index][event.target.name] = event.target.value;
-    setLessons(updatedLessons);
-  };
-
-  const handleLessonVideoUpload = (index, event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const updatedLessons = [...lessons];
-      updatedLessons[index].url = URL.createObjectURL(file);
-      setLessons(updatedLessons);
     }
   };
 
@@ -199,16 +250,16 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
                   type="text"
                   name="title"
                   value={lesson.title}
-                  onChange={(e) => handleLessonChange(index, e)}
                   className="border p-2 w-full rounded"
                   placeholder="Title"
+                  onChange={(e) => handleLessonChange(index, 'title', e.target.value)}
                 />
                 <textarea
                   name="description"
                   value={lesson.description}
-                  onChange={(e) => handleLessonChange(index, e)}
                   className="mt-2 border p-2 w-full rounded"
                   placeholder="Description"
+                  onChange={(e) => handleLessonChange(index, 'description', e.target.value)}
                 />
                 <div className="mt-2">
                   <label className="block mb-2 font-semibold">Video URL</label>
@@ -222,11 +273,18 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
                     type="file"
                     name="url"
                     accept="video/*"
-                    onChange={(e) => handleLessonVideoUpload(index, e)}
                     className="border p-2 w-full rounded"
                     placeholder="Video URL"
+                    onChange={(e) => handleLessonVideoChange(index, e)}
                   />
                 </div>
+                <button
+                  type="button"
+                  onClick={() => handleLessonUpdate(index)}
+                  className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+                >
+                  Update Lesson
+                </button>
               </div>
             ))}
             <button
