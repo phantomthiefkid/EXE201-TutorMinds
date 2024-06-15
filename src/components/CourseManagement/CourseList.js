@@ -2,40 +2,41 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from 'axios';
 import { getUserDataFromToken, getUserIdFromToken } from "../../redux/auth/loginSlice";
+import ModalUpdateCourse from "./ModalUpdateCourse";
 
 const CourseList = ({ idTutor }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("");
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCourse, setSelectedCourse] = useState(null); 
   const role = getUserDataFromToken();
   const {id} = useParams();
-  console.log(id)
+
+  const fetchCourses = async () => {
+    const token = localStorage.getItem('token'); 
+    let url = 'https://fams-management.tech/course?pageNo=0&pageSize=10';
+    
+    if (idTutor) {
+      url = `https://fams-management.tech/course/tutor?pageNo=0&pageSize=10&tutorId=${id}`;
+    }
+
+    try {
+      const response = await axios.get(url, {
+        headers: { 
+          'accept': '*/*', 
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setCourses(response.data.content);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching course data:", error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      const token = localStorage.getItem('token'); // Get the token from localStorage
-      let url = 'https://fams-management.tech/course?pageNo=0&pageSize=10';
-      
-      if (id) {
-        url = `https://fams-management.tech/course/tutor?pageNo=0&pageSize=10&&tutorId=${id}`;
-      }
-
-      try {
-        const response = await axios.get(url, {
-          headers: { 
-            'accept': '*/*', 
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        setCourses(response.data.content);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching course data:", error);
-        setLoading(false);
-      }
-    };
-
     fetchCourses();
   }, [id]);
 
@@ -45,6 +46,10 @@ const CourseList = ({ idTutor }) => {
 
   const handleFilter = (e) => {
     setFilter(e.target.value);
+  };
+
+  const onUpdateSuccess = () => {
+    fetchCourses();
   };
 
   const filteredCourses = courses.filter((course) => {
@@ -76,7 +81,7 @@ const CourseList = ({ idTutor }) => {
             className="h-6 w-6 shrink-0 fill-yellow-400"
             viewBox="0 0 256 256"
           >
-            <path d="M239.2 97.4A16.4 16.4.0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4.0 00128 16h0a16.4 16.4.0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5.0 0016.8 97.4 16.8 16.8.0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5.0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1.0 008.7 2.6 16.5 16.5.0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8.0 00239.2 97.4zM128 192.8v-132L105.1 82.6 90 130.1l-35.6 4.6 27 22.8L63.3 200 128 163.6z"></path>
+            <path d="M239.2 97.4A16.4 16.4.0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4.0 00128 16h0a16.4 16.4.0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5.0 0016.8 97.4 16.8 16.8.0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5.0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1.0 008.7 2.6 16.5 16.5.0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8.0 00239.2 97.4z"></path>
           </svg>
         )}
         {[...Array(emptyStars)].map((_, i) => (
@@ -98,6 +103,13 @@ const CourseList = ({ idTutor }) => {
 
   return (
     <>
+      {selectedCourse && (
+        <ModalUpdateCourse
+          course={selectedCourse}
+          onClose={() => setSelectedCourse(null)}
+          onUpdateSuccess={onUpdateSuccess}
+        />
+      )}
       <div className="w-full max-w-7xl px-4 md:px-5 mx-auto mt-10">
         <div className="flex items-center mb-4">
           <input
@@ -136,7 +148,11 @@ const CourseList = ({ idTutor }) => {
             >
               <div className="col-span-12 lg:col-span-2 img box">
                 <img
-                  src={"https://foundr.com/wp-content/uploads/2021/09/Best-online-course-platforms.png"}
+                  src={
+                    course?.image
+                      ? course.image
+                      : "https://foundr.com/wp-content/uploads/2021/09/Best-online-course-platforms.png"
+                  }
                   alt={course.title}
                   className="max-lg:w-full lg:w-[200px]"
                 />
@@ -146,9 +162,22 @@ const CourseList = ({ idTutor }) => {
                   <h5 className="font-manrope font-bold text-2xl leading-9 text-gray-900">
                     {course.title}
                   </h5>
-                  <h6 className="text-indigo-600 font-manrope font-bold text-2xl leading-9 text-right">
-                    ${course.price}
-                  </h6>
+                  <div className="flex items-center">
+                    <h6 className="text-indigo-600 font-manrope font-bold text-2xl leading-9 text-right">
+                      ${course.price}
+                    </h6>
+                    {role === "ADMIN" && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setSelectedCourse(course);
+                        }}
+                        className="ml-2 bg-green-500 text-white p-2 rounded hover:bg-green-600 transition-colors"
+                      >
+                        Update
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <p className="font-normal text-base leading-7 text-gray-500 mb-6">
                   {course.simpleDescription}{" "}

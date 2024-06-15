@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { getIdOfUser } from '../../redux/auth/loginSlice';
+import axios from 'axios';
+const id = getIdOfUser();
+console.log(id);
 
 const transactions = [
   {
@@ -76,7 +80,27 @@ const getStatusColor = (status) => {
   }
 };
 
+
 const PaymentHistory = () => {
+  const token = localStorage.getItem('token'); 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`https://fams-management.tech/api/transaction/${id}?pageIndex=1&pageSize=10`,{
+        headers: { 
+          'accept': '*/*', 
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  useEffect(() => {
+    fetchData();
+  }, [])
+
   return (
     <div className="bg-gray-100 mx-auto ">
       <div className="p-4 text-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white">
