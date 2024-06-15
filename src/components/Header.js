@@ -18,7 +18,9 @@ import ModalSignIn from "./Account.js/ModalSignIn";
 import {
   getUserDataFromToken,
   getUserIdFromToken,
+  getEmailDataFromToken,
 } from "../redux/auth/loginSlice";
+import { fetchUser } from "../redux/Usermanagement/user";
 import { fetchWallet } from "../redux/payment/Payment";
 
 const Header = () => {
@@ -30,11 +32,17 @@ const Header = () => {
   const dispatch = useDispatch();
   const roleName = getUserDataFromToken();
   const id = getUserIdFromToken();
+  const email = getEmailDataFromToken();
   const walletDetail = useSelector((state) => state.wallet.wallet);
+  const fetchUserDetail = useSelector((state) => state.user.user);
   const [data, setData] = useState(null);
+  const [dataUser, setDataUser] = useState(null);
 
   const formatCurrency = (value) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(value);
   };
   useEffect(() => {
     dispatch(fetchWallet({ id }));
@@ -43,7 +51,15 @@ const Header = () => {
   useEffect(() => {
     setData(walletDetail);
   }, [walletDetail]);
-  console.log("---------->", walletDetail);
+
+  useEffect(() => {
+    dispatch(fetchUser({ email }));
+  }, [dispatch, email]);
+
+  useEffect(() => {
+    setDataUser(fetchUserDetail);
+  }, [fetchUserDetail]);
+
 
   const dropdownRef = useRef(null);
 
@@ -129,11 +145,11 @@ const Header = () => {
               Danh sách khóa học
             </Link>
 
-            {token && roleName === "STUDENT" && (
+            {token && (roleName === "STUDENT" || roleName === "TUTOR") && (
               <div className="flex items-center border border-gray-300 rounded-full p-1">
                 <Coin className="text-yellow-500 mr-2" size={25} />
                 <p className="text-lg text-blue-600 font-bold">
-                  {formatCurrency(walletDetail?.ballance ?? 0)}
+                  {formatCurrency(walletDetail?.balance ?? 0)}
                 </p>
               </div>
             )}
@@ -154,11 +170,15 @@ const Header = () => {
                   className="flex items-center cursor-pointer"
                 >
                   <div className="text-blue-600 hover:text-blue-800 mr-2 text-lg">
-                    {roleName}
+                    {fetchUserDetail?.fullName}
                   </div>
                   <img
                     className="rounded-full h-12 w-12"
-                    src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                    src={
+                      fetchUserDetail?.avatar
+                        ? fetchUserDetail.avatar
+                        : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                    }
                     alt="profile"
                   />
                 </div>
@@ -197,17 +217,17 @@ const Header = () => {
                         </Link>
                       </div>
                     )}
-                    {(roleName === "TUTOR") && (
+                    {roleName === "TUTOR" && (
                       <div
                         className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                         onClick={() => window.scrollTo(0, 0)}
                       >
                         <Link to={`/toturcourse/${id}`} onClick={closeDropdown}>
-                        <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
-                          <BookmarkCheck size={20} className="mr-2" />
-                          Khóa học của tôi
-                        </div>
-                      </Link>
+                          <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                            <BookmarkCheck size={20} className="mr-2" />
+                            Khóa học của tôi
+                          </div>
+                        </Link>
                       </div>
                     )}
                     {roleName === "STUDENT" && (
