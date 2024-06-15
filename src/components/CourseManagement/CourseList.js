@@ -166,7 +166,7 @@ const CourseList = ({ idTutor }) => {
                     <h6 className="text-indigo-600 font-manrope font-bold text-2xl leading-9 text-right">
                       ${course.price}
                     </h6>
-                    {role === "TUTOR" && (
+                    {role === "TUTOR" && ( 
                       <button
                         onClick={(e) => {
                           e.preventDefault();
