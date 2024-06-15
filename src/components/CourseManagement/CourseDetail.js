@@ -37,6 +37,8 @@ const CourseDetail = () => {
     return <div>Loading...</div>;
   }
 
+  console.log(course);
+
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };

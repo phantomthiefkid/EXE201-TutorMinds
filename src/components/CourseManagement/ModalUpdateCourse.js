@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,10 +10,31 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
   const [image, setImage] = useState(course.image);
   const [description, setDescription] = useState(course.description);
   const [simpleDescription, setSimpleDescription] = useState(course.simpleDescription);
+  const [lessons, setLessons] = useState([]);
   const [newImageFile, setNewImageFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
-  console.log(course);
+  useEffect(() => {
+    const fetchLessons = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(
+          `https://fams-management.tech/course/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setLessons(response.data.lessonsList);
+      } catch (error) {
+        console.error("Error fetching course:", error);
+      }
+    };
+
+    fetchLessons();
+  }, []);
+
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
