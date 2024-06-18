@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
 import { Link } from 'react-router-dom';
+import PaymentPage from '../Payment/PaymentPage ';
 
 const TopToWallet = () => {
     useEffect(() => {
@@ -11,7 +12,7 @@ const TopToWallet = () => {
         <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
             <h1 className="text-3xl font-bold mb-6 text-center">Nạp tiền vào ví</h1>
 
-            <div className="flex flex-wrap bg-white p-6 rounded-lg shadow-md w-full max-w-5xl">
+            <div className="flex flex-wrap bg-white p-6 rounded-lg shadow-md w-full max-w-5xl m-12">
                 {/* Left Column: Form Inputs */}
                 <div className="w-full md:w-1/2 pr-6 border-r border-gray-300">
                     <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
@@ -126,20 +127,21 @@ const TopToWallet = () => {
                         </div>
                     </div>
 
-                    <Link to={`/payment`}>
+                    {/* <Link to={`/payment`}>
                         <button
                             type="button"
                             className="mt-6 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         >
                             Tôi đã thanh toán
                         </button>
-                    </Link>
+                    </Link> */}
                 </div>
 
                 {/* Right Column: QR Code */}
                 <div className="w-full md:w-1/2 flex flex-col items-center justify-center pl-6">
-                    <h2 className="text-xl font-semibold mb-4">Quét mã QR MoMo</h2>
-                    <QRCode value="momo://xxx" size={256} />
+                    {/* <h2 className="text-xl font-semibold mb-4">Quét mã QR MoMo</h2> */}
+                    {/* <QRCode value="momo://xxx" size={256} /> */}
+                    <PaymentPage/>
                 </div>
             </div>
         </div>
