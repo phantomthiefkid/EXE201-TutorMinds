@@ -37,7 +37,9 @@ const Header = () => {
   const fetchUserDetail = useSelector((state) => state.user.user);
   const [data, setData] = useState(null);
   const [dataUser, setDataUser] = useState(null);
-
+  if (walletDetail) {
+    console.log("Check: ", walletDetail)
+  }
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -149,7 +151,7 @@ const Header = () => {
               <div className="flex items-center border border-gray-300 rounded-full p-1">
                 <Coin className="text-yellow-500 mr-2" size={25} />
                 <p className="text-lg text-blue-600 font-bold">
-                  {formatCurrency(walletDetail?.balance ?? 0)}
+                  {formatCurrency(walletDetail?.ballance ?? 0)}
                 </p>
               </div>
             )}
