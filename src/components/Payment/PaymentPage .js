@@ -38,7 +38,7 @@ const PaymentPage = () => {
         <div className="w-70vw bg-gray-100 flex items-center justify-center">
             <form className="mt-4">
                 <img
-                    className="w-80% h-auto object-cover object-center"
+                    className="w-40% h-40% object-cover object-center"
                     src="https://trello.com/1/cards/666c62fbd8b2d4e029902fe7/attachments/666c6561b8d24801d6801458/download/image.png"
                     alt="QR Code"
                 />
@@ -48,7 +48,7 @@ const PaymentPage = () => {
                 >
                     Ghi chú:
                 </label>
-                <input
+                <textarea
                     type="text"
                     name="amount"
                     id="amount"
