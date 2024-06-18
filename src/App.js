@@ -24,6 +24,7 @@ import PaymentHistory from "./components/Payment/PaymentHistory.js";
 import Calendar from "./components/Tutormanagement/CalendarTutor.js";
 import TopToWallet from "./components/Usermanagement/TopToWallet";
 import PaymentHistoryAdmin from "./components/Admin/PaymentHistoryAdmin";
+import PaymentPage from "./components/Payment/PaymentPage .js";
 function App() {
   const roleName = getUserDataFromToken();
 
@@ -47,6 +48,7 @@ function App() {
         <Route path="/addcourse" element={<AddCourse />}></Route>
         <Route path="/video/:id" element={<LessonVideo/>}></Route>        
         <Route path="/payment" element={<PaymentHistory/>}></Route>        
+        <Route path="/paymentpage" element={<PaymentPage/>}></Route>        
         <Route
           path="/requestlistadmin"
           element={<RequiestListWithSidebar></RequiestListWithSidebar>}
