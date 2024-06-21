@@ -3,28 +3,36 @@ import { Link, useParams } from "react-router-dom";
 import axios from 'axios';
 import { getUserDataFromToken, getUserIdFromToken } from "../../redux/auth/loginSlice";
 import ModalUpdateCourse from "./ModalUpdateCourse";
+import { PenFill } from "react-bootstrap-icons";
 
 const CourseList = ({ idTutor }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("");
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCourse, setSelectedCourse] = useState(null); 
+  const [selectedCourse, setSelectedCourse] = useState(null);
   const role = getUserDataFromToken();
-  const {id} = useParams();
+  const { id } = useParams();
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(value);
+  };
 
   const fetchCourses = async () => {
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
     let url = 'https://fams-management.tech/course?pageNo=0&pageSize=10';
-    
-    if (idTutor) {
+
+    if (id) {
       url = `https://fams-management.tech/course/tutor?pageNo=0&pageSize=10&tutorId=${id}`;
     }
 
     try {
       const response = await axios.get(url, {
-        headers: { 
-          'accept': '*/*', 
+        headers: {
+          'accept': '*/*',
           'Authorization': `Bearer ${token}`
         }
       });
@@ -98,7 +106,9 @@ const CourseList = ({ idTutor }) => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (<div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>);
   }
 
   return (
@@ -164,17 +174,17 @@ const CourseList = ({ idTutor }) => {
                   </h5>
                   <div className="flex items-center">
                     <h6 className="text-indigo-600 font-manrope font-bold text-2xl leading-9 text-right">
-                      ${course.price}
+                      {formatCurrency(course.price)}
                     </h6>
-                    {role === "TUTOR" && ( 
+                    {role === "TUTOR" && id && (
                       <button
                         onClick={(e) => {
                           e.preventDefault();
                           setSelectedCourse(course);
                         }}
-                        className="ml-2 bg-green-500 text-white p-2 rounded hover:bg-green-600 transition-colors"
+                        className="ml-2 bg-blue-600 text-white p-2 rounded hover:bg-blue-800 transition-colors"
                       >
-                        Update
+                        <PenFill></PenFill>
                       </button>
                     )}
                   </div>

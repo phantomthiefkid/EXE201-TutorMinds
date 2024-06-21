@@ -11,6 +11,7 @@ const UserList = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedTutor, setSelectedTutor] = useState(null);
     const handleOnClose = () => setShowModalUpdate(false);
+    const [loading, setLoading] = useState(true);
     const handleOnCloseTutor = () => setShowModalUpdateTutor(false);
     const [dropdownStates, setDropdownStates] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
@@ -45,6 +46,7 @@ const UserList = () => {
         try {
             const response = await axiosInstance.get(`/users?pageNo=${currentPage - 1}&pageSize=${usersPerPage}&sortField=id&sortOrder=${sortOrder}&search=${searchTerm}&roleName=${filterRole}`);
             setUsers(response.data);
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching users:', error);
         }
@@ -91,6 +93,12 @@ const UserList = () => {
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
 
     const totalPages = users.totalPages;
+
+    if (loading) {
+        return (<div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+        </div>);
+      }
 
     return (
         <>

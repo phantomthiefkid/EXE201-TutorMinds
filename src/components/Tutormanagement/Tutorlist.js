@@ -9,14 +9,11 @@ const TutorList = () => {
   const tutorsAPI = useSelector((tutor) => tutor.tutor.data);
   const totalPagesAPI = useSelector((page) => page.tutor.data.totalPages);
   const dispatch = useDispatch();
-
+  const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(0);
   const [tutorList, setTutorList] = useState([]);
   const [apiData, setApiData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
-  console.log("tutorPage", tutorsAPI);
-  console.log("totalPage", totalPagesAPI);
 
   useEffect(() => {
     if (Array.isArray(tutorsAPI)) {
@@ -40,6 +37,7 @@ const TutorList = () => {
           setApiData(response.payload.content);
           console.log("Hello: ", response.payload.content);
           // setTotalPages(response.payload.totalPages);
+          setLoading(false)
         }
       })
       .catch((error) => {
@@ -64,6 +62,12 @@ const TutorList = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
+  if (loading) {
+    return ((<div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>))
+  }
 
   return (
     <>
@@ -146,11 +150,10 @@ const TutorList = () => {
                         {[...Array(5)].map((_, i) => (
                           <svg
                             key={i}
-                            class={`h-4 w-4 ${
-                              i < tutor.profile.ratingPoint
+                            class={`h-4 w-4 ${i < tutor.profile.ratingPoint
                                 ? "fill-amber-300"
                                 : "fill-gray-300"
-                            }`}
+                              }`}
                             viewBox="0 0 256 256"
                           >
                             <path d="M239.2 97.4A16.4 16.4.0 00224.6 86l-59.4-4.1-22-55.5A16.4 16.4.0 00128 16h0a16.4 16.4.0 00-15.2 10.4L90.4 82.2 31.4 86A16.5 16.5.0 0016.8 97.4 16.8 16.8.0 0022 115.5l45.4 38.4L53.9 207a18.5 18.5.0 007 19.6 18 18 0 0020.1.6l46.9-29.7h.2l50.5 31.9a16.1 16.1.0 008.7 2.6 16.5 16.5.0 0015.8-20.8l-14.3-58.1L234 115.5A16.8 16.8.0 00239.2 97.4z"></path>
@@ -191,27 +194,24 @@ const TutorList = () => {
             {totalPagesAPI &&
               [...Array(totalPagesAPI).keys()].map((page) => (
                 <li
-                  className={`page-item ${
-                    currentPage === page ? "active" : ""
-                  }`}
+                  className={`page-item ${currentPage === page ? "active" : ""
+                    }`}
                   key={page}
                 >
                   <button
                     onClick={() => handlePageChange(page)}
-                    className={`flex items-center justify-center px-4 h-10 leading-tight text-gray-500 ${
-                      currentPage === page
+                    className={`flex items-center justify-center px-4 h-10 leading-tight text-gray-500 ${currentPage === page
                         ? "bg-sky-300 text-white"
                         : "bg-gray-300 "
-                    } border border-gray-300 rounded-xl mx-3`}
+                      } border border-gray-300 rounded-xl mx-3`}
                   >
                     {page + 1}
                   </button>
                 </li>
               ))}
             <li
-              className={`page-item ${
-                currentPage === totalPagesAPI - 1 ? "disabled" : ""
-              }`}
+              className={`page-item ${currentPage === totalPagesAPI - 1 ? "disabled" : ""
+                }`}
             >
               <button
                 onClick={handleIncreasePage}
