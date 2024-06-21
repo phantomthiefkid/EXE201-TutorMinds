@@ -12,7 +12,7 @@ const getStatusColor = (status) => {
     case 'Đã hủy':
       return 'bg-red-500';
     default:
-      return 'bg-gray-500';
+      return 'bg-green-500';
   }
 };
 
@@ -53,7 +53,7 @@ const PaymentHistory = () => {
                   <p className="text-gray-600">{transaction.createDate}</p> 
                 </div>
               </div>
-              <button className="ml-4 text-blue-500 hover:underline">Chi tiết</button>
+              {/* <button className="ml-4 text-blue-500 hover:underline">Chi tiết</button> */}
             </div>
             <div className="flex justify-between items-center">
               <div className="flex items-center">

@@ -25,7 +25,7 @@ const PaymentHistoryAdmin = () => {
     const [selectedTransactionTopToWallet, setSelectedTransactionTopToWallet] = useState(null);
     const [transactions, setTransactions] = useState([]);
     const [showTopUpModal, setShowTopUpModal] = useState(false);
-
+    const [loading, setLoading] = useState(true);
     const axiosInstance = axios.create({
         baseURL: URL_TRANSACTION_LIST,
     });
@@ -52,6 +52,7 @@ const PaymentHistoryAdmin = () => {
             const response = await axiosInstance.get(`${adminId}`);
             if (response) {
                 setTransactions(response.data.content);
+                setLoading(false)
             }
         } catch (error) {
             console.error('Error fetching transactions:', error);
@@ -66,6 +67,12 @@ const PaymentHistoryAdmin = () => {
     const handleCloseTopUpModal = () => {
         setShowTopUpModal(false);
     };
+
+    if (loading) {
+        return (<div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+        </div>);
+      }
 
     return (
         <div className="bg-gray-100 mx-auto p-6">

@@ -58,9 +58,10 @@ const TopToWalletForUser = ({ show, handleClose, transaction }) => {
             const data = {
                 idAdmin: id,
                 userId: transaction.createBy.id,
-                ballance: Number(wallet.ballance) + Number(amount) || Number(wallet.ballance)
+                ballance: Number(wallet?.ballance) + Number(amount) || 0 + Number(amount)
             }
             alert("Bạn có chắc chắn muốn nạp tiền vào ví")
+            console.log("Check: ", data)
             const response = dispatch(topToWallet(data))
             if (response) {
                 toast.success("Nạp tiền vào ví thành công!!!");

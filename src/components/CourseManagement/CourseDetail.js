@@ -12,7 +12,12 @@ const CourseDetail = () => {
   const { id } = useParams();
   const [activeIndex, setActiveIndex] = useState(null);
   const [course, setCourse] = useState(null);
-
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(value);
+  };
   useEffect(() => {
     const fetchCourse = async () => {
       const token = localStorage.getItem("token");
@@ -34,7 +39,9 @@ const CourseDetail = () => {
     fetchCourse();
   }, []);
   if (!course) {
-    return <div>Loading...</div>;
+    return (<div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>);
   }
 
   console.log(course);
@@ -101,7 +108,7 @@ const CourseDetail = () => {
               class="w-full h-auto"
             />
             <h3 class="antialiased tracking-normal font-sans text-3xl font-semibold leading-snug text-blue-gray-900 flex justify-center mt-5 mb-2">
-              {course.price} VNĐ
+              {formatCurrency(course.price)}
             </h3>
             <button class="border w-full py-3 bg-purple-500 text-white font-bold hover:bg-purple-700">
               Thêm vào giỏ hàng
@@ -151,9 +158,8 @@ const CourseDetail = () => {
                   aria-controls={`accordion-collapse-body-${index}`}
                 >
                   <svg
-                    className={`w-3 h-3 ${
-                      activeIndex === index ? "rotate-0" : "rotate-180"
-                    } shrink-0 transition-transform`}
+                    className={`w-3 h-3 ${activeIndex === index ? "rotate-0" : "rotate-180"
+                      } shrink-0 transition-transform`}
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -172,9 +178,8 @@ const CourseDetail = () => {
               </h2>
               <div
                 id={`accordion-collapse-body-${index}`}
-                className={`${
-                  activeIndex === index ? "block" : "hidden"
-                } p-5 border border-b-0 border-gray-200`}
+                className={`${activeIndex === index ? "block" : "hidden"
+                  } p-5 border border-b-0 border-gray-200`}
                 aria-labelledby={`accordion-collapse-heading-${index}`}
               >
                 <div className="mb-2 text-blue-700 hover:text-blue-400">
@@ -241,12 +246,12 @@ const CourseDetail = () => {
           <h2 className="text-3xl font-bold mb-5 text-sky-500">Đánh giá</h2>
           <div className="flex flex-col md:flex-row items-center md:items-start md:space-x-8 mb-2">
             <img
-              src="https://scontent.fhan14-2.fna.fbcdn.net/v/t39.30808-6/405341235_1774049269674530_8472061970839104134_n.jpg?stp=dst-jpg_p526x296&_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFJUVqz-fUD2ltXZ-nsL8Db_Q6zlIRbcIb9DrOUhFtwhoCloy0xduU5DbSlr_34JAx9dtagA58_5NEts2VEVzeX&_nc_ohc=L4xoalfqFywQ7kNvgFAeqXo&_nc_ht=scontent.fhan14-2.fna&oh=00_AYAg_jRVJWgkIK-sjAoam8Iumf7hV-MzhGqeK_2851eBOA&oe=665C9830"
+              src="https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/448770374_485614437269942_1108470856292668565_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHRwxsF7To6A5vICbu32saIBdk_7juqjqMF2T_uO6qOo_SxtqsMEL52B7DRU7XHGSbTpZAjc3yRLhQaNLRWpnLq&_nc_ohc=EKwTONNykAcQ7kNvgGS6Xj4&_nc_ht=scontent.fsgn8-4.fna&oh=00_AYDPFfpxItEF9KgRMcoP0XDcxgN75qXB63Buc23XkKehCA&oe=667BD3F9"
               alt="Tutor"
               className="rounded-full w-28 h-28 md:w-28 md:h-28 mb-4 md:mb-0 border-4 border-gray-200 shadow-sm"
             />
             <div className="text-center md:text-left">
-              <h1 className="text-xl font-bold text-gray-800">Thầy Giáo Ba</h1>
+              <h1 className="text-xl font-bold text-gray-800">Mbappé</h1>
               <div className="flex items-center justify-center md:justify-start mt-2 text-gray-600">
                 <p className="text-lg">21 khóa học</p>
               </div>

@@ -17,22 +17,28 @@ const TutorDetail = () => {
   const dispatch = useDispatch();
   const tutorDetail = useSelector((state) => state.tutor.tutor);
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [showModalRequest, setShowModalRequest] = useState(false);
   const handleOnClose = () => setShowModalRequest(false);
   const [showModalCalendar, setShowModalCalendar] = useState(false);
   const handleOnCloseCalendar = () => setShowModalCalendar(false);
 
   useEffect(() => {
-    dispatch(fetchTutorDetail({ id }));
+    dispatch(fetchTutorDetail({ id })).then(() => {
+      setLoading(false);
+    });
+
   }, [dispatch, id]);
 
   useEffect(() => {
     setData(tutorDetail);
   }, [tutorDetail]);
-  console.log(">>>>>>>", tutorDetail);
 
-  if (!tutorDetail) {
-    return <div>Loading...</div>;
+
+  if (loading) {
+    return ((<div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+    </div>))
   }
 
   return (
@@ -50,7 +56,7 @@ const TutorDetail = () => {
           email={tutorDetail?.email}
         />
       )}
-      <div className="bg-gray-200 min-h-screen text-gray-800 z-0">
+      <div className="bg-gray-100 min-h-screen text-gray-800 z-0">
         <div className="relative z-0">
           <img
             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw5fHxjb3ZlcnxlbnwwfDB8fHwxNzEwNzQxNzY0fDA&ixlib=rb-4.0.3&q=80&w=1080"
@@ -59,7 +65,7 @@ const TutorDetail = () => {
           />
           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 p-4">
             <img
-              src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw3fHxwZW9wbGV8ZW58MHwwfHx8MTcxMTExMTM4N3ww&ixlib=rb-4.0.3&q=80&w=1080"
+              src={data?.avatar || `https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw3fHxwZW9wbGV8ZW58MHwwfHx8MTcxMTExMTM4N3ww&ixlib=rb-4.0.3&q=80&w=1080`}
               alt="Profile"
               className="rounded-sm w-32 h-32 md:w-40 md:h-40 border-4 border-white"
             />
