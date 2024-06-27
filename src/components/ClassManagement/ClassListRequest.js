@@ -7,11 +7,12 @@ import {
   ExclamationCircle,
   Search,
   FileText,
+  CreditCard,
 } from "react-bootstrap-icons";
 import ModalInformationRequest from "./ModalInformationRequest";
 import ModalRequestDetail from "./ModalRequestDetail";
 import { getUserDataFromToken } from "../../redux/auth/loginSlice";
-
+import ModalPayment from "./ModalPayment";
 import {
   fetchClassList,
   updateClassRequest,
@@ -22,7 +23,7 @@ const ClassListRequest = () => {
   const classAPI = useSelector((classes) => classes.class.data);
   const totalPagesAPI = useSelector((page) => page.class.data.totalPages);
   const dispatch = useDispatch();
-
+  const [isModalPayment, setIsModalPayment] = useState(false);
   const [flag, setFlag] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [classList, setClassList] = useState([]);
@@ -49,6 +50,14 @@ const ClassListRequest = () => {
   const handleOpenInformationModal = (classId) => {
     setSelectedClassId(classId)
     setShowModalInformationRequest(true)
+  }
+
+  const openPaymentModal = () => {
+    setIsModalPayment(true)
+  }
+
+  const closePaymentModal = () => {
+    setIsModalPayment(false);
   }
 
   useEffect(() => {
@@ -476,6 +485,13 @@ const ClassListRequest = () => {
                             </svg>
                           </button>
                         )}
+
+                        {classes.conversationStatus.label === "Approved" && (
+                          <button onClick={openPaymentModal} className="text-blue-500 text-2xl p-2">
+                            <CreditCard/>
+                          </button>
+                        )}
+                         <ModalPayment isOpen={isModalPayment} onClose={closePaymentModal} />
 
                         {dropdownStates[classes.id] &&
                           classes.conversationStatus.label !== "Rejected" && (
