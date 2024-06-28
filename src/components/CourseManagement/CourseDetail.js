@@ -7,7 +7,7 @@ import {
   Shield,
 } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
-import ModalPayment from "../ClassManagement/ModalPayment";
+import ModalPaymentCourseDetail from "../ClassManagement/ModalPaymentCourseDetail";
 import { getEnrollCourse } from "../../redux/course/Course";
 import { getUserIdFromToken } from "../../redux/auth/loginSlice";
 const CourseDetail = () => {
@@ -91,7 +91,7 @@ const CourseDetail = () => {
 
   return (
     <div className="w-full max-w-full px-4 md:px-5 mx-auto mt-6">
-      <ModalPayment isOpen={isModalPayment} onClose={closePaymentModal} selectedClassId={id} course={course} tutor={course?.tutor.id} />
+      <ModalPaymentCourseDetail isOpen={isModalPayment} onClose={closePaymentModal} selectedClassId={id} course={course} tutor={course?.tutor.id} />
       <div class="text-white flex flex-col h-full min-h-[280px] w-full rounded-sm !bg-gray-900 px-12 py-8">
         <h2 class="text-3xl mb-4">{course.title}</h2>
         <p className="text-xl line-clamp-5 w-1/2">

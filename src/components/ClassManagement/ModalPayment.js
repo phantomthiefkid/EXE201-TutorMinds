@@ -1,79 +1,135 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast, ToastContainer } from 'react-toastify';
-import { getUserIdFromToken } from '../../redux/auth/loginSlice';
-import { fetchWallet, topToWallet, invoice, fetchWalletTutor } from '../../redux/payment/Payment';
-import { enrollCourse } from '../../redux/course/Course';
-const ModalPayment = ({ isOpen, onClose, selectedClassId, course, tutor }) => {
+import { fetchClassDetail } from "../../redux/ClassManagement/classSlice";
+import { getUserIdFromToken } from "../../redux/auth/loginSlice";
+import { fetchWallet } from "../../redux/payment/Payment";
+import axios from "axios";
+
+const URL_INVOICE = "https://fams-management.tech/api/invoice";
+const URL_WALLET = "https://fams-management.tech/api/wallet";
+
+const ModalPayment = ({ isOpen, onClose, selectedClassId }) => {
   const dispatch = useDispatch();
-  const userId = getUserIdFromToken();
-  const transactionDate = new Date().toLocaleDateString('vi-VN');
+  const classDetail = useSelector((state) => state.class.class);
   const walletDetail = useSelector((state) => state.wallet.wallet);
-  const walletTutorDetail = useSelector((state) => state.wallet.walletTutor);
-  const handleAccept = () => {
-    if (walletDetail.ballance < course.price) {
-      alert("Số dư của bạn không đủ để thực hiện giao dịch!!!")
-      onClose();
-    } else {
-      if (window.confirm('Bạn có chắc chắn muốn thực hiện giao dịch?')) {
-        const currentBallanceStudent = Number(walletDetail.ballance - course.price)
-        const currentBallanceTutor = Math.floor(walletTutorDetail.ballance + (course.price * 0.9));
-        console.log(currentBallanceTutor)
-        const dataStudent = {
-          idAdmin: userId,
-          userId: userId,
-          ballance: Number(currentBallanceStudent)
-        }
-        const dataTutor = {
-          idAdmin: userId,
-          userId: course?.tutor.id,
-          ballance: Number(currentBallanceTutor)
-        }
-        const invoiceCourse = {
-          type: "Course",
-          price: Number(course.price),
-          studentId: userId,
-          tutorId: course?.tutor.id
-        }
-
-        const response = dispatch(topToWallet(dataStudent))
-        if (response) {
-          dispatch(enrollCourse({ courseId: course.id, userId: userId }));
-          dispatch(invoice(invoiceCourse));
-          dispatch(topToWallet(dataTutor))
-          toast.success("Thanh toán khóa học thành công!!!");
-          setTimeout(() => {
-            onClose();
-            window.location.reload();
-          }, 700)
-        }
-
-      }
-    }
-
-  };
+  const userId = getUserIdFromToken();
 
   useEffect(() => {
-    dispatch(fetchWallet({ userId }));
-    dispatch(fetchWalletTutor({id: tutor}))
-    
-  }, [dispatch, userId, tutor]);
-  
-  if (!isOpen) return null;
+    if (selectedClassId) {
+      dispatch(fetchClassDetail({ id: selectedClassId }));
+    }
+  }, [selectedClassId]);
+
+  useEffect(() => {
+    dispatch(fetchWallet({ id: userId }));
+  }, [userId]);
+
+  if (!isOpen || !classDetail) return null;
+
+  const handlePostRequest = async () => {
+    const payload = {
+      type: "RequestClass",
+      price: classDetail.totalPrice,
+      studentId: userId,
+      tutorId: classDetail.teacher.id,
+    };
+
+    console.log("payload", payload);
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await axios.post(URL_INVOICE, null, {
+        params: payload,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("POST response:", response.data);
+      onClose();
+    } catch (error) {
+      console.error("Error making POST request:", error);
+    }
+  };
+  const handlePostWallet = async () => {
+    try {
+      const payload = {
+        user: {
+          id: userId,
+        },
+        ballance: walletDetail.ballance - classDetail.totalPrice,
+      };
+
+      console.log("payload", payload);
+      const token = localStorage.getItem("token");
+
+      const response = await axios.post(`${URL_WALLET}/${userId}`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("POST wallet response:", response.data);
+      dispatch(fetchWallet({ id: userId }));
+    } catch (error) {
+      console.error("Error making POST wallet request:", error);
+    }
+  };
+
+  const handleAccept = () => {
+    if (classDetail.totalPrice <= walletDetail?.ballance) {
+      if (window.confirm("Bạn có chắc chắn muốn thực hiện giao dịch?")) {
+        handlePostRequest();
+        handlePostWallet();
+      }
+    } else {
+      alert("Số dư không đủ. Vui lòng nạp thêm tiền.");
+    }
+  };
+
   return (
-    <div className="fixed z-50 inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <ToastContainer></ToastContainer>
+    <div className="fixed inset-0 bg-black bg-opacity-10 flex justify-center items-center">
       <div className="bg-white p-10 rounded-lg w-100 text-center relative">
-        <button className="absolute top-2 right-2 text-2xl" onClick={onClose}>×</button>
-        <h2 className="text-lg font-bold mb-4 break-words">Bạn có muốn thanh toán giao dịch này?</h2>
-        <p className="mb-4">Số tiền thanh toán: {course.price} VND</p>
-        <p className="mb-2"><strong>Khóa học:</strong> {course.title}</p>
-        <p className="mb-2"><strong>Được tạo bởi:</strong> {course?.tutor.fullName}</p>
-        <p className="mb-2"><strong>Ngày giao dịch:</strong> {transactionDate}</p>
-        <p className="mb-4"><strong>Thông tin khóa học: </strong>{course.description}</p>
+        <button
+          className="absolute top-2 right-2 text-2xl"
+          onClick={() => onClose()}
+        >
+          ×
+        </button>
+        <h2 className="text-lg font-bold mb-4 break-words">
+          Bạn có muốn thanh toán giao dịch này?
+        </h2>
+        <p className="mb-4">
+          Số tiền thanh toán: {classDetail?.totalPrice} VND
+        </p>
+        <p className="mb-2">
+          <strong>Người dùng:</strong> {classDetail?.user?.fullName}
+        </p>
+        <p className="mb-2">
+          <strong>Gia sư:</strong> {classDetail?.teacher?.fullName}
+        </p>
+        <p className="mb-2">
+          <strong>Ngày giao dịch:</strong> {classDetail?.createdDate}
+        </p>
+
+        <p className="mb-4">
+          <strong>Thông tin khác:</strong> {classDetail?.title}
+        </p>
+
         <div className="flex justify-between mt-4">
-          <button className="bg-green-500 text-white py-2 px-4 rounded" onClick={handleAccept}>Chấp nhận</button>
-          <button className="bg-red-500 text-white py-2 px-4 rounded" onClick={onClose}>Từ Chối</button>
+          <button
+            className="bg-green-500 text-white py-2 px-4 rounded"
+            onClick={handleAccept}
+          >
+            Chấp nhận
+          </button>
+          <button
+            className="bg-red-500 text-white py-2 px-4 rounded"
+            onClick={() => onClose()}
+          >
+            Từ Chối
+          </button>
         </div>
       </div>
     </div>

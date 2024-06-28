@@ -22,7 +22,7 @@ export const fetchWallet = createAsyncThunk("fetchWallet", async ({ id }) => {
     };
 
     const response = await axios.get(URL_FETCH_WALLET + id, config);
-    console.log("Wallet", response.data);
+    // console.log("Wallet", response.data);
     return response.data;
   } catch (error) {
     console.error(
@@ -100,7 +100,7 @@ export const topToWallet = createAsyncThunk("topToWallet", async (data) => {
     };
     const wallet = {
       user: {
-        id: data.userId
+        id: data.userId,
       },
       ballance: data.ballance
     }
@@ -112,7 +112,6 @@ export const topToWallet = createAsyncThunk("topToWallet", async (data) => {
     throw error;
   }
 });
-
 
 export const WalletData = createSlice({
   name: "walletData",

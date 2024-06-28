@@ -38,9 +38,9 @@ const Header = () => {
   const fetchUserDetail = useSelector((state) => state.user.user);
   const [data, setData] = useState(null);
   const [dataUser, setDataUser] = useState(null);
-  if (walletDetail) {
-    console.log("Check: ", walletDetail)
-  }
+  // if (walletDetail) {
+  //   console.log("Check: ", walletDetail)
+  // }
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
