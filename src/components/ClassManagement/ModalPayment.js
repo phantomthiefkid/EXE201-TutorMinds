@@ -18,7 +18,7 @@ const ModalPayment = ({ isOpen, onClose, selectedClassId }) => {
     if (selectedClassId) {
       dispatch(fetchClassDetail({ id: selectedClassId }));
     }
-  }, [selectedClassId]);
+  }, []);
 
   useEffect(() => {
     dispatch(fetchWallet({ id: userId }));
@@ -70,18 +70,87 @@ const ModalPayment = ({ isOpen, onClose, selectedClassId }) => {
         },
       });
 
-      console.log("POST wallet response:", response.data);
       dispatch(fetchWallet({ id: userId }));
     } catch (error) {
       console.error("Error making POST wallet request:", error);
     }
   };
 
+  // const handlePostWalletTutor = async () => {
+  //   try {
+  //     await dispatch(fetchWallet({ id: classDetail.teacher.id }));
+
+  //     console.log("Teacher's wallet after fetch:", walletDetail.ballance);
+
+  //     const payload = {
+  //       user: {
+  //         id: classDetail.teacher.id,
+  //       },
+  //       ballance: classDetail.totalPrice * 0.9 + walletDetail.ballance,
+  //     };
+
+  //     console.log("payload", payload);
+  //     const token = localStorage.getItem("token");
+
+  //     const response = await axios.post(
+  //       `${URL_WALLET}/${classDetail.teacher.id}`,
+  //       payload,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+
+  //     console.log("POST wallet tutor response:", response.data);
+  //   } catch (error) {
+  //     console.error("Error making POST wallet request:", error);
+  //   }
+  // };
+
+  const handlePostWalletTutor = async () => {
+    try {
+      const fetchResponse = await dispatch(fetchWallet({ id: classDetail.teacher.id }));
+  
+      const tutorWallet = fetchResponse.payload; 
+  
+      console.log("Teacher's wallet after fetch:", tutorWallet.ballance);
+  
+      const payload = {
+        user: {
+          id: classDetail.teacher.id,
+        },
+        ballance: classDetail.totalPrice * 0.9 + tutorWallet.ballance,
+      };
+  
+      console.log("payload", payload);
+      const token = localStorage.getItem("token");
+  
+      const response = await axios.post(
+        `${URL_WALLET}/${classDetail.teacher.id}`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      console.log("POST wallet tutor response:", response.data);
+    } catch (error) {
+      console.error("Error making POST wallet request:", error);
+    }
+  };
+  
   const handleAccept = () => {
     if (classDetail.totalPrice <= walletDetail?.ballance) {
       if (window.confirm("Bạn có chắc chắn muốn thực hiện giao dịch?")) {
         handlePostRequest();
+       
         handlePostWallet();
+        handlePostWalletTutor();
       }
     } else {
       alert("Số dư không đủ. Vui lòng nạp thêm tiền.");
