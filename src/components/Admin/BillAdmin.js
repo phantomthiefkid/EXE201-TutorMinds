@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { CashStack } from "react-bootstrap-icons";  // Import biểu tượng đồng tiền
+import { CashStack } from "react-bootstrap-icons";  
 
 const BillAdmin = () => {
     const [billList, setBillList] = useState([]);
@@ -20,7 +20,6 @@ const BillAdmin = () => {
                 }
             });
 
-            // Sort bills by ID in ascending order
             const sortedBills = response.data.content.sort((a, b) => a.id - b.id);
 
             setBillList(sortedBills);
