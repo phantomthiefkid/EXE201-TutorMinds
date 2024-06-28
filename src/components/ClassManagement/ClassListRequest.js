@@ -35,12 +35,15 @@ const ClassListRequest = () => {
   const [showModalRequest, setShowModalRequest] = useState(false);
   const [selectedClassId, setSelectedClassId] = useState(null);
   const handleOnClose = () => setShowModalRequest(false);
-  const handleOnCloseInformationRequest = () => { setShowModalInformationRequest(false) }
-  const [showModalInformationRequest, setShowModalInformationRequest] = useState(false);
+  const handleOnCloseInformationRequest = () => {
+    setShowModalInformationRequest(false);
+  };
+  const [showModalInformationRequest, setShowModalInformationRequest] =
+    useState(false);
   const handleOpenModal = (classId) => {
     setSelectedClassId(classId);
     setShowModalRequest(true);
-    setDropdownStates({})
+    setDropdownStates({});
   };
   const itemsPerPage = 8;
 
@@ -48,17 +51,19 @@ const ClassListRequest = () => {
   const roleName = getUserDataFromToken();
 
   const handleOpenInformationModal = (classId) => {
-    setSelectedClassId(classId)
-    setShowModalInformationRequest(true)
-  }
+    setSelectedClassId(classId);
+    setShowModalInformationRequest(true);
+  };
 
-  const openPaymentModal = () => {
-    setIsModalPayment(true)
-  }
+  const openPaymentModal = (classId) => {
+    setSelectedClassId(classId);
+    setIsModalPayment(true);
+  };
 
   const closePaymentModal = () => {
+    setSelectedClassId(null);
     setIsModalPayment(false);
-  }
+  };
 
   useEffect(() => {
     if (Array.isArray(classAPI)) {
@@ -137,7 +142,7 @@ const ClassListRequest = () => {
       const response = await dispatch(
         updateClassRequest({ id: data.id, data: update })
       );
-      setDropdownStates({})
+      setDropdownStates({});
       setFlag(!flag); // This will trigger useEffect to re-fetch the updated class list
       toast.success("Gửi yêu cầu thành công!!!", { autoClose: 500 });
     } catch (error) {
@@ -161,7 +166,7 @@ const ClassListRequest = () => {
       const response = await dispatch(
         updateClassRequest({ id: data.id, data: update })
       );
-      setDropdownStates({})
+      setDropdownStates({});
       console.log("Update successful", response);
       setFlag(!flag); // This will trigger useEffect to re-fetch the updated class list
       toast.success("Gửi yêu cầu thành công!", { autoClose: 500 });
@@ -288,7 +293,13 @@ const ClassListRequest = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm hover:text-blue-400 text-gray-900">
-                          <button onClick={() => handleOpenInformationModal(classes.id)}>{classes.title}</button>
+                          <button
+                            onClick={() =>
+                              handleOpenInformationModal(classes.id)
+                            }
+                          >
+                            {classes.title}
+                          </button>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -319,18 +330,19 @@ const ClassListRequest = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`px-2 inline-flex text-xs leading-5 font-bold rounded-full 
-                ${classes.conversationStatus.label === "Draft"
-                              ? "text-gray-500"
-                              : classes.conversationStatus.label === "Submitted to Tutor"
-                                ? "text-sky-600"
-                                : classes.conversationStatus.label === "Rejected"
-                                  ? "text-red-600"
-                                  : classes.conversationStatus.label === "Refinement Required"
-                                    ? "text-yellow-600"
-                                    : classes.conversationStatus.label === "Approved by Tutor"
-                                      ? "text-green-600"
-                                      : "text-orange-500"
-                            } flex items-center gap-1`}
+                ${
+                  classes.conversationStatus.label === "Draft"
+                    ? "text-gray-500"
+                    : classes.conversationStatus.label === "Submitted to Tutor"
+                    ? "text-sky-600"
+                    : classes.conversationStatus.label === "Rejected"
+                    ? "text-red-600"
+                    : classes.conversationStatus.label === "Refinement Required"
+                    ? "text-yellow-600"
+                    : classes.conversationStatus.label === "Approved by Tutor"
+                    ? "text-green-600"
+                    : "text-orange-500"
+                } flex items-center gap-1`}
                         >
                           {classes.conversationStatus.label === "Draft" && (
                             <FileText />
@@ -348,20 +360,26 @@ const ClassListRequest = () => {
                         </span>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                        {classes.conversationStatus.label !== "Approved by Tutor" && classes.conversationStatus.label !== "Approved" && classes.conversationStatus.label !== "Rejected" && classes.conversationStatus.label !== "Refinement Required" && classes.conversationStatus.label !== "Draft" && (
-                          <button
-                            type="button"
-                            className="inline-block text-gray-500 hover:text-gray-700"
-                            onClick={() => toggleDropdown(classes.id)}
-                          >
-                            <svg
-                              className="inline-block h-6 w-6 fill-current"
-                              viewBox="0 0 24 24"
+                        {classes.conversationStatus.label !==
+                          "Approved by Tutor" &&
+                          classes.conversationStatus.label !== "Approved" &&
+                          classes.conversationStatus.label !== "Rejected" &&
+                          classes.conversationStatus.label !==
+                            "Refinement Required" &&
+                          classes.conversationStatus.label !== "Draft" && (
+                            <button
+                              type="button"
+                              className="inline-block text-gray-500 hover:text-gray-700"
+                              onClick={() => toggleDropdown(classes.id)}
                             >
-                              <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z" />
-                            </svg>
-                          </button>
-                        )}
+                              <svg
+                                className="inline-block h-6 w-6 fill-current"
+                                viewBox="0 0 24 24"
+                              >
+                                <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z" />
+                              </svg>
+                            </button>
+                          )}
                         {dropdownStates[classes.id] && (
                           <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg z-20">
                             <div className="py-1 rounded-md bg-white shadow-xs">
@@ -383,10 +401,7 @@ const ClassListRequest = () => {
                               >
                                 Làm lại yêu cầu
                               </button>
-                              <button
-
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                              >
+                              <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                                 Khác
                               </button>
                             </div>
@@ -411,7 +426,13 @@ const ClassListRequest = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
-                          <button onClick={() => handleOpenInformationModal(classes.id)}>{classes.title}</button>
+                          <button
+                            onClick={() =>
+                              handleOpenInformationModal(classes.id)
+                            }
+                          >
+                            {classes.title}
+                          </button>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -442,18 +463,19 @@ const ClassListRequest = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`px-2 inline-flex text-xs leading-5 font-bold rounded-full 
-                ${classes.conversationStatus.label === "Draft"
-                              ? "text-gray-500"
-                              : classes.conversationStatus.label === "Submitted to Tutor"
-                                ? "text-sky-600"
-                                : classes.conversationStatus.label === "Rejected"
-                                  ? "text-red-600"
-                                  : classes.conversationStatus.label === "Refinement Required"
-                                    ? "text-yellow-600"
-                                    : classes.conversationStatus.label === "Approved by Tutor"
-                                      ? "text-green-600"
-                                      : "text-orange-500"
-                            } flex items-center gap-1`}
+                ${
+                  classes.conversationStatus.label === "Draft"
+                    ? "text-gray-500"
+                    : classes.conversationStatus.label === "Submitted to Tutor"
+                    ? "text-sky-600"
+                    : classes.conversationStatus.label === "Rejected"
+                    ? "text-red-600"
+                    : classes.conversationStatus.label === "Refinement Required"
+                    ? "text-yellow-600"
+                    : classes.conversationStatus.label === "Approved by Tutor"
+                    ? "text-green-600"
+                    : "text-orange-500"
+                } flex items-center gap-1`}
                         >
                           {classes.conversationStatus.label === "Draft" && (
                             <FileText />
@@ -471,27 +493,39 @@ const ClassListRequest = () => {
                         </span>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                        {classes.conversationStatus.label !== "Approved" && classes.conversationStatus.label !== "Approved by Tutor" && classes.conversationStatus.label !== "Rejected" && classes.conversationStatus.label !== "Submitted to Tutor" && (
-                          <button
-                            type="button"
-                            className="inline-block text-gray-500 hover:text-gray-700"
-                            onClick={() => toggleDropdown(classes.id)}
-                          >
-                            <svg
-                              className="inline-block h-6 w-6 fill-current"
-                              viewBox="0 0 24 24"
+                        {classes.conversationStatus.label !== "Approved" &&
+                          classes.conversationStatus.label !==
+                            "Approved by Tutor" &&
+                          classes.conversationStatus.label !== "Rejected" &&
+                          classes.conversationStatus.label !==
+                            "Submitted to Tutor" && (
+                            <button
+                              type="button"
+                              className="inline-block text-gray-500 hover:text-gray-700"
+                              onClick={() => toggleDropdown(classes.id)}
                             >
-                              <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z" />
-                            </svg>
-                          </button>
-                        )}
+                              <svg
+                                className="inline-block h-6 w-6 fill-current"
+                                viewBox="0 0 24 24"
+                              >
+                                <path d="M12 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm-2 6a2 2 0 104 0 2 2 0 00-4 0z" />
+                              </svg>
+                            </button>
+                          )}
 
                         {classes.conversationStatus.label === "Approved" && (
-                          <button onClick={openPaymentModal} className="text-blue-500 text-2xl p-2">
-                            <CreditCard/>
+                          <button
+                            onClick={() => openPaymentModal(classes.id)}
+                            className="text-blue-500 text-2xl p-2"
+                          >
+                            <CreditCard />
                           </button>
                         )}
-                         <ModalPayment isOpen={isModalPayment} onClose={closePaymentModal} />
+                        <ModalPayment
+                          isOpen={isModalPayment}
+                          onClose={closePaymentModal}
+                          selectedClassId={selectedClassId}
+                        />
 
                         {dropdownStates[classes.id] &&
                           classes.conversationStatus.label !== "Rejected" && (
@@ -509,10 +543,7 @@ const ClassListRequest = () => {
                                 >
                                   Làm lại yêu cầu
                                 </button>
-                                <button
-
-                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                >
+                                <button className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                                   Khác
                                 </button>
                               </div>
@@ -536,8 +567,13 @@ const ClassListRequest = () => {
         setFlag={setFlag}
         selectedClassId={selectedClassId}
       />
-      <ModalInformationRequest flag={flag}
-        setFlag={setFlag} selectedClassId={selectedClassId} isOpen={showModalInformationRequest} onClose={handleOnCloseInformationRequest} />
+      <ModalInformationRequest
+        flag={flag}
+        setFlag={setFlag}
+        selectedClassId={selectedClassId}
+        isOpen={showModalInformationRequest}
+        onClose={handleOnCloseInformationRequest}
+      />
       <div className="flex justify-center mb-4">
         <nav aria-label="">
           <ul className="flex items-center -space-x-px h-10 text-base">
@@ -552,24 +588,27 @@ const ClassListRequest = () => {
             {totalPagesAPI &&
               [...Array(totalPagesAPI).keys()].map((page) => (
                 <li
-                  className={`page-item ${currentPage === page ? "active" : ""
-                    }`}
+                  className={`page-item ${
+                    currentPage === page ? "active" : ""
+                  }`}
                   key={page}
                 >
                   <button
                     onClick={() => handlePageChange(page)}
-                    className={`flex items-center justify-center px-4 h-10 leading-tight text-gray-500 ${currentPage === page
-                      ? "bg-sky-300 text-white"
-                      : "bg-gray-300 "
-                      } border border-gray-300 rounded-xl mx-3`}
+                    className={`flex items-center justify-center px-4 h-10 leading-tight text-gray-500 ${
+                      currentPage === page
+                        ? "bg-sky-300 text-white"
+                        : "bg-gray-300 "
+                    } border border-gray-300 rounded-xl mx-3`}
                   >
                     {page + 1}
                   </button>
                 </li>
               ))}
             <li
-              className={`page-item ${currentPage === totalPagesAPI - 1 ? "disabled" : ""
-                }`}
+              className={`page-item ${
+                currentPage === totalPagesAPI - 1 ? "disabled" : ""
+              }`}
             >
               <button
                 onClick={handleIncreasePage}

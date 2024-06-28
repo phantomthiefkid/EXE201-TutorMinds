@@ -6,7 +6,7 @@ import {
 import axios from "axios";
 
 const URL_FETCH_WALLET = "https://fams-management.tech/api/wallet/";
-const URL_POST_WALLET = "https://fams-management.tech/api/wallet/"
+const URL_POST_WALLET = "https://fams-management.tech/api/wallet/";
 export const fetchWallet = createAsyncThunk("fetchWallet", async ({ id }) => {
   try {
     const token = localStorage.getItem("token");
@@ -21,7 +21,7 @@ export const fetchWallet = createAsyncThunk("fetchWallet", async ({ id }) => {
     };
 
     const response = await axios.get(URL_FETCH_WALLET + id, config);
-    console.log("Wallet", response.data);
+    // console.log("Wallet", response.data);
     return response.data;
   } catch (error) {
     console.error(
@@ -46,19 +46,21 @@ export const topToWallet = createAsyncThunk("topToWallet", async (data) => {
     };
     const wallet = {
       user: {
-        id: data.userId
+        id: data.userId,
       },
-      ballance: data.ballance
-    }
-   
-    const response = await axios.post(URL_POST_WALLET + data.userId, wallet, config);
+      ballance: data.ballance,
+    };
+
+    const response = await axios.post(
+      URL_POST_WALLET + data.userId,
+      wallet,
+      config
+    );
     return response.data;
   } catch (error) {
-   
     throw error;
   }
 });
-
 
 export const WalletData = createSlice({
   name: "walletData",
