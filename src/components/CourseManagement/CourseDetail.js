@@ -7,11 +7,16 @@ import {
   Shield,
 } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
-
+import ModalPayment from "../ClassManagement/ModalPayment";
+import { getEnrollCourse } from "../../redux/course/Course";
+import { getUserIdFromToken } from "../../redux/auth/loginSlice";
 const CourseDetail = () => {
   const { id } = useParams();
+  const [isModalPayment, setIsModalPayment] = useState(false);
   const [activeIndex, setActiveIndex] = useState(null);
   const [course, setCourse] = useState(null);
+  const [enroll, setEnroll] = useState(null);
+  const userId = getUserIdFromToken();
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -21,9 +26,12 @@ const CourseDetail = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       const token = localStorage.getItem("token");
+      
+      const URL_FETCH_COURSE_DETAIL = "https://fams-management.tech/course/"
       try {
+        
         const response = await axios.get(
-          `https://fams-management.tech/course/${id}`,
+          URL_FETCH_COURSE_DETAIL + id,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -35,8 +43,27 @@ const CourseDetail = () => {
         console.error("Error fetching course:", error);
       }
     };
-
+    const fetchEnrollCourse = async () => {
+      const token = localStorage.getItem("token");
+      const URL_ENROLL_COURSE = "https://fams-management.tech/course/enroll/";
+      try {
+        const url = `${URL_ENROLL_COURSE}${id}/${userId}`
+        const response = await axios.get(
+          url,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setEnroll(response.data);
+      } catch (error) {
+        console.error("Error fetching course:", error);
+      }
+    };
+    fetchEnrollCourse();
     fetchCourse();
+    
   }, []);
   if (!course) {
     return (<div className="flex justify-center items-center h-screen">
@@ -44,14 +71,27 @@ const CourseDetail = () => {
     </div>);
   }
 
-  console.log(course);
+  const openPaymentModal = () => {
+    setIsModalPayment(true)
+  }
+
+  const closePaymentModal = () => {
+    setIsModalPayment(false);
+  }
 
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
+  const handleClick = (e) => {
+    if (enroll === null) {
+      e.preventDefault();
+      alert('Bạn cần mua khóa học để xem video này.');
+    }
+  };
 
   return (
     <div className="w-full max-w-full px-4 md:px-5 mx-auto mt-6">
+      <ModalPayment isOpen={isModalPayment} onClose={closePaymentModal} selectedClassId={id} course={course} tutor={course?.tutor.id} />
       <div class="text-white flex flex-col h-full min-h-[280px] w-full rounded-sm !bg-gray-900 px-12 py-8">
         <h2 class="text-3xl mb-4">{course.title}</h2>
         <p className="text-xl line-clamp-5 w-1/2">
@@ -113,7 +153,7 @@ const CourseDetail = () => {
             <button class="border w-full py-3 bg-purple-500 text-white font-bold hover:bg-purple-700">
               Thêm vào giỏ hàng
             </button>
-            <button class="border border-black w-full mt-4 py-3 font-bold hover:bg-gray-200">
+            <button onClick={openPaymentModal} class="border border-black w-full mt-4 py-3 font-bold hover:bg-gray-200">
               Mua khóa học
             </button>
             <h5 class="antialiased tracking-normal font-sans text-xl font-bold leading-snug flex mt-2 mb-2">
@@ -183,7 +223,7 @@ const CourseDetail = () => {
                 aria-labelledby={`accordion-collapse-heading-${index}`}
               >
                 <div className="mb-2 text-blue-700 hover:text-blue-400">
-                  <Link to={`/video/${id}`}>{lesson.description}</Link>
+                  <Link onClick={handleClick} to={`${enroll === null ? `/coursedetail/${id}`: `/video/${id}`} `}>{lesson.description}</Link>
                 </div>
               </div>
             </div>

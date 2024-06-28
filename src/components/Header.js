@@ -11,6 +11,7 @@ import {
   Bank,
   Coin,
   BookmarkCheck,
+  CurrencyExchange,
 } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -253,7 +254,7 @@ const Header = () => {
                         <Link to="/payment" onClick={closeDropdown}>
                           <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
                             <Bank size={20} className="mr-2" />
-                            Lịch sử giao dịch
+                            Lịch sử nạp tiền
                           </div>
                         </Link>
                       </div>
@@ -266,6 +267,27 @@ const Header = () => {
                         </div>
                       </Link>
                     )}
+                    {roleName === "TUTOR" && (<div
+                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
+                      onClick={() => window.scrollTo(0, 0)}
+                    >
+                      <Link to="/" onClick={closeDropdown}>
+                        <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                          <Bank size={20} className="mr-2" />
+                          Lịch sử giao dịch
+                        </div>
+                      </Link>
+                    </div>) || roleName === "STUDENT" && (<div
+                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
+                      onClick={() => window.scrollTo(0, 0)}
+                    >
+                      <Link to="/" onClick={closeDropdown}>
+                        <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                          <CurrencyExchange size={20} className="mr-2" />
+                          Lịch sử giao dịch
+                        </div>
+                      </Link>
+                    </div>)}
 
                     <div
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
