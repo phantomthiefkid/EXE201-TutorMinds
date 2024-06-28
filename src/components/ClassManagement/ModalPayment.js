@@ -18,7 +18,7 @@ const ModalPayment = ({ isOpen, onClose, selectedClassId }) => {
     if (selectedClassId) {
       dispatch(fetchClassDetail({ id: selectedClassId }));
     }
-  }, [selectedClassId]);
+  }, []);
 
   useEffect(() => {
     dispatch(fetchWallet({ id: userId }));
