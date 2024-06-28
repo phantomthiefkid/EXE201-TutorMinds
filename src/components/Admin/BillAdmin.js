@@ -85,7 +85,7 @@ const BillAdmin = () => {
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <div className="flex items-center">
                                                 <CashStack className="text-gray-900 mr-2" /> 
-                                                <p className="text-gray-900 whitespace-no-wrap">₫{bill.price.toLocaleString()}</p>
+                                                <p className="text-gray-900 whitespace-no-wrap">{bill.price.toLocaleString()} VNĐ</p>
                                             </div>
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
