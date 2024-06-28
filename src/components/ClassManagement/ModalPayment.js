@@ -8,7 +8,7 @@ import axios from "axios";
 const URL_INVOICE = "https://fams-management.tech/api/invoice";
 const URL_WALLET = "https://fams-management.tech/api/wallet";
 
-const ModalPayment = ({ isOpen, onClose, selectedClassId }) => {
+const ModalPayment = ({ isOpen, onClose, selectedClassId, course }) => {
   const dispatch = useDispatch();
   const classDetail = useSelector((state) => state.class.class);
   const walletDetail = useSelector((state) => state.wallet.wallet);
