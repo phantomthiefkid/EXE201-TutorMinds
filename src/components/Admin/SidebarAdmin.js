@@ -23,9 +23,9 @@ const SidebarAdmin = ({ children }) => {
                     <Link to={`/paymenthistoryadmin`} className="flex items-start py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200 hover:text-blue-600 text-md">
                     <Book className='mr-2'size={20}/> Quản lí lịch sử giao dịch
                     </Link>
-                    <a href="#" className="flex items-start py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200 hover:text-blue-600 text-md">
+                    <Link to={`/billpage`} className="flex items-start py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200 hover:text-blue-600 text-md">
                      <ClipboardDataFill className='mr-2'size={20}/>   Hóa đơn
-                    </a>
+                    </Link>
                     <Link to={`/`} className="flex items-start py-2.5 px-4 rounded transition duration-200 hover:bg-gray-200 hover:text-blue-600 text-md">
                        <BoxArrowRight className='mr-2'size={20}/> Đăng xuất
                     </Link>
