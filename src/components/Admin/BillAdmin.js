@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { CashStack } from "react-bootstrap-icons";  // Import biểu tượng đồng tiền
 
 const BillAdmin = () => {
     const [billList, setBillList] = useState([]);
@@ -19,7 +20,10 @@ const BillAdmin = () => {
                 }
             });
 
-            setBillList(response.data.content);
+            // Sort bills by ID in ascending order
+            const sortedBills = response.data.content.sort((a, b) => a.id - b.id);
+
+            setBillList(sortedBills);
             setTotalPages(response.data.totalPages);
         } catch (error) {
             console.log(error);
@@ -80,7 +84,8 @@ const BillAdmin = () => {
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <div className="flex items-center">
-                                                <p className="text-gray-900 whitespace-no-wrap">{bill.price} VNĐ</p>
+                                                <CashStack className="text-gray-900 mr-2" /> 
+                                                <p className="text-gray-900 whitespace-no-wrap">₫{bill.price.toLocaleString()}</p>
                                             </div>
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
