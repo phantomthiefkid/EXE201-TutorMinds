@@ -33,6 +33,7 @@ export const fetchClassList = createAsyncThunk(
       };
 
       const response = await axios.get(URL_FETCH_CLASSES, config);
+      console.log("redux: ", response.data)
       return response.data;
     } catch (error) {
       

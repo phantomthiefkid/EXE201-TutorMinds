@@ -12,7 +12,7 @@ const RequestListAdmin = () => {
   const [filter, setFilter] = useState('All');
   const [classList, setClassList] = useState([]);
   const [apiData, setApiData] = useState([]);
-
+  console.log("Check: ", classAPI)
   useEffect(() => {
     if (Array.isArray(classAPI)) {
       setClassList([...classAPI]);
