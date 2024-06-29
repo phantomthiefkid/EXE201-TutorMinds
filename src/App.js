@@ -12,7 +12,7 @@ import Dashboard from "./components/Admin/Dashboard";
 import Tutorlist from "./components/Tutormanagement/Tutorlist";
 import CourseList from "./components/CourseManagement/CourseList";
 import CourseDetail from "./components/CourseManagement/CourseDetail";
-import TutorDetail from "./components/Tutormanagement/TutorDetail.js";
+import TutorDetail from "./components/Tutormanagement/Tutordetail.js";
 import ProfileUser from "./components/Usermanagement/ProfileUser";
 import ClassListRequest from "./components/ClassManagement/ClassListRequest";
 import { getUserDataFromToken } from "./redux/auth/loginSlice";
@@ -20,7 +20,7 @@ import RequestListAdmin from "./components/Admin/RequestListAdmin";
 import AddCourse from "./components/CourseManagement/AddCourse";
 import LessonVideo from "./components/CourseManagement/LessonVideo";
 import PaymentHistory from "./components/Payment/PaymentHistory.js";
-
+import BillAdmin from "./components/Admin/BillAdmin";
 import Calendar from "./components/Tutormanagement/CalendarTutor.js";
 import TopToWallet from "./components/Usermanagement/TopToWallet";
 import PaymentHistoryAdmin from "./components/Admin/PaymentHistoryAdmin";
@@ -50,7 +50,8 @@ function App() {
         <Route path="/video/:id" element={<LessonVideo/>}></Route>        
         <Route path="/payment" element={<PaymentHistory/>}></Route>        
         <Route path="/paymentpage" element={<PaymentPage/>}></Route>        
-        <Route path="/paymentGuest" element={<TransactionHistory/>}></Route>        
+        <Route path="/paymentGuest" element={<TransactionHistory/>}></Route>    
+        <Route path="/billpage" element={<SidebarAdmin><BillAdmin></BillAdmin></SidebarAdmin>}></Route>      
         <Route
           path="/requestlistadmin"
           element={<RequiestListWithSidebar></RequiestListWithSidebar>}
