@@ -14,8 +14,8 @@ const TransactionHistory = () => {
     const fetchTransactions = async () => {
       try {
         const url = userRole === 'TUTOR' ? 
-          `http://34.126.79.32/api/invoice/tutor/${userId}` :
-          `http://34.126.79.32/api/invoice/student/${userId}?pageNo=0&pageSize=8`;
+          `https://fams-management.tech/api/invoice/tutor/${userId}` :
+          `https://fams-management.tech/api/invoice/student/${userId}?pageNo=0&pageSize=8`;
 
         const response = await axios.get(url, {
           headers: {
@@ -53,7 +53,7 @@ const TransactionHistory = () => {
                   alt="avatar"
                   className="w-12 h-12 rounded-full"
                 />
-                <p className="text-gray-600 font-semibold ml-4">Yêu cầu giao dịch</p>
+                <p className="text-gray-600 font-semibold ml-4">Giao dịch</p>
               </div>
               <div className="flex flex-col w-2/3 ml-4">
                 <p className="text-gray-600">Người chuyển: {userRole !== 'TUTOR' ? transaction.tutor.fullName : transaction.student.fullName}</p>

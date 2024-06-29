@@ -59,9 +59,9 @@ const TutorDetail = () => {
       <div className="bg-gray-100 min-h-screen text-gray-800 z-0">
         <div className="relative z-0">
           <img
-            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw5fHxjb3ZlcnxlbnwwfDB8fHwxNzEwNzQxNzY0fDA&ixlib=rb-4.0.3&q=80&w=1080"
+            src="https://www.omni-academy.com/wp-content/uploads/2017/05/online-courses-header.jpg"
             alt="Cover"
-            className="w-full z-0 h-64 object-cover"
+            className="w-full z-0 h-96 object-cover"
           />
           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 p-4">
             <img
