@@ -271,7 +271,7 @@ const Header = () => {
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                       onClick={() => window.scrollTo(0, 0)}
                     >
-                      <Link to="/" onClick={closeDropdown}>
+                      <Link to="/paymentGuest" onClick={closeDropdown}>
                         <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
                           <Bank size={20} className="mr-2" />
                           Lịch sử giao dịch
@@ -281,7 +281,7 @@ const Header = () => {
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                       onClick={() => window.scrollTo(0, 0)}
                     >
-                      <Link to="/" onClick={closeDropdown}>
+                      <Link to="/paymentGuest" onClick={closeDropdown}>
                         <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
                           <CurrencyExchange size={20} className="mr-2" />
                           Lịch sử giao dịch
