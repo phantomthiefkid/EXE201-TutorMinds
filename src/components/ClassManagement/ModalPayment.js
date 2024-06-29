@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchClassDetail } from "../../redux/ClassManagement/classSlice";
 import { getUserIdFromToken } from "../../redux/auth/loginSlice";
 import { fetchWallet } from "../../redux/payment/Payment";
+import Swal from "sweetalert2";
 import axios from "axios";
 
 const URL_INVOICE = "https://fams-management.tech/api/invoice";
@@ -111,22 +112,24 @@ const ModalPayment = ({ isOpen, onClose, selectedClassId }) => {
 
   const handlePostWalletTutor = async () => {
     try {
-      const fetchResponse = await dispatch(fetchWallet({ id: classDetail.teacher.id }));
-  
-      const tutorWallet = fetchResponse.payload; 
-  
+      const fetchResponse = await dispatch(
+        fetchWallet({ id: classDetail.teacher.id })
+      );
+
+      const tutorWallet = fetchResponse.payload;
+
       console.log("Teacher's wallet after fetch:", tutorWallet.ballance);
-  
+
       const payload = {
         user: {
           id: classDetail.teacher.id,
         },
         ballance: classDetail.totalPrice * 0.9 + tutorWallet.ballance,
       };
-  
+
       console.log("payload", payload);
       const token = localStorage.getItem("token");
-  
+
       const response = await axios.post(
         `${URL_WALLET}/${classDetail.teacher.id}`,
         payload,
@@ -137,23 +140,41 @@ const ModalPayment = ({ isOpen, onClose, selectedClassId }) => {
           },
         }
       );
-  
+
       console.log("POST wallet tutor response:", response.data);
     } catch (error) {
       console.error("Error making POST wallet request:", error);
     }
   };
-  
+
   const handleAccept = () => {
     if (classDetail.totalPrice <= walletDetail?.ballance) {
-      if (window.confirm("Bạn có chắc chắn muốn thực hiện giao dịch?")) {
-        handlePostRequest();
-       
-        handlePostWallet();
-        handlePostWalletTutor();
-      }
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Bạn có chắc chắn muốn thực hiện giao dịch!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, proceed!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          handlePostRequest();
+          handlePostWallet();
+          handlePostWalletTutor();
+          Swal.fire({
+            title: "Success!",
+            text: "Bạn đã thanh toán thành công.",
+            icon: "success",
+          });
+        }
+      });
     } else {
-      alert("Số dư không đủ. Vui lòng nạp thêm tiền.");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Số dư không đủ. Vui lòng nạp thêm tiền!",
+      });
     }
   };
 
