@@ -10,6 +10,7 @@ import { Link, useParams } from "react-router-dom";
 import ModalPaymentCourseDetail from "../ClassManagement/ModalPaymentCourseDetail";
 import { getEnrollCourse } from "../../redux/course/Course";
 import { getUserIdFromToken } from "../../redux/auth/loginSlice";
+import Swal from "sweetalert2";
 const CourseDetail = () => {
   const { id } = useParams();
   const [isModalPayment, setIsModalPayment] = useState(false);
@@ -85,7 +86,14 @@ const CourseDetail = () => {
   const handleClick = (e) => {
     if (enroll === null) {
       e.preventDefault();
-      alert('Bạn cần mua khóa học để xem video này.');
+      Swal.fire({
+        title: "Yêu cầu mua khóa học?",
+        text: "Bạn cần mua khóa học để xem video bài giảng!",
+        icon: "warning",
+        
+      }).then((result) => {
+        
+      });
     }
   };
 
