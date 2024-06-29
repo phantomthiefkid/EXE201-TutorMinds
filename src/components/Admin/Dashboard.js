@@ -3,10 +3,45 @@ import { Bar } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import "chart.js/auto";
+import axios from "axios";
+
+const URL_STATISTIC = "https://fams-management.tech/api/statistic";
 
 const Dashboard = () => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const [statistic, setStatistic] = useState([]);
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    })
+      .format(value)
+      .replace("₫", "VNĐ");
+  };
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    } else {
+      fetchStatistic();
+    }
+  }, [token, navigate]);
+
+  const fetchStatistic = async () => {
+    try {
+      const response = await axios.get(URL_STATISTIC, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = response.data;
+      setStatistic(data);
+    } catch (error) {
+      console.error("Error fetching statistics:", error);
+    }
+  };
 
   // Dữ liệu biểu đồ
   const [chartData, setChartData] = useState({
@@ -44,17 +79,17 @@ const Dashboard = () => {
     0
   );
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/");
-    }
-  }, [token, navigate]);
+  // useEffect(() => {
+  //   if (!token) {
+  //     navigate("/");
+  //   }
+  // }, [token, navigate]);
 
   // Dữ liệu biểu đồ hình tròn cho các trạng thái lớp học
   const classStatusData = [
-    { name: "Rejected", value: 5 },
-    { name: "Approval", value: 10 },
-    { name: "Refinement", value: 3 },
+    { name: "Rejected", value: statistic.rejectedRequestAmount },
+    { name: "Approval", value: statistic.approvedRequestAmount },
+    { name: "Other", value: statistic.otherRequestAmount },
   ];
 
   const COLORS = ["#FF8042", "#0088FE", "#FFBB28"];
@@ -129,13 +164,13 @@ const Dashboard = () => {
             {[
               {
                 title: "Số lượng học sinh",
-                count: 449,
+                count: statistic.studentAmount,
                 imgSrc:
                   "https://cdn-icons-png.freepik.com/512/2940/2940653.png",
               },
               {
                 title: "Số lượng gia sư",
-                count: 205,
+                count: statistic.tutorAmount,
                 imgSrc: "https://cdn-icons-png.freepik.com/512/607/607438.png",
               },
               {
@@ -159,7 +194,7 @@ const Dashboard = () => {
               },
               {
                 title: "Tổng doanh thu",
-                count: "4.000.000.000 VNĐ",
+                count: formatCurrency(statistic.revenue),
                 imgSrc:
                   "https://blog.webico.vn/wp-content/uploads/2019/12/1417423865-2.jpg",
               },
