@@ -26,7 +26,10 @@ const SuccessPaymentScreen = () => {
   }, [dispatch, id, orderCode]);
 
   useEffect(() => {
-    if (walletUser && order) {
+    const walletUpdateFlag = `walletUpdate_${orderCode}`;
+
+    // Kiểm tra nếu đã cập nhật ví cho orderCode này chưa
+    if (walletUser && order && !localStorage.getItem(walletUpdateFlag)) {
       const walletUpdate = {
         idAdmin: 32,
         userId: id,
@@ -35,15 +38,14 @@ const SuccessPaymentScreen = () => {
       console.log("wallet: ", walletUser, " order: ", order);
 
       if (!isNaN(walletUpdate.ballance)) {
-
         dispatch(topToWallet(walletUpdate)).then(() => {
-          navigate('/successpaymentscreen')
-        }
-        )
+          // Đánh dấu đã cập nhật ví
+          localStorage.setItem(walletUpdateFlag, 'true');
+          navigate('/successpaymentscreen');
+        });
       }
     }
-  }, [walletUser, order, dispatch, id]);
-
+  }, [walletUser, order, dispatch, id, orderCode]);
 
   return (
     <div className="h-screen flex flex-col justify-center items-center">
