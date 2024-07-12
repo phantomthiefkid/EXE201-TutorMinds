@@ -11,13 +11,13 @@ const SuccessPaymentScreen = () => {
   const id = getIdOfUser();
   const walletUser = useSelector((state) => state.wallet.wallet);
   const code = "158884"
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(window.location.search);
     const cancel = urlParams.get('cancel');
     const orderCode = urlParams.get('orderCode');
+  useEffect(() => {
 
     dispatch(fetchWallet({ id: id }));
-    dispatch(getOrder(code))
+    dispatch(getOrder(orderCode))
     // if (cancel === 'true' && orderCode) {
     //   console.log('Order Code:', orderCode);
     //   dispatch(getOrder(code));
@@ -34,7 +34,7 @@ const SuccessPaymentScreen = () => {
     //     dispatch(topToWallet(walletUpdate));
     //   }
     // }
-  }, [dispatch, id, code]);
+  }, [dispatch, id, orderCode]);
 
   useEffect(() => {
     // Check if walletUser and order are available
@@ -52,7 +52,7 @@ const SuccessPaymentScreen = () => {
         dispatch(topToWallet(walletUpdate));
       }
     }
-  }, []);
+  }, [walletUser, order, dispatch, id]);
 
 
   return (
