@@ -87,18 +87,11 @@
 // export default FailurePaymentScreen;
 
 import React, { useEffect } from 'react';
-import { Amazon } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getIdOfUser } from '../../redux/auth/loginSlice';
 import { getOrder, fetchWallet, topToWallet } from '../../redux/payment/Payment';
 
-const updateWallet = {
-  user: {
-    id: 0
-  },
-  ballance: 0
-}
 
 const FailurePaymentScreen = () => {
   const dispatch = useDispatch();
