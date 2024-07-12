@@ -8,6 +8,7 @@ import axios from "axios";
 const URL_FETCH_WALLET = "https://fams-management.tech/api/wallet/";
 const URL_POST_WALLET = "https://fams-management.tech/api/wallet/";
 const URL_INVOICE = "https://fams-management.tech/api/invoice";
+const URL_GET_ORDER = "https://fams-management.tech/order/";
 const URL_CREATE_PAYMENT_LINK = "https://fams-management.tech/api/create-payment-link";
 export const fetchWallet = createAsyncThunk("fetchWallet", async ({ id }) => {
   try {
@@ -136,11 +137,31 @@ export const createPaymentLink = createAsyncThunk("createPaymentLink", async (pr
   }
 });
 
+export const getOrder = createAsyncThunk("getOrder", async (orderId) => {
+  try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+          throw new Error("Missing token");
+      }
+      const config = {
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,  
+          }
+      };
+      const response = await axios.get(`${URL_GET_ORDER+orderId}`, null, config);
+      return response.data;
+  } catch (error) {
+      throw error;
+  }
+});
+
 export const WalletData = createSlice({
   name: "walletData",
   initialState: {
     isLoading: false,
     data: [],
+    order: {},
     isError: false,
     wallet: {},
     walletTutor: {},
@@ -184,6 +205,19 @@ export const WalletData = createSlice({
         state.isLoading = true;
       })
       .addCase(createPaymentLink.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(getOrder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.order = action.payload;
+      })
+      .addCase(getOrder.rejected, (state) => {
+        state.isError = true;
+        state.isLoading = true;
+      })
+      .addCase(getOrder.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
       });
