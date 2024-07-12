@@ -15,8 +15,9 @@ const SuccessPaymentScreen = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Kiểm tra nếu orderCode không tồn tại thì reload lại trang
-    if (!orderCode) {
+    // Kiểm tra nếu orderCode không tồn tại và trang chưa được reload trước đó
+    if (!orderCode && !sessionStorage.getItem('reloaded')) {
+      sessionStorage.setItem('reloaded', 'true');
       window.location.reload();
     } else {
       dispatch(fetchWallet({ id: id }));
