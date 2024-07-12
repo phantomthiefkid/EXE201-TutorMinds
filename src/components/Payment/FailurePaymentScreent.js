@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const FailurePaymentScreen = () => {
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const cancel = urlParams.get('cancel');
+    const orderCode = urlParams.get('orderCode');
+
+    if (cancel === 'true' && orderCode) {
+      console.log('Order Code:', orderCode);
+      // Lưu orderCode vào biến state hoặc Redux store nếu cần thiết
+    }
+  }, []);
+
   return (
     <div className="h-screen flex flex-col justify-center items-center">
       <h4 className="text-lg font-bold text-red-700">Thanh toán thất bại</h4>
