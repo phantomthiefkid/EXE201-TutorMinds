@@ -15,14 +15,9 @@ const SuccessPaymentScreen = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Kiểm tra nếu orderCode không tồn tại và trang chưa được reload trước đó
-    if (!orderCode && !sessionStorage.getItem('reloaded')) {
-      sessionStorage.setItem('reloaded', 'true');
-      window.location.reload();
-    } else {
-      dispatch(fetchWallet({ id: id }));
-      dispatch(getOrder(orderCode));
-    }
+    dispatch(fetchWallet({ id: id }));
+    dispatch(getOrder(orderCode));
+
   }, [dispatch, id, orderCode]);
 
   useEffect(() => {
@@ -39,9 +34,12 @@ const SuccessPaymentScreen = () => {
 
       if (!isNaN(walletUpdate.ballance)) {
         dispatch(topToWallet(walletUpdate)).then(() => {
-          // Đánh dấu đã cập nhật ví
+          // Đánh dấu đã cập nhật ví và điều hướng
           localStorage.setItem(walletUpdateFlag, 'true');
-          navigate('/successpaymentscreen');
+          navigate('/successpaymentscreen').then(() => {
+            // Reload lại trang sau khi điều hướng
+            window.location.reload();
+          });
         });
       }
     }
