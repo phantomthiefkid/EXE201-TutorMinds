@@ -5,30 +5,23 @@ import { Link } from 'react-router-dom';
 import { getIdOfUser } from '../../redux/auth/loginSlice';
 import { getOrder, fetchWallet, topToWallet } from '../../redux/payment/Payment';
 
-const updateWallet = {
-  user: {
-    id: 0
-  },
-  ballance: 0
-}
-
 const FailurePaymentScreen = () => {
   const dispatch = useDispatch();
   const order = useSelector((state) => state.wallet.order);
   const id = getIdOfUser();
   const walletUser = useSelector((state) => state.wallet.wallet);
   const code = "158884"
+  const urlParams = new URLSearchParams(window.location.search);
+  const cancel = urlParams.get('cancel');
+  const orderCode = urlParams.get('orderCode');
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const cancel = urlParams.get('cancel');
-    const orderCode = urlParams.get('orderCode');
 
     dispatch(fetchWallet({ id: id }));
-    dispatch(getOrder(code))
+    dispatch(getOrder(orderCode))
     if (cancel === 'true' && orderCode) {
       localStorage.setItem('orderCode', orderCode);
     }
-    
+
     // if (walletUser && order) {
     //   const walletUpdate = {
     //     idAdmin: 32,
@@ -40,14 +33,14 @@ const FailurePaymentScreen = () => {
     //     dispatch(topToWallet(walletUpdate));
     //   }
     // }
-  }, [dispatch, id, code]);
+  }, [dispatch, id, orderCode]);
 
   useEffect(() => {
     // Check if walletUser and order are available
     const storedOrderCode = localStorage.getItem('orderCode');
     if (storedOrderCode && walletUser && order) {
       // Calculate updated wallet balance
-      localStorage.removeItem('orderCode');
+
       const walletUpdate = {
         idAdmin: 32,
         userId: id,
@@ -55,6 +48,7 @@ const FailurePaymentScreen = () => {
       };
       console.log("wallet: ", walletUser, " order: ", order);
       // Check if wallet balance is valid
+      localStorage.removeItem('orderCode');
       if (!isNaN(walletUpdate.ballance)) {
         // Dispatch action to update wallet balance
         dispatch(topToWallet(walletUpdate));
