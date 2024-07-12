@@ -1,18 +1,59 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { getIdOfUser } from '../../redux/auth/loginSlice';
+import { getOrder, fetchWallet, topToWallet } from '../../redux/payment/Payment';
 
 const SuccessPaymentScreen = () => {
 
+  const dispatch = useDispatch();
+  const order = useSelector((state) => state.wallet.order);
+  const id = getIdOfUser();
+  const walletUser = useSelector((state) => state.wallet.wallet);
+  const code = "158884"
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const cancel = urlParams.get('cancel');
     const orderCode = urlParams.get('orderCode');
 
-    if (cancel === 'true' && orderCode) {
-      console.log('Order Code:', orderCode);
-      // Lưu orderCode vào biến state hoặc Redux store nếu cần thiết
+    dispatch(fetchWallet({ id: id }));
+    dispatch(getOrder(code))
+    // if (cancel === 'true' && orderCode) {
+    //   console.log('Order Code:', orderCode);
+    //   dispatch(getOrder(code));
+    // }
+    
+    // if (walletUser && order) {
+    //   const walletUpdate = {
+    //     idAdmin: 32,
+    //     userId: id,
+    //     ballance: Number(walletUser?.ballance) + Number(order?.amount)
+    //   }
+    //   console.log("wallet: ", walletUser, " order: ", order)
+    //   if (!isNaN(walletUpdate.ballance)) {
+    //     dispatch(topToWallet(walletUpdate));
+    //   }
+    // }
+  }, [dispatch, id, code]);
+
+  useEffect(() => {
+    // Check if walletUser and order are available
+    if (walletUser && order) {
+      // Calculate updated wallet balance
+      const walletUpdate = {
+        idAdmin: 32,
+        userId: id,
+        ballance: Number(walletUser?.ballance) + Number(order?.amount)
+      };
+      console.log("wallet: ", walletUser, " order: ", order);
+      // Check if wallet balance is valid
+      if (!isNaN(walletUpdate.ballance)) {
+        // Dispatch action to update wallet balance
+        dispatch(topToWallet(walletUpdate));
+      }
     }
   }, []);
+
 
   return (
     <div className="h-screen flex flex-col justify-center items-center">
