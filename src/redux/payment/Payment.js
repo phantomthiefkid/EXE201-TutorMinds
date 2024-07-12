@@ -8,7 +8,7 @@ import axios from "axios";
 const URL_FETCH_WALLET = "https://fams-management.tech/api/wallet/";
 const URL_POST_WALLET = "https://fams-management.tech/api/wallet/";
 const URL_INVOICE = "https://fams-management.tech/api/invoice";
-const URL_GET_ORDER = "https://fams-management.tech/order/";
+const URL_GET_ORDER = "https://fams-management.tech/order";
 const URL_CREATE_PAYMENT_LINK = "https://fams-management.tech/api/create-payment-link";
 export const fetchWallet = createAsyncThunk("fetchWallet", async ({ id }) => {
   try {
@@ -107,6 +107,8 @@ export const topToWallet = createAsyncThunk("topToWallet", async (data) => {
       ballance: data.ballance
     }
 
+    console.log("data: ", data)
+
     const response = await axios.post(URL_POST_WALLET + data.userId, wallet, config);
     return response.data;
   } catch (error) {
@@ -149,8 +151,8 @@ export const getOrder = createAsyncThunk("getOrder", async (orderId) => {
               Authorization: `Bearer ${token}`,  
           }
       };
-      const response = await axios.get(`${URL_GET_ORDER+orderId}`, null, config);
-      return response.data;
+      const response = await axios.get(`${URL_GET_ORDER}/${orderId}`, config);
+      return response.data.data;
   } catch (error) {
       throw error;
   }

@@ -1,39 +1,78 @@
 import React, { useEffect } from 'react';
+import { Amazon } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getIdOfUser } from '../../redux/auth/loginSlice';
-import { getOrder, fetchWallet } from '../../redux/payment/Payment';
+import { getOrder, fetchWallet, topToWallet } from '../../redux/payment/Payment';
+
+const updateWallet = {
+  user: {
+    id: 0
+  },
+  ballance: 0
+}
 
 const FailurePaymentScreen = () => {
   const dispatch = useDispatch();
   const order = useSelector((state) => state.wallet.order);
   const id = getIdOfUser();
   const walletUser = useSelector((state) => state.wallet.wallet);
-
+  const code = "158884"
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const cancel = urlParams.get('cancel');
     const orderCode = urlParams.get('orderCode');
 
     dispatch(fetchWallet({ id: id }));
-
+    dispatch(getOrder(code))
     if (cancel === 'true' && orderCode) {
-      console.log('Order Code:', orderCode);
-      dispatch(getOrder(orderCode));
+      localStorage.setItem('orderCode', orderCode);
     }
-  }, [dispatch, id]);
+    
+    // if (walletUser && order) {
+    //   const walletUpdate = {
+    //     idAdmin: 32,
+    //     userId: id,
+    //     ballance: Number(walletUser?.ballance) + Number(order?.amount)
+    //   }
+    //   console.log("wallet: ", walletUser, " order: ", order)
+    //   if (!isNaN(walletUpdate.ballance)) {
+    //     dispatch(topToWallet(walletUpdate));
+    //   }
+    // }
+  }, [dispatch, id, code]);
 
   useEffect(() => {
-    if (order) {
-      console.log('Order:', order);
+    // Check if walletUser and order are available
+    const storedOrderCode = localStorage.getItem('orderCode');
+    if (storedOrderCode && walletUser && order) {
+      // Calculate updated wallet balance
+      localStorage.removeItem('orderCode');
+      const walletUpdate = {
+        idAdmin: 32,
+        userId: id,
+        ballance: Number(walletUser?.ballance) + Number(order?.amount)
+      };
+      console.log("wallet: ", walletUser, " order: ", order);
+      // Check if wallet balance is valid
+      if (!isNaN(walletUpdate.ballance)) {
+        // Dispatch action to update wallet balance
+        dispatch(topToWallet(walletUpdate));
+      }
     }
-  }, [order]);
+  }, [dispatch, walletUser, order, id]);
 
-  useEffect(() => {
-    if (walletUser) {
-      console.log('Wallet User:', walletUser);
-    }
-  }, [walletUser]);
+  // useEffect(() => {
+  //   if (order) {
+  //     console.log('Order:', order);
+  //   }
+  // }, [order]);
+
+  // useEffect(() => {
+  //   if (walletUser) {
+  //     console.log('Wallet User:', walletUser);
+  //   }
+  // }, [walletUser]);
 
   return (
     <div className="h-screen flex flex-col justify-center items-center">
