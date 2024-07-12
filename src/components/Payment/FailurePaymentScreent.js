@@ -1,16 +1,28 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import { getIdOfUser } from '../../redux/auth/loginSlice';
+import { getOrder } from '../../redux/payment/Payment';
+import { fetchWallet } from '../../redux/payment/Payment';
 const FailurePaymentScreen = () => {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const cancel = urlParams.get('cancel');
     const orderCode = urlParams.get('orderCode');
-
+    const dispatch = useDispatch();
+    const id = getIdOfUser();
+    const order = useSelector((order) => order.wallet.order);
     if (cancel === 'true' && orderCode) {
       console.log('Order Code:', orderCode);
-      // Lưu orderCode vào biến state hoặc Redux store nếu cần thiết
+      const response = dispatch(getOrder(orderCode));
+      console.log(response)
+      if (response) {
+        const walletUser = dispatch(fetchWallet({id: id}))
+        if (walletUser) {
+          console.log(walletUser)
+        }
+      }
     }
   }, []);
 
