@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getIdOfUser } from '../../redux/auth/loginSlice';
 import { getOrder, fetchWallet, topToWallet } from '../../redux/payment/Payment';
 
@@ -10,23 +10,18 @@ const SuccessPaymentScreen = () => {
   const order = useSelector((state) => state.wallet.order);
   const id = getIdOfUser();
   const walletUser = useSelector((state) => state.wallet.wallet);
-  const code = "158884"
   const urlParams = new URLSearchParams(window.location.search);
-  const cancel = urlParams.get('cancel');
   const orderCode = urlParams.get('orderCode');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Kiểm tra xem trang đã reload chưa, nếu chưa thì reload
-    if (!window.sessionStorage.getItem('reloaded')) {
-      window.sessionStorage.setItem('reloaded', 'true');
+    // Kiểm tra nếu orderCode không tồn tại thì reload lại trang
+    if (!orderCode) {
       window.location.reload();
+    } else {
+      dispatch(fetchWallet({ id: id }));
+      dispatch(getOrder(orderCode));
     }
-  }, []);
-
-  useEffect(() => {
-
-    dispatch(fetchWallet({ id: id }));
-    dispatch(getOrder(orderCode))
   }, [dispatch, id, orderCode]);
 
   useEffect(() => {
@@ -37,10 +32,13 @@ const SuccessPaymentScreen = () => {
         ballance: Number(walletUser?.ballance) + Number(order?.amount)
       };
       console.log("wallet: ", walletUser, " order: ", order);
-      // Check if wallet balance is valid
+
       if (!isNaN(walletUpdate.ballance)) {
-        // Dispatch action to update wallet balance
-        dispatch(topToWallet(walletUpdate));
+
+        dispatch(topToWallet(walletUpdate)).then(() => {
+          navigate('/successpaymentscreen')
+        }
+        )
       }
     }
   }, [walletUser, order, dispatch, id]);
