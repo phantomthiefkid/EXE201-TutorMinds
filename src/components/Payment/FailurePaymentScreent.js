@@ -11,17 +11,17 @@ const FailurePaymentScreen = () => {
   const id = getIdOfUser();
   const walletUser = useSelector((state) => state.wallet.wallet);
   const code = "158884"
+  const urlParams = new URLSearchParams(window.location.search);
+  const cancel = urlParams.get('cancel');
+  const orderCode = urlParams.get('orderCode');
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const cancel = urlParams.get('cancel');
-    const orderCode = urlParams.get('orderCode');
 
     dispatch(fetchWallet({ id: id }));
     dispatch(getOrder(orderCode))
     if (cancel === 'true' && orderCode) {
       localStorage.setItem('orderCode', orderCode);
     }
-    
+
     // if (walletUser && order) {
     //   const walletUpdate = {
     //     idAdmin: 32,
@@ -40,7 +40,7 @@ const FailurePaymentScreen = () => {
     const storedOrderCode = localStorage.getItem('orderCode');
     if (storedOrderCode && walletUser && order) {
       // Calculate updated wallet balance
-    
+
       const walletUpdate = {
         idAdmin: 32,
         userId: id,
