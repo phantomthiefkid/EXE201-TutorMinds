@@ -28,6 +28,7 @@ import PaymentPage from "./components/Payment/PaymentPage .js";
 import TransactionHistory from "./components/Usermanagement/TransactionHistory .js";
 import SucessPaymentScreen from "./components/Payment/SucessPaymentScreen";
 import FailurePaymentScreen from "./components/Payment/FailurePaymentScreent";
+import PayOSScreen from "./components/Payment/PayOSScreen";
 function App() {
   const roleName = getUserDataFromToken();
 
@@ -65,6 +66,7 @@ function App() {
         <Route path="/paymenthistoryadmin" element={<SidebarAdmin><PaymentHistoryAdmin></PaymentHistoryAdmin></SidebarAdmin>}></Route>
         <Route path="/successpaymentscreen" element={<SucessPaymentScreen></SucessPaymentScreen>}></Route>
         <Route path="/failurepaymentscreen" element={<FailurePaymentScreen></FailurePaymentScreen>}></Route>
+        <Route path="/payosscreen" element={<PayOSScreen></PayOSScreen>}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
