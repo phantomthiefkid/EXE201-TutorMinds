@@ -2,29 +2,38 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getIdOfUser } from '../../redux/auth/loginSlice';
-import { getOrder } from '../../redux/payment/Payment';
-import { fetchWallet } from '../../redux/payment/Payment';
+import { getOrder, fetchWallet } from '../../redux/payment/Payment';
+
 const FailurePaymentScreen = () => {
+  const dispatch = useDispatch();
+  const order = useSelector((state) => state.wallet.order);
+  const id = getIdOfUser();
+  const walletUser = useSelector((state) => state.wallet.wallet);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const cancel = urlParams.get('cancel');
     const orderCode = urlParams.get('orderCode');
-    const dispatch = useDispatch();
-    const id = getIdOfUser();
-    const order = useSelector((order) => order.wallet.order);
+
+    dispatch(fetchWallet({ id: id }));
+
     if (cancel === 'true' && orderCode) {
       console.log('Order Code:', orderCode);
-      const response = dispatch(getOrder(orderCode));
-      console.log(response)
-      if (response) {
-        const walletUser = dispatch(fetchWallet({id: id}))
-        if (walletUser) {
-          console.log(walletUser)
-        }
-      }
+      dispatch(getOrder(orderCode));
     }
-  }, []);
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (order) {
+      console.log('Order:', order);
+    }
+  }, [order]);
+
+  useEffect(() => {
+    if (walletUser) {
+      console.log('Wallet User:', walletUser);
+    }
+  }, [walletUser]);
 
   return (
     <div className="h-screen flex flex-col justify-center items-center">
