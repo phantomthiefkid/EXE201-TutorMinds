@@ -239,7 +239,7 @@ const Header = () => {
                         className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
                         onClick={() => window.scrollTo(0, 0)}
                       >
-                        <Link to="/toptowallet" onClick={closeDropdown}>
+                        <Link to="/paymentpage" onClick={closeDropdown}>
                           <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
                             <Wallet size={20} className="mr-2" />
                             Nạp tiền bằng Momo

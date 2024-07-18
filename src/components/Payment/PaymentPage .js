@@ -35,37 +35,42 @@ const PaymentPage = () => {
         window.location.href = "/payment";
       }
     return (
-        <div className="w-70vw bg-gray-100 flex items-center justify-center">
-            <form className="mt-4">
-                <img
-                    className="w-40% h-40% object-cover object-center"
-                    src="https://trello.com/1/cards/666c62fbd8b2d4e029902fe7/attachments/666c6561b8d24801d6801458/download/image.png"
-                    alt="QR Code"
-                />
-                <label
-                    htmlFor="amount"
-                    className="block text-mg font-medium text-gray-700 text-2xl mt-5 mb-5"
-                >
-                    Ghi chú:
-                </label>
-                <textarea
-                    type="text"
-                    name="amount"
-                    id="amount"
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    placeholder="Ghi chú thông tin ở đây"
-                    onChange={(e) => setPaymentInfo((prev) => ({
-                        ...prev, description: e.target.value
-                    }))}
-                />
-                <button
-                    type="button"
-                    className="w-full mt-4 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    onClick={handlePaymentRequest}
-                >
-                    Thanh toán
-                </button>
-            </form>
+        <div>
+            <div className='mt-12'>
+                <h2 className="text-4xl font-bold text-gray-800 ml-12 mb-6 underline">Trang thanh toán</h2>
+            </div>
+            <div className="bg-gray-100 flex items-center justify-center m-12">
+                <form className="mt-4">
+                    <img
+                        className="w-40% h-40% object-cover object-center"
+                        src="https://trello.com/1/cards/666c62fbd8b2d4e029902fe7/attachments/666c6561b8d24801d6801458/download/image.png"
+                        alt="QR Code"
+                    />
+                    <label
+                        htmlFor="amount"
+                        className="block text-mg font-medium text-gray-700 text-2xl mt-5 mb-5"
+                    >
+                        Ghi chú:
+                    </label>
+                    <textarea
+                        type="text"
+                        name="amount"
+                        id="amount"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        placeholder="Ghi chú thông tin ở đây"
+                        onChange={(e) => setPaymentInfo((prev) => ({
+                            ...prev, description: e.target.value
+                        }))}
+                    />
+                    <button
+                        type="button"
+                        className="w-full mt-4 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        onClick={handlePaymentRequest}
+                    >
+                        Thanh toán
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };
