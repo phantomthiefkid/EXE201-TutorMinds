@@ -14,7 +14,7 @@ const PaymentPage = () => {
           "id": userId
         },
         "receiver": {
-          "id": 32
+          "id": 1
         },
         description: "",
       })

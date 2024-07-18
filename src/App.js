@@ -20,11 +20,15 @@ import RequestListAdmin from "./components/Admin/RequestListAdmin";
 import AddCourse from "./components/CourseManagement/AddCourse";
 import LessonVideo from "./components/CourseManagement/LessonVideo";
 import PaymentHistory from "./components/Payment/PaymentHistory.js";
-
+import BillAdmin from "./components/Admin/BillAdmin";
 import Calendar from "./components/Tutormanagement/CalendarTutor.js";
 import TopToWallet from "./components/Usermanagement/TopToWallet";
 import PaymentHistoryAdmin from "./components/Admin/PaymentHistoryAdmin";
 import PaymentPage from "./components/Payment/PaymentPage .js";
+import TransactionHistory from "./components/Usermanagement/TransactionHistory .js";
+import SucessPaymentScreen from "./components/Payment/SucessPaymentScreen";
+import FailurePaymentScreen from "./components/Payment/FailurePaymentScreent";
+import PayOSScreen from "./components/Payment/PayOSScreen";
 function App() {
   const roleName = getUserDataFromToken();
 
@@ -49,6 +53,8 @@ function App() {
         <Route path="/video/:id" element={<LessonVideo/>}></Route>        
         <Route path="/payment" element={<PaymentHistory/>}></Route>        
         <Route path="/paymentpage" element={<PaymentPage/>}></Route>        
+        <Route path="/paymentGuest" element={<TransactionHistory/>}></Route>    
+        <Route path="/billpage" element={<SidebarAdmin><BillAdmin></BillAdmin></SidebarAdmin>}></Route>      
         <Route
           path="/requestlistadmin"
           element={<RequiestListWithSidebar></RequiestListWithSidebar>}
@@ -58,6 +64,9 @@ function App() {
         <Route path="/requestlistadmin" element={<RequiestListWithSidebar></RequiestListWithSidebar>}></Route>
         <Route path="/toptowallet" element={<TopToWallet></TopToWallet>}></Route>
         <Route path="/paymenthistoryadmin" element={<SidebarAdmin><PaymentHistoryAdmin></PaymentHistoryAdmin></SidebarAdmin>}></Route>
+        <Route path="/successpaymentscreen" element={<SucessPaymentScreen></SucessPaymentScreen>}></Route>
+        <Route path="/failurepaymentscreen" element={<FailurePaymentScreen></FailurePaymentScreen>}></Route>
+        <Route path="/payosscreen" element={<PayOSScreen></PayOSScreen>}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>

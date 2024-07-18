@@ -25,7 +25,7 @@ const PaymentHistoryAdmin = () => {
     const [selectedTransactionTopToWallet, setSelectedTransactionTopToWallet] = useState(null);
     const [transactions, setTransactions] = useState([]);
     const [showTopUpModal, setShowTopUpModal] = useState(false);
-
+    const [loading, setLoading] = useState(true);
     const axiosInstance = axios.create({
         baseURL: URL_TRANSACTION_LIST,
     });
@@ -52,6 +52,7 @@ const PaymentHistoryAdmin = () => {
             const response = await axiosInstance.get(`${adminId}`);
             if (response) {
                 setTransactions(response.data.content);
+                setLoading(false)
             }
         } catch (error) {
             console.error('Error fetching transactions:', error);
@@ -66,6 +67,20 @@ const PaymentHistoryAdmin = () => {
     const handleCloseTopUpModal = () => {
         setShowTopUpModal(false);
     };
+
+    if (loading) {
+        return (<div className="flex justify-center items-center h-screen">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+        </div>);
+    } else {
+        return (<div className="flex justify-center items-center h-screen">
+            <div className="text-gray-500 text-lg font-semibold">
+                Không có giao dịch nào gần đây
+            </div>
+        </div>
+        )
+    }
+
 
     return (
         <div className="bg-gray-100 mx-auto p-6">
@@ -97,20 +112,27 @@ const PaymentHistoryAdmin = () => {
                         </div>
 
                     ))}
-                    <div className="flex justify-between items-center mt-4">
-                        <button className="text-purple-500 hover:underline">&larr; Trước</button>
-                        <div className="space-x-2">
-                            <button className="text-purple-500 hover:underline">1</button>
-                            <button className="text-purple-500 hover:underline">2</button>
-                            <button className="text-purple-500 hover:underline">3</button>
-                            <button className="text-purple-500 hover:underline">4</button>
-                            <button className="text-purple-500 hover:underline">...</button>
+                    {transactions.length > 0 ? (<div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
+                        {/* <span className="text-xs xs:text-sm text-gray-900">
+                            Showing {currentPage} of {totalPages} Pages
+                        </span> */}
+                        <div className="inline-flex mt-2 xs:mt-0">
+                            <button
+                                className="text-sm bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-l"
+                            // onClick={() => setCurrentPage(prevPage => prevPage - 1)}
+                            // disabled={currentPage === 1}
+                            >
+                                Prev
+                            </button>
+                            <button
+                                className="text-sm bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-r"
+                            // onClick={() => setCurrentPage(prevPage => prevPage + 1)}
+                            // disabled={currentPage === totalPages}
+                            >
+                                Next
+                            </button>
                         </div>
-                        <button className="text-purple-500 hover:underline">Sau &rarr;</button>
-                    </div>
-                    <div className="p-4 text-center text-gray-600 mt-8">
-                        &copy; 2022, Bling Cloud Technologies LLC. All Rights Reserved.
-                    </div>
+                    </div>) : ""}
                 </div>
             </div>
             {selectedTransaction && (

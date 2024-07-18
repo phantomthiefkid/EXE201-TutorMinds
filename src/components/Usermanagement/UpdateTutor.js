@@ -76,7 +76,7 @@ const UpdateTutor = ({ visible, onClose, tutor, fetchUsers }) => {
     const handleUpdateTutor = async () => {
         const encodedEmail = encodeURIComponent(tutor.email);
         try {
-            const response = await axios.post(`https://fams-management.tech/api/test/tutors/${encodedEmail}`, {
+            const response = await axios.post(`http://34.126.79.32/api/tutors/${encodedEmail}`, {
                 personalIntroduction: tutorProfile.personalIntroduction,
                 personalInformation: tutorProfile.personalInformation,
                 ratingPoint: tutorProfile.ratingPoint,

@@ -7,12 +7,12 @@ const RequestListAdmin = () => {
   const classAPI = useSelector((item) => item.class.data.content);
   const totalPagesAPI = useSelector((page) => page.class.data.totalPages);
   const dispatch = useDispatch();
-
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const [filter, setFilter] = useState('All');
   const [classList, setClassList] = useState([]);
   const [apiData, setApiData] = useState([]);
-
+  console.log("Check: ", classAPI)
   useEffect(() => {
     if (Array.isArray(classAPI)) {
       setClassList([...classAPI]);
@@ -37,6 +37,7 @@ const RequestListAdmin = () => {
           setCurrentPage(0);
         } else {
           setApiData(response.payload.content);
+          setLoading(false)
         }
       })
       .catch((error) => {
@@ -64,6 +65,15 @@ const RequestListAdmin = () => {
     const statusMatch = filter === 'All' || request.conversationStatus.label === filter;
     return statusMatch;
   });
+
+  if (loading) {
+    return <div className="flex justify-center items-center h-screen">
+      <div className="text-gray-500 text-lg font-semibold">
+        Không có yêu cầu nào gần đây
+      </div>
+    </div>
+      ;
+  }
 
   return (
     <div className="container mx-auto px-4 sm:px-8">

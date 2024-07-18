@@ -11,6 +11,8 @@ import {
   Bank,
   Coin,
   BookmarkCheck,
+  CurrencyExchange,
+  CreditCard,
 } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -37,9 +39,9 @@ const Header = () => {
   const fetchUserDetail = useSelector((state) => state.user.user);
   const [data, setData] = useState(null);
   const [dataUser, setDataUser] = useState(null);
-  if (walletDetail) {
-    console.log("Check: ", walletDetail)
-  }
+  // if (walletDetail) {
+  //   console.log("Check: ", walletDetail)
+  // }
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -240,7 +242,20 @@ const Header = () => {
                         <Link to="/paymentpage" onClick={closeDropdown}>
                           <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
                             <Wallet size={20} className="mr-2" />
-                            Nạp tiền
+                            Nạp tiền bằng Momo
+                          </div>
+                        </Link>
+                      </div>
+                    )}
+                     {roleName === "STUDENT" && (
+                      <div
+                        className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
+                        onClick={() => window.scrollTo(0, 0)}
+                      >
+                        <Link to="/payosscreen" onClick={closeDropdown}>
+                          <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                            <CreditCard size={20} className="mr-2" />
+                            Nạp tiền PayOS
                           </div>
                         </Link>
                       </div>
@@ -253,7 +268,7 @@ const Header = () => {
                         <Link to="/payment" onClick={closeDropdown}>
                           <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
                             <Bank size={20} className="mr-2" />
-                            Lịch sử giao dịch
+                            Lịch sử nạp tiền
                           </div>
                         </Link>
                       </div>
@@ -266,6 +281,27 @@ const Header = () => {
                         </div>
                       </Link>
                     )}
+                    {roleName === "TUTOR" && (<div
+                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
+                      onClick={() => window.scrollTo(0, 0)}
+                    >
+                      <Link to="/paymentGuest" onClick={closeDropdown}>
+                        <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                          <Bank size={20} className="mr-2" />
+                          Lịch sử giao dịch
+                        </div>
+                      </Link>
+                    </div>) || roleName === "STUDENT" && (<div
+                      className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"
+                      onClick={() => window.scrollTo(0, 0)}
+                    >
+                      <Link to="/paymentGuest" onClick={closeDropdown}>
+                        <div className="flex items-center py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300">
+                          <CurrencyExchange size={20} className="mr-2" />
+                          Lịch sử giao dịch
+                        </div>
+                      </Link>
+                    </div>)}
 
                     <div
                       className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-300"

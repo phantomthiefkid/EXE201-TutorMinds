@@ -172,11 +172,11 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
   return (
     <div className="fixed inset-0 overflow-y-auto bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
       <ToastContainer />
-      <div className="bg-white p-4 md:p-8 rounded-lg shadow-lg max-w-lg w-full max-h-screen-3/4 overflow-y-auto" style={{ height: "950px"}}>
-        <h2 className="text-2xl font-bold mb-4 text-center">Update Course</h2>
+      <div className="bg-white p-4 md:p-8 rounded-lg shadow-lg w-full max-w-2xl max-h-screen overflow-y-auto">
+        <h2 className="text-2xl font-bold mb-4 text-center">Cập nhật khóa học</h2>
         <form onSubmit={handleUpdate}>
           <div className="mb-4">
-            <label htmlFor="title" className="block text-lg font-semibold mb-2">Title</label>
+            <label htmlFor="title" className="block text-lg font-semibold mb-2">Tiêu đề khóa học</label>
             <input
               id="title"
               type="text"
@@ -186,7 +186,7 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="price" className="block text-lg font-semibold mb-2">Price</label>
+            <label htmlFor="price" className="block text-lg font-semibold mb-2">Giá</label>
             <input
               id="price"
               type="number"
@@ -196,7 +196,7 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="description" className="block text-lg font-semibold mb-2">Description</label>
+            <label htmlFor="description" className="block text-lg font-semibold mb-2">Chi tiết bài giảng</label>
             <textarea
               id="description"
               className="border w-full p-3 rounded"
@@ -205,7 +205,7 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="simpleDescription" className="block text-lg font-semibold mb-2">Simple Description</label>
+            <label htmlFor="simpleDescription" className="block text-lg font-semibold mb-2">Mô tả ngắn gọn</label>
             <textarea
               id="simpleDescription"
               className="border w-full p-3 rounded"
@@ -231,7 +231,7 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
                 />
               </div>
             )}
-            <label htmlFor="image" className="block text-lg font-semibold mb-2">Image</label>
+            <label htmlFor="image" className="block text-lg font-semibold mb-2">Ảnh</label>
             <input
               id="image"
               type="file"
@@ -241,11 +241,11 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
             />
           </div>
 
-          <div className="bg-gray-100 p-4 md:p-6 rounded-lg shadow-md max-h-80 overflow-y-auto">
-            <h3 className="text-xl font-semibold mb-4">Lessons</h3>
+          <div className="bg-gray-100 p-4 md:p-6 rounded-lg shadow-md max-h-64 overflow-y-auto">
+            <h3 className="text-xl font-semibold mb-4">Danh sách bài giảng</h3>
             {lessons.map((lesson, index) => (
               <div key={index} className="mb-4 p-4 border border-gray-300 rounded-md">
-                <label className="block mb-2 font-semibold">Lesson {index + 1}</label>
+                <label className="block mb-2 font-semibold">Bài giảng {index + 1}</label>
                 <input
                   type="text"
                   name="title"
@@ -283,7 +283,7 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
                   onClick={() => handleLessonUpdate(index)}
                   className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
                 >
-                  Update Lesson
+                  Cập nhật bài giảng
                 </button>
               </div>
             ))}
@@ -292,7 +292,7 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
               onClick={addLesson}
               className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
-              Add Lesson
+              Thêm bài giảng
             </button>
           </div>
 
@@ -302,13 +302,13 @@ const ModalUpdateCourse = ({ course, onClose, onUpdateSuccess }) => {
               onClick={onClose}
               type="button"
             >
-              Cancel
+              Hủy
             </button>
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded"
               type="submit"
             >
-              Update
+              Cập nhật
             </button>
           </div>
         </form>
