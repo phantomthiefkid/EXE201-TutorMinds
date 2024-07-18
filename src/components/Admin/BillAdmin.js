@@ -1,21 +1,21 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { CashStack } from "react-bootstrap-icons";  
+import { CashStack } from "react-bootstrap-icons";
 
 const BillAdmin = () => {
     const [billList, setBillList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const billsPerPage = 8;
-
-    const token = localStorage.getItem('token'); 
+    const [loading, setLoading] = useState(true);
+    const token = localStorage.getItem('token');
     const id = 1;
 
     const fetchData = async (page) => {
         try {
-            const response = await axios.get(`https://fams-management.tech/api/invoice/student/${id}?pageNo=${page - 1}&pageSize=${billsPerPage}`, {
-                headers: { 
-                    'accept': '*/*', 
+            const response = await axios.get(`https://fams-management.tech/api/invoice?pageNo=${page - 1}&pageSize=${billsPerPage}`, {
+                headers: {
+                    'accept': '*/*',
                     'Authorization': `Bearer ${token}`
                 }
             });
@@ -24,6 +24,7 @@ const BillAdmin = () => {
 
             setBillList(sortedBills);
             setTotalPages(response.data.totalPages);
+            setLoading(false)
         } catch (error) {
             console.log(error);
         }
@@ -32,6 +33,11 @@ const BillAdmin = () => {
     useEffect(() => {
         fetchData(currentPage);
     }, [currentPage]);
+    if (loading) {
+        return (<div className="flex justify-center items-center h-screen">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+        </div>);
+    }
 
     return (
         <div className="container mx-auto px-4 sm:px-8">
@@ -83,7 +89,7 @@ const BillAdmin = () => {
                                         </td>
                                         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             <div className="flex items-center">
-                                                <CashStack className="text-gray-900 mr-2" /> 
+                                                <CashStack className="text-gray-900 mr-2" />
                                                 <p className="text-gray-900 whitespace-no-wrap">{bill.price.toLocaleString()} VNĐ</p>
                                             </div>
                                         </td>
