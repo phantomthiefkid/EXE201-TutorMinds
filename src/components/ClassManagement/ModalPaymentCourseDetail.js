@@ -4,6 +4,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { getUserIdFromToken } from '../../redux/auth/loginSlice';
 import { fetchWallet, topToWallet, invoice, fetchWalletTutor } from '../../redux/payment/Payment';
 import { enrollCourse } from '../../redux/course/Course';
+import Swal from "sweetalert2";
 const ModalPaymentCourseDetail = ({ isOpen, onClose, selectedClassId, course, tutor }) => {
   const dispatch = useDispatch();
   const userId = getUserIdFromToken();
@@ -12,29 +13,47 @@ const ModalPaymentCourseDetail = ({ isOpen, onClose, selectedClassId, course, tu
   const walletTutorDetail = useSelector((state) => state.wallet.walletTutor);
   const handleAccept = () => {
     if (walletDetail.ballance < course.price) {
-      alert("Số dư của bạn không đủ để thực hiện giao dịch!!!")
-      onClose();
+      Swal.fire({
+        title: "Số dư không đủ?",
+        text: "Số dư của bạn không đủ để thực hiện giao dịch!",
+        icon: "warning",
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          onClose();
+        }
+      });
+
     } else {
-      if (window.confirm('Bạn có chắc chắn muốn thực hiện giao dịch?')) {
-        const currentBallanceStudent = Number(walletDetail.ballance - course.price)
-        const currentBallanceTutor = Math.floor(walletTutorDetail.ballance + (course.price * 0.9));
-        console.log(currentBallanceTutor)
-        const dataStudent = {
-          idAdmin: userId,
-          userId: userId,
-          ballance: Number(currentBallanceStudent)
-        }
-        const dataTutor = {
-          idAdmin: userId,
-          userId: course?.tutor.id,
-          ballance: Number(currentBallanceTutor)
-        }
-        const invoiceCourse = {
-          type: "Course",
-          price: Number(course.price),
-          studentId: userId,
-          tutorId: course?.tutor.id
-        }
+      const currentBallanceStudent = Number(walletDetail.ballance - course.price)
+      const currentBallanceTutor = Math.floor(walletTutorDetail.ballance + (course.price * 0.9));
+
+      const dataStudent = {
+        idAdmin: userId,
+        userId: userId,
+        ballance: Number(currentBallanceStudent)
+      }
+      const dataTutor = {
+        idAdmin: userId,
+        userId: course?.tutor.id,
+        ballance: Number(currentBallanceTutor)
+      }
+      const invoiceCourse = {
+        type: "Course",
+        price: Number(course.price),
+        studentId: userId,
+        tutorId: course?.tutor.id
+      }
+      Swal.fire({
+        title: "Thanh toán",
+        text: "Bạn có chắc chắn muốn giao dịch?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Hủy",
+      }).then(() => {
+
 
         const response = dispatch(topToWallet(dataStudent))
         if (response) {
@@ -47,18 +66,17 @@ const ModalPaymentCourseDetail = ({ isOpen, onClose, selectedClassId, course, tu
             window.location.reload();
           }, 700)
         }
-
-      }
+      })
     }
 
   };
 
   useEffect(() => {
     dispatch(fetchWallet({ userId }));
-    dispatch(fetchWalletTutor({id: tutor}))
-    
+    dispatch(fetchWalletTutor({ id: tutor }))
+
   }, [dispatch, userId, tutor]);
-  
+
   if (!isOpen) return null;
   return (
     <div className="fixed z-50 inset-0 bg-black bg-opacity-50 flex justify-center items-center">
