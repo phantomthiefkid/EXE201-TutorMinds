@@ -78,14 +78,14 @@ const UserList = () => {
     const handleEditClick = (user, e) => {
         setSelectedUser(user);
         setShowModalUpdate(true);
-        setShowModalUpdateTutor(false); 
+        setShowModalUpdateTutor(false);
         closeAllDropdowns();
     };
 
     const handleManageProfileTutor = (user) => {
-        setSelectedTutor(user); 
+        setSelectedTutor(user);
         setShowModalUpdate(false);
-        setShowModalUpdateTutor(true); 
+        setShowModalUpdateTutor(true);
         closeAllDropdowns();
     }
 
@@ -96,9 +96,9 @@ const UserList = () => {
 
     if (loading) {
         return (<div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
         </div>);
-      }
+    }
 
     return (
         <>
@@ -111,8 +111,8 @@ const UserList = () => {
             <UpdateTutor
                 onClose={handleOnCloseTutor}
                 visible={showModalUpdateTutor}
-                tutor={selectedTutor} 
-                fetchUsers={fetchUsers} 
+                tutor={selectedTutor}
+                fetchUsers={fetchUsers}
             />
             <ToastContainer />
             <div className="container mx-auto px-4 sm:px-8">

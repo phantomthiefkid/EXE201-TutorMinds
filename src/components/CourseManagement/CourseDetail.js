@@ -27,10 +27,10 @@ const CourseDetail = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       const token = localStorage.getItem("token");
-      
+
       const URL_FETCH_COURSE_DETAIL = "https://fams-management.tech/course/"
       try {
-        
+
         const response = await axios.get(
           URL_FETCH_COURSE_DETAIL + id,
           {
@@ -64,7 +64,7 @@ const CourseDetail = () => {
     };
     fetchEnrollCourse();
     fetchCourse();
-    
+
   }, []);
   if (!course) {
     return (<div className="flex justify-center items-center h-screen">
@@ -90,9 +90,9 @@ const CourseDetail = () => {
         title: "Yêu cầu mua khóa học?",
         text: "Bạn cần mua khóa học để xem video bài giảng!",
         icon: "warning",
-        
+
       }).then((result) => {
-        
+
       });
     }
   };
@@ -158,12 +158,14 @@ const CourseDetail = () => {
             <h3 class="antialiased tracking-normal font-sans text-3xl font-semibold leading-snug text-blue-gray-900 flex justify-center mt-5 mb-2">
               {formatCurrency(course.price)}
             </h3>
-            <button class="border w-full py-3 bg-purple-500 text-white font-bold hover:bg-purple-700">
+            {!course.enroll ? (<><button class="border w-full py-3 bg-purple-500 text-white font-bold hover:bg-purple-700">
               Thêm vào giỏ hàng
             </button>
             <button onClick={openPaymentModal} class="border border-black w-full mt-4 py-3 font-bold hover:bg-gray-200">
               Mua khóa học
-            </button>
+            </button></>) : ( <button onClick={openPaymentModal} class="border border-black w-full mt-4 py-3 font-bold hover:bg-gray-200">
+              Đã mua khóa học
+            </button>)}
             <h5 class="antialiased tracking-normal font-sans text-xl font-bold leading-snug flex mt-2 mb-2">
               Khóa học bao gồm:
             </h5>
@@ -231,7 +233,7 @@ const CourseDetail = () => {
                 aria-labelledby={`accordion-collapse-heading-${index}`}
               >
                 <div className="mb-2 text-blue-700 hover:text-blue-400">
-                  <Link onClick={handleClick} to={`${enroll === null ? `/coursedetail/${id}`: `/video/${id}`} `}>{lesson.description}</Link>
+                  <Link onClick={handleClick} to={`${enroll === null ? `/coursedetail/${id}` : `/video/${id}`} `}>{lesson.description}</Link>
                 </div>
               </div>
             </div>
