@@ -5,8 +5,11 @@ import { getIdOfUser, getUserDataFromToken } from '../../redux/auth/loginSlice';
 const TransactionHistory = () => {
   const [transactions, setTransactions] = useState([]);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const itemsPerPage = 8;
+
   const userRole = getUserDataFromToken();
-  console.log(userRole);
   const userId = getIdOfUser();
   const token = localStorage.getItem('token');
 
@@ -14,8 +17,8 @@ const TransactionHistory = () => {
     const fetchTransactions = async () => {
       try {
         const url = userRole === 'TUTOR' ?
-          `https://fams-management.tech/api/invoice/tutor/${userId}` :
-          `https://fams-management.tech/api/invoice/student/${userId}?pageNo=0&pageSize=8`;
+          `https://fams-management.tech/api/invoice/tutor/${userId}?pageNo=${currentPage}&pageSize=${itemsPerPage}` :
+          `https://fams-management.tech/api/invoice/student/${userId}?pageNo=${currentPage}&pageSize=${itemsPerPage}`;
 
         const response = await axios.get(url, {
           headers: {
@@ -24,16 +27,21 @@ const TransactionHistory = () => {
           }
         });
         setTransactions(response?.data?.content);
+        setTotalPages(response?.data?.totalPages);
       } catch (error) {
         console.error('Error fetching transactions:', error);
       }
     };
 
     fetchTransactions();
-  }, [userId, userRole, token]);
+  }, [userId, userRole, token, currentPage]);
 
   const handleTopUp = (transaction) => {
     // Add your top-up logic here
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -57,7 +65,7 @@ const TransactionHistory = () => {
                   <p className="text-gray-600 font-semibold ml-4">Giao dịch</p>
                 </div>
                 <div className="flex flex-col w-2/3 ml-4">
-                  <p className="text-gray-600">Người chuyển: {userRole !== 'TUTOR' ? transaction.tutor.fullName : transaction.student.fullName}</p>
+                  <p className="text-gray-600">Người nhận: {userRole !== 'TUTOR' ? transaction.tutor.fullName : transaction.student.fullName}</p>
                   <p className="text-gray-600">Ngày chuyển: {transaction.createdDate}</p>
                 </div>
                 <div className="flex flex-col w-2/3 ml-4">
@@ -76,8 +84,33 @@ const TransactionHistory = () => {
       ) : (
         <p className="text-center text-gray-500">Không có giao dịch nào.</p>
       )}
-    </div>
 
+      <div className="flex justify-center m-6">
+        <button
+          className={`px-4 py-2 mx-1 rounded ${currentPage === 0 ? 'bg-gray-200 cursor-not-allowed' : 'bg-blue-500 text-white'}`}
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 0}
+        >
+          Previous
+        </button>
+        {[...Array(totalPages).keys()].map(page => (
+          <button
+            key={page}
+            className={`px-4 py-2 mx-1 rounded ${page === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            onClick={() => handlePageChange(page)}
+          >
+            {page + 1}
+          </button>
+        ))}
+        <button
+          className={`px-4 py-2 mx-1 rounded ${currentPage === totalPages - 1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-blue-500 text-white'}`}
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages - 1}
+        >
+          Next
+        </button>
+      </div>
+    </div>
   );
 };
 
