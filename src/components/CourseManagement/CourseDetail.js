@@ -163,7 +163,7 @@ const CourseDetail = () => {
             </button>
             <button onClick={openPaymentModal} class="border border-black w-full mt-4 py-3 font-bold hover:bg-gray-200">
               Mua khóa học
-            </button></>) : ( <button onClick={openPaymentModal} class="border border-black w-full mt-4 py-3 font-bold hover:bg-gray-200">
+            </button></>) : ( <button class="border border-black w-full mt-4 py-3 font-bold hover:bg-gray-200">
               Đã mua khóa học
             </button>)}
             <h5 class="antialiased tracking-normal font-sans text-xl font-bold leading-snug flex mt-2 mb-2">
