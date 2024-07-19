@@ -24,7 +24,8 @@ const UpdateTutor = ({ visible, onClose, tutor, fetchUsers }) => {
         try {
             const response = await axios.get(`https://fams-management.tech/api/test/tutors/${tutor.id}`, {
                 headers: {
-                    'accept': '*/*'
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
                 }
             });
             if (response.status === 200) {
@@ -76,7 +77,7 @@ const UpdateTutor = ({ visible, onClose, tutor, fetchUsers }) => {
     const handleUpdateTutor = async () => {
         const encodedEmail = encodeURIComponent(tutor.email);
         try {
-            const response = await axios.post(`http://34.126.79.32/api/tutors/${encodedEmail}`, {
+            const response = await axios.post(`https://fams-management.tech/api/tutors/${encodedEmail}`, {
                 personalIntroduction: tutorProfile.personalIntroduction,
                 personalInformation: tutorProfile.personalInformation,
                 ratingPoint: tutorProfile.ratingPoint,
@@ -93,8 +94,8 @@ const UpdateTutor = ({ visible, onClose, tutor, fetchUsers }) => {
             });
             if (response.status === 200) {
                 toast.success("Cập nhật thông tin gia sư thành công!");
-                fetchUsers(); 
-                onClose(); 
+                fetchUsers();
+                onClose();
             } else {
                 toast.error("Không thể cập nhật thông tin gia sư!");
             }
@@ -102,7 +103,7 @@ const UpdateTutor = ({ visible, onClose, tutor, fetchUsers }) => {
             toast.error("Có lỗi xảy ra, vui lòng thử lại sau!");
         }
     };
-    
+
 
     if (!visible || !tutorProfile) return null;
 

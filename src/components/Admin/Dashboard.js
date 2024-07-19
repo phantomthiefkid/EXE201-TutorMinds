@@ -240,7 +240,7 @@ const Dashboard = () => {
               },
               {
                 title: "Tổng số lớp học",
-                count: 18,
+                count: statistic?.approvedRequestAmount || 0,
                 imgSrc:
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfDhQwYkvbExlEDDidPW0o5X27oABpTj-MpH3w2FQGVatB9llsY1VswShanckPjcM_Ic8&usqp=CAU",
               },
