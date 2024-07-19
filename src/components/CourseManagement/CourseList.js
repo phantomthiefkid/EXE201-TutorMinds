@@ -120,7 +120,7 @@ const CourseList = ({ idTutor }) => {
           onUpdateSuccess={onUpdateSuccess}
         />
       )}
-      <div className="w-full max-w-7xl px-4 md:px-5 mx-auto mt-10">
+      <div className="w-full max-w-7xl mb-20 px-4 md:px-5 mx-auto mt-10">
         <div className="flex items-center mb-4">
           <input
             type="text"

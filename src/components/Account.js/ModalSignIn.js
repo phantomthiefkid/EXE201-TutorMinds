@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { loginApi } from "../../redux/auth/loginSlice";
@@ -119,9 +119,9 @@ const ModalSignIn = ({ visible, onClose }) => {
           <div className="text-center mt-4">
             <p className="text-gray-600 text-sm">
               Chưa có tài khoản?{" "}
-              <a href="#" className="text-blue-500 hover:underline">
+              <Link to={'/registerUser'} onClick={() => onClose()} className="text-blue-500 hover:underline">
                 Đăng ký ngay
-              </a>
+              </Link>
             </p>
           </div>
         </div>
