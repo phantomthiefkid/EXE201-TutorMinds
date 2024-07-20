@@ -105,7 +105,7 @@ const RequestListAdmin = () => {
                 <h2 className="text-xl font-semibold text-gray-800 mb-2">{request.title}</h2>
                 <p className="text-gray-600 mb-2">{request.description}</p>
                 <p className="text-gray-500 text-sm mb-2">ID: {request.id} - Ngày tạo: {request.createdDate}</p>
-                <p className="text-green-600 font-bold text-lg">Giá tiền: 500,000 VND</p>
+                <p className="text-green-600 font-bold text-lg">{request.totalPrice} VNĐ</p>
               </div>
               <div className="flex items-center space-x-2">
                 <div className={`font-semibold flex items-center space-x-1 ${request.conversationStatus.label === 'Draft' ? 'text-gray-500' : request.conversationStatus.label === 'Submitted to Tutor' ? 'text-blue-500' : request.conversationStatus.label === 'Rejected' ? 'text-red-500' : request.conversationStatus.label === 'Refinement Required' ? 'text-yellow-500' : request.conversationStatus.label === 'Approved by Tutor' ? 'text-green-500' : 'text-blue-500'}`}>
