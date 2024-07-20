@@ -10,45 +10,65 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchTutorDetail } from "../../redux/TutorManagement/Tutor";
 import ModalCreateRequest from "./ModalCreateRequest";
+import ModalCalendar from "./ModalCalendar";
 
 const TutorDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const tutorDetail = useSelector((state) => state.tutor.tutor);
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [showModalRequest, setShowModalRequest] = useState(false);
   const handleOnClose = () => setShowModalRequest(false);
+  const [showModalCalendar, setShowModalCalendar] = useState(false);
+  const handleOnCloseCalendar = () => setShowModalCalendar(false);
 
   useEffect(() => {
-    dispatch(fetchTutorDetail({ id }));
+    dispatch(fetchTutorDetail({ id })).then(() => {
+      setLoading(false);
+    });
   }, [dispatch, id]);
 
   useEffect(() => {
     setData(tutorDetail);
   }, [tutorDetail]);
-  console.log(">>>>>>>", tutorDetail);
 
-  if (!tutorDetail) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
   }
 
   return (
     <>
-      <ModalCreateRequest
-        onClose={handleOnClose}
-        visible={showModalRequest}
-        tutorId={tutorDetail?.id}
-      />
-      <div className="bg-gray-200 min-h-screen text-gray-800 z-0">
+      {showModalRequest && (
+        <ModalCreateRequest
+          onClose={handleOnClose}
+          visible={showModalRequest}
+          tutorId={tutorDetail?.id}
+        />
+      )}
+      {showModalCalendar && (
+        <ModalCalendar
+          onClose={handleOnCloseCalendar}
+          email={tutorDetail?.email}
+        />
+      )}
+      <div className="bg-gray-100 min-h-screen text-gray-800 z-0">
         <div className="relative z-0">
           <img
-            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw5fHxjb3ZlcnxlbnwwfDB8fHwxNzEwNzQxNzY0fDA&ixlib=rb-4.0.3&q=80&w=1080"
+            src="https://www.omni-academy.com/wp-content/uploads/2017/05/online-courses-header.jpg"
             alt="Cover"
-            className="w-full z-0 h-64 object-cover"
+            className="w-full z-0 h-96 object-cover"
           />
           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 p-4">
             <img
-              src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw3fHxwZW9wbGV8ZW58MHwwfHx8MTcxMTExMTM4N3ww&ixlib=rb-4.0.3&q=80&w=1080"
+              src={
+                data?.avatar ||
+                `https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw3fHxwZW9wbGV8ZW58MHwwfHx8MTcxMTExMTM4N3ww&ixlib=rb-4.0.3&q=80&w=1080`
+              }
               alt="Profile"
               className="rounded-sm w-32 h-32 md:w-40 md:h-40 border-4 border-white"
             />
@@ -84,6 +104,12 @@ const TutorDetail = () => {
             </div>
             <div className="flex items-center justify-center mt-2">
               <ChatDots className="w-8 h-8 text-green-500 mx-5" />
+              <button
+                onClick={() => setShowModalCalendar(true)}
+                className=" mx-4 rounded bg-sky-500 text-white px-6 py-2 text-xs font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-400"
+              >
+                Lịch dạy của gia sư
+              </button>
 
               <button
                 onClick={() => setShowModalRequest(true)}
